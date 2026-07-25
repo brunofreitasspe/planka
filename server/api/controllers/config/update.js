@@ -190,6 +190,15 @@
  *                 maxLength: 256
  *                 nullable: true
  *                 description: Expected SHA256 fingerprint of the SSH jump host's public key, used to verify its identity and prevent MITM attacks
+ *               registrationEnabled:
+ *                 type: boolean
+ *                 description: Whether public self-registration is enabled
+ *                 example: false
+ *               registrationAllowedDomains:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Email domains allowed to self-register (empty allows any domain)
  *     responses:
  *       200:
  *         description: Configuration updated successfully
@@ -372,6 +381,14 @@ module.exports = {
       maxLength: 256,
       allowNull: true,
     },
+
+    registrationEnabled: {
+      type: 'boolean',
+    },
+    registrationAllowedDomains: {
+      type: 'json',
+      custom: (value) => Array.isArray(value) && value.every((item) => typeof item === 'string'),
+    },
   },
 
   async fn(inputs) {
@@ -409,6 +426,8 @@ module.exports = {
       'ldapSshRemoteHost',
       'ldapSshRemotePort',
       'ldapSshHostKeyFingerprint',
+      'registrationEnabled',
+      'registrationAllowedDomains',
     ]);
 
     const config = await sails.helpers.config.updateMain.with({

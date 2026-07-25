@@ -156,6 +156,10 @@ const Events = {
   USER_UPDATE: 'userUpdate',
   USER_DELETE: 'userDelete',
 
+  USER_REGISTRATION_REQUESTED: 'userRegistrationRequested',
+  USER_REGISTRATION_APPROVED: 'userRegistrationApproved',
+  USER_REGISTRATION_REJECTED: 'userRegistrationRejected',
+
   WEBHOOK_CREATE: 'webhookCreate',
   WEBHOOK_UPDATE: 'webhookUpdate',
   WEBHOOK_DELETE: 'webhookDelete',

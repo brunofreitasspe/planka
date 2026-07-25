@@ -3,8 +3,6 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
-import router from './router';
-import login from './login';
-import registration from './registration';
+import Register from './Register';
 
-export default [router, login, registration];
+export default Register;

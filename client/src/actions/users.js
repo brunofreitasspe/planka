@@ -294,6 +294,50 @@ const clearUserApiKeyValue = (id) => ({
   },
 });
 
+const approveUser = (id) => ({
+  type: ActionTypes.USER_APPROVE,
+  payload: {
+    id,
+  },
+});
+
+approveUser.success = (user) => ({
+  type: ActionTypes.USER_APPROVE__SUCCESS,
+  payload: {
+    user,
+  },
+});
+
+approveUser.failure = (id, error) => ({
+  type: ActionTypes.USER_APPROVE__FAILURE,
+  payload: {
+    id,
+    error,
+  },
+});
+
+const rejectUser = (id) => ({
+  type: ActionTypes.USER_REJECT,
+  payload: {
+    id,
+  },
+});
+
+rejectUser.success = (user) => ({
+  type: ActionTypes.USER_REJECT__SUCCESS,
+  payload: {
+    user,
+  },
+});
+
+rejectUser.failure = (id, error) => ({
+  type: ActionTypes.USER_REJECT__FAILURE,
+  payload: {
+    id,
+    error,
+  },
+});
+
 const deleteUser = (id) => ({
   type: ActionTypes.USER_DELETE,
   payload: {
@@ -422,6 +466,8 @@ export default {
   createUserApiKey,
   deleteUserApiKey,
   clearUserApiKeyValue,
+  approveUser,
+  rejectUser,
   deleteUser,
   handleUserDelete,
   addUserToCard,

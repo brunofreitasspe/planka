@@ -6,6 +6,7 @@
 import socket from './socket';
 import bootstrap from './bootstrap';
 import login from './login';
+import registration from './registration';
 import core from './core';
 import modals from './modals';
 import config from './config';
@@ -35,6 +36,7 @@ export default {
   ...socket,
   ...bootstrap,
   ...login,
+  ...registration,
   ...core,
   ...modals,
   ...config,

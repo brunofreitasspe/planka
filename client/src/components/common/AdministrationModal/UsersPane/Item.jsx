@@ -3,12 +3,12 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Button, Icon, Table } from 'semantic-ui-react';
+import { Button, Icon, Label, Table } from 'semantic-ui-react';
 import { useEventCallback } from '../../../../lib/hooks';
 
 import selectors from '../../../../selectors';
@@ -16,6 +16,7 @@ import entryActions from '../../../../entry-actions';
 import { usePopupInClosableContext } from '../../../../hooks';
 import { UserRoleIcons } from '../../../../constants/Icons';
 import ActionsStep from './ActionsStep';
+import ConfirmationStep from '../../ConfirmationStep';
 import UserAvatar from '../../../users/UserAvatar';
 
 import styles from './Item.module.scss';
@@ -37,6 +38,29 @@ const Item = React.memo(({ id }) => {
 
   const ActionsPopup = usePopupInClosableContext(ActionsStep, {
     onClose: handleActionsPopupClose,
+  });
+
+  const handleApproveConfirm = useCallback(() => {
+    dispatch(entryActions.approveUser(id));
+  }, [id, dispatch]);
+
+  const handleRejectConfirm = useCallback(() => {
+    dispatch(entryActions.rejectUser(id));
+  }, [id, dispatch]);
+
+  const ApprovePopup = usePopupInClosableContext(ConfirmationStep, {
+    title: 'common.approveRegistration',
+    content: 'common.areYouSureYouWantToApproveThisRegistration',
+    buttonType: 'positive',
+    buttonContent: 'action.approve',
+    onConfirm: handleApproveConfirm,
+  });
+
+  const RejectPopup = usePopupInClosableContext(ConfirmationStep, {
+    title: 'common.rejectRegistration',
+    content: 'common.areYouSureYouWantToRejectThisRegistration',
+    buttonContent: 'action.reject',
+    onConfirm: handleRejectConfirm,
   });
 
   return (
@@ -81,8 +105,32 @@ const Item = React.memo(({ id }) => {
       <Table.Cell className={styles.roleCell}>
         <Icon name={UserRoleIcons[user.role]} className={styles.icon} />
         {t(`common.${user.role}`)}
+        {user.isPendingApproval && (
+          <Label color="orange" size="tiny" className={styles.statusLabel}>
+            {t('common.pendingApproval')}
+          </Label>
+        )}
+        {user.rejectedAt && (
+          <Label size="tiny" className={styles.statusLabel}>
+            {t('common.registrationRejected')}
+          </Label>
+        )}
       </Table.Cell>
       <Table.Cell textAlign="right">
+        {user.isPendingApproval && (
+          <>
+            <ApprovePopup>
+              <Button positive className={styles.button}>
+                <Icon fitted name="checkmark" />
+              </Button>
+            </ApprovePopup>
+            <RejectPopup>
+              <Button negative className={styles.button}>
+                <Icon fitted name="close" />
+              </Button>
+            </RejectPopup>
+          </>
+        )}
         <ActionsPopup userId={id}>
           <Button className={styles.button}>
             <Icon fitted name="pencil" />

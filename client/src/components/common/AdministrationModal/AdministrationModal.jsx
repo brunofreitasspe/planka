@@ -7,12 +7,13 @@ import React, { useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Modal, Tab } from 'semantic-ui-react';
+import { Label, Menu, Modal, Tab } from 'semantic-ui-react';
 
 import selectors from '../../../selectors';
 import entryActions from '../../../entry-actions';
 import { useClosableModal } from '../../../hooks';
 import UsersPane from './UsersPane';
+import RegistrationPane from './RegistrationPane';
 import SmtpPane from './SmtpPane';
 import LdapPane from './LdapPane';
 import WebhooksPane from './WebhooksPane';
@@ -21,6 +22,7 @@ import styles from './AdministrationModal.module.scss';
 
 const AdministrationModal = React.memo(() => {
   const config = useSelector(selectors.selectConfig);
+  const pendingApprovalUsersTotal = useSelector(selectors.selectPendingApprovalUsersTotal);
 
   const dispatch = useDispatch();
   const [t] = useTranslation();
@@ -38,10 +40,25 @@ const AdministrationModal = React.memo(() => {
 
   const panes = [
     {
-      menuItem: t('common.users', {
+      menuItem: (
+        <Menu.Item key="users">
+          {t('common.users', {
+            context: 'title',
+          })}
+          {pendingApprovalUsersTotal > 0 && (
+            <Label circular color="orange" size="tiny" className={styles.usersTabLabel}>
+              {pendingApprovalUsersTotal}
+            </Label>
+          )}
+        </Menu.Item>
+      ),
+      render: () => <UsersPane />,
+    },
+    {
+      menuItem: t('common.registration', {
         context: 'title',
       }),
-      render: () => <UsersPane />,
+      render: () => <RegistrationPane />,
     },
   ];
   if (config.smtpHost !== undefined) {

@@ -4,6 +4,11 @@
  */
 
 :global(#app) {
+  .backToLoginWrapper {
+    margin-top: 24px;
+    text-align: center;
+  }
+
   .cover {
     background: url("../../../assets/images/login-cover.jpg") left / cover;
   }
@@ -17,25 +22,6 @@
     right: 0;
     top: 0;
     width: 100%;
-  }
-
-  .debugLog {
-    border: 1px solid rgba(9, 30, 66, 0.13);
-    border-radius: 3px;
-    color: #333;
-    line-height: 1.4;
-    margin-top: 16px;
-    padding: 8px 12px;
-    width: 100%;
-  }
-
-  .divider {
-    font-weight: normal;
-  }
-
-  .registerLinkWrapper {
-    margin-top: 1rem;
-    text-align: center;
   }
 
   .form {
@@ -76,7 +62,7 @@
     margin-bottom: 16px;
   }
 
-  .login {
+  .register {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -95,21 +81,6 @@
     display: flex;
     justify-content: center;
     margin-bottom: 40px;
-  }
-
-  .poweredBy {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
-    margin-top: auto;
-  }
-
-  .poweredByText {
-    color: #6b808c;
-    font-weight: lighter;
-    text-align: center;
   }
 
   .wrapper {

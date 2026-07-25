@@ -388,6 +388,34 @@ export function* clearUserApiKeyValue(id) {
   yield put(actions.clearUserApiKeyValue(id));
 }
 
+export function* approveUser(id) {
+  yield put(actions.approveUser(id));
+
+  let user;
+  try {
+    ({ item: user } = yield call(request, api.approveUser, id));
+  } catch (error) {
+    yield put(actions.approveUser.failure(id, error));
+    return;
+  }
+
+  yield put(actions.approveUser.success(user));
+}
+
+export function* rejectUser(id) {
+  yield put(actions.rejectUser(id));
+
+  let user;
+  try {
+    ({ item: user } = yield call(request, api.rejectUser, id));
+  } catch (error) {
+    yield put(actions.rejectUser.failure(id, error));
+    return;
+  }
+
+  yield put(actions.rejectUser.success(user));
+}
+
 export function* deleteUser(id) {
   yield put(actions.deleteUser(id));
 
@@ -528,6 +556,8 @@ export default {
   createUserApiKey,
   deleteUserApiKey,
   clearUserApiKeyValue,
+  approveUser,
+  rejectUser,
   deleteUser,
   handleUserDelete,
   addUserToCard,

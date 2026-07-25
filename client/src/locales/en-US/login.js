@@ -3,7 +3,9 @@ export default {
     common: {
       activeUsersLimitReached: 'Active users limit reached',
       adminLoginRequiredToInitializeInstance: 'Admin login required to initialize instance',
+      createAccount_title: 'Create Account',
       emailAlreadyInUse: 'E-mail already in use',
+      emailDomainNotAllowed: 'E-mail domain is not allowed to register',
       emailOrUsername: 'E-mail or username',
       invalidCredentials: 'Invalid credentials',
       invalidEmailOrUsername: 'Invalid e-mail or username',
@@ -14,16 +16,27 @@ export default {
       pageNotFound_title: 'Page Not Found',
       password: 'Password',
       poweredByPlanka: 'Powered by <1>PLANKA</1>',
+      previousRegistrationWasRejected:
+        'A previous registration request with this e-mail was rejected',
+      registrationActiveLimitReached: 'Active limit reached',
+      registrationApprovalRequired: 'Your account is awaiting admin approval',
+      registrationDisabled: 'Registration is disabled',
+      registrationSubmittedAndAwaitingApproval:
+        'Your registration request has been submitted and is awaiting admin approval.',
       serverConnectionFailed: 'Server connection failed',
+      tooManyRegistrationAttempts: 'Too many registration attempts, please try again later',
       unknownError: 'Unknown error, try again later',
       useSingleSignOn: 'Use single sign-on',
       usernameAlreadyInUse: 'Username already in use',
       whoops_title: 'Whoops!',
+      yourRegistrationWasRejected: 'Your registration request was rejected',
     },
 
     action: {
+      backToLogIn: 'Back to log in',
       cancelAndClose: 'Cancel and close',
       continue: 'Continue',
+      createAccount: 'Create account',
       debugSso: 'Debug SSO',
       goBack: 'Go back',
       goHome: 'Go home',

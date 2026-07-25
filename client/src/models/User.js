@@ -150,6 +150,8 @@ export default class extends BaseModel {
       case ActionTypes.USER_CREATE__SUCCESS:
       case ActionTypes.USER_CREATE_HANDLE:
       case ActionTypes.USER_UPDATE__SUCCESS:
+      case ActionTypes.USER_APPROVE__SUCCESS:
+      case ActionTypes.USER_REJECT__SUCCESS:
         User.upsert(payload.user);
 
         break;

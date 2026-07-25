@@ -6,6 +6,7 @@
 import { combineReducers } from 'redux';
 
 import authenticateForm from './authenticate-form';
+import registrationForm from './registration-form';
 import userCreateForm from './user-create-form';
 import projectCreateForm from './project-create-form';
 import smtpTestState from './smtp-test-state';
@@ -13,6 +14,7 @@ import ldapTestState from './ldap-test-state';
 
 export default combineReducers({
   authenticateForm,
+  registrationForm,
   userCreateForm,
   projectCreateForm,
   smtpTestState,

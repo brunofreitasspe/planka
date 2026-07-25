@@ -12,6 +12,8 @@ const getUsers = (headers) => socket.get('/users', undefined, headers);
 
 const createUser = (data, headers) => socket.post('/users', data, headers);
 
+const registerUser = (data, headers) => http.post('/users/register', data, headers);
+
 /* const getUser = (id, headers) =>
   socket.get(`/users/${id}`, undefined, headers).then((body) => ({
     ...body,
@@ -36,11 +38,16 @@ const updateUserAvatar = (id, data, headers) => http.post(`/users/${id}/avatar`,
 const createUserApiKey = (userId, headers) =>
   socket.post(`/users/${userId}/api-key`, undefined, headers);
 
+const approveUser = (id, headers) => socket.post(`/users/${id}/approve`, undefined, headers);
+
+const rejectUser = (id, headers) => socket.post(`/users/${id}/reject`, undefined, headers);
+
 const deleteUser = (id, headers) => socket.delete(`/users/${id}`, undefined, headers);
 
 export default {
   getUsers,
   createUser,
+  registerUser,
   // getUser,
   getCurrentUser,
   updateUser,
@@ -49,5 +56,7 @@ export default {
   updateUserUsername,
   updateUserAvatar,
   createUserApiKey,
+  approveUser,
+  rejectUser,
   deleteUser,
 };

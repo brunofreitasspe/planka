@@ -181,6 +181,12 @@ const Errors = {
   USE_SINGLE_SIGN_ON: {
     useSingleSignOn: 'Use single sign-on',
   },
+  REGISTRATION_APPROVAL_REQUIRED: {
+    registrationApprovalRequired: 'Your account is awaiting admin approval',
+  },
+  REGISTRATION_REJECTED: {
+    registrationRejected: 'Your registration request was rejected',
+  },
   TERMS_ACCEPTANCE_REQUIRED: {
     termsAcceptanceRequired: 'Terms acceptance required',
   },
@@ -230,6 +236,12 @@ module.exports = {
       responseType: 'unauthorized',
     },
     useSingleSignOn: {
+      responseType: 'forbidden',
+    },
+    registrationApprovalRequired: {
+      responseType: 'forbidden',
+    },
+    registrationRejected: {
       responseType: 'forbidden',
     },
     termsAcceptanceRequired: {
@@ -305,6 +317,26 @@ module.exports = {
     }
 
     if (!user) {
+      const pendingOrRejectedUser = await User.qm.getOneByEmailOrUsername(inputs.emailOrUsername);
+
+      if (
+        pendingOrRejectedUser &&
+        !pendingOrRejectedUser.isSsoUser &&
+        !pendingOrRejectedUser.isLdapUser &&
+        (pendingOrRejectedUser.isPendingApproval || pendingOrRejectedUser.rejectedAt)
+      ) {
+        const isPendingOrRejectedPasswordValid = await bcrypt.compare(
+          inputs.password,
+          pendingOrRejectedUser.password,
+        );
+
+        if (isPendingOrRejectedPasswordValid) {
+          throw pendingOrRejectedUser.rejectedAt
+            ? Errors.REGISTRATION_REJECTED
+            : Errors.REGISTRATION_APPROVAL_REQUIRED;
+        }
+      }
+
       sails.log.warn(
         `Invalid email or username: "${inputs.emailOrUsername}"! (IP: ${remoteAddress})`,
       );

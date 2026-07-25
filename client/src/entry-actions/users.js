@@ -175,6 +175,20 @@ const clearUserApiKeyValue = (id) => ({
   },
 });
 
+const approveUser = (id) => ({
+  type: EntryActionTypes.USER_APPROVE,
+  payload: {
+    id,
+  },
+});
+
+const rejectUser = (id) => ({
+  type: EntryActionTypes.USER_REJECT,
+  payload: {
+    id,
+  },
+});
+
 const deleteUser = (id) => ({
   type: EntryActionTypes.USER_DELETE,
   payload: {
@@ -284,6 +298,8 @@ export default {
   createUserApiKey,
   deleteUserApiKey,
   clearUserApiKeyValue,
+  approveUser,
+  rejectUser,
   deleteUser,
   handleUserDelete,
   addUserToCard,

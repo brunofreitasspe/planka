@@ -47,6 +47,10 @@
  *                       type: boolean
  *                       description: Whether OIDC authentication is enforced (users must use OIDC to login)
  *                       example: false
+ *                 registrationEnabled:
+ *                   type: boolean
+ *                   description: Whether self-registration is enabled
+ *                   example: false
  *                 activeUsersLimit:
  *                   type: number
  *                   nullable: true
@@ -75,10 +79,11 @@ module.exports = {
     const { currentUser } = this.req;
 
     const internalConfig = await InternalConfig.qm.getOneMain();
+    const config = await Config.qm.getOneMain();
     const oidc = await sails.hooks.oidc.getBootstrap();
 
     return {
-      item: sails.helpers.bootstrap.presentOne(internalConfig, oidc, currentUser),
+      item: sails.helpers.bootstrap.presentOne(internalConfig, config, oidc, currentUser),
     };
   },
 };

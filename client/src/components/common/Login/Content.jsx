@@ -6,6 +6,7 @@
 import isEmail from 'validator/lib/isEmail';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
+import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation, Trans } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -18,6 +19,7 @@ import entryActions from '../../../entry-actions';
 import { useForm, useNestedRef } from '../../../hooks';
 import { isUsername } from '../../../utils/validator';
 import AccessTokenSteps from '../../../constants/AccessTokenSteps';
+import Paths from '../../../constants/Paths';
 import TermsModal from './TermsModal';
 
 import logo from '../../../assets/images/logo.png';
@@ -49,6 +51,16 @@ const createMessage = (error, isDebug) => {
       return {
         type: 'error',
         content: 'common.useSingleSignOn',
+      };
+    case 'Your account is awaiting admin approval':
+      return {
+        type: 'error',
+        content: 'common.registrationApprovalRequired',
+      };
+    case 'Your registration request was rejected':
+      return {
+        type: 'error',
+        content: 'common.yourRegistrationWasRejected',
       };
     case 'Admin login required to initialize instance':
       return {
@@ -266,6 +278,11 @@ const Content = React.memo(() => {
                       disabled={isSubmitting || isSubmittingWithOidc}
                     />
                   </Form>
+                  {bootstrap.registrationEnabled && (
+                    <div className={styles.registerLinkWrapper}>
+                      <Link to={Paths.REGISTER}>{t('action.createAccount')}</Link>
+                    </div>
+                  )}
                   {withOidc && (
                     <Divider horizontal content={t('common.or')} className={styles.divider} />
                   )}
