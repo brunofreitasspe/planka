@@ -7,6 +7,16 @@ const { ProxyAgent } = require('undici');
 
 const Webhook = require('../../models/Webhook');
 
+const MAX_ATTEMPTS = 3;
+const RETRY_DELAYS_MS = [1000, 3000];
+
+const delay = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+
+const describeError = (error) => (error.cause ? `${error} (cause: ${error.cause})` : `${error}`);
+
 /**
  * @typedef {Object} Included
  * @property {any[]} [users] - Array of users (optional).
@@ -58,25 +68,52 @@ async function sendWebhook(webhook, event, data, prevData, user) {
     user,
   });
 
-  try {
-    const response = await fetch(webhook.url, {
-      headers,
-      body,
-      method: 'POST',
-      dispatcher: sails.config.custom.outgoingProxy
-        ? new ProxyAgent(sails.config.custom.outgoingProxy)
-        : undefined,
-    });
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    let response;
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      response = await fetch(webhook.url, {
+        headers,
+        body,
+        method: 'POST',
+        dispatcher: sails.config.custom.outgoingProxy
+          ? new ProxyAgent(sails.config.custom.outgoingProxy)
+          : undefined,
+      });
+    } catch (error) {
+      if (attempt === MAX_ATTEMPTS) {
+        sails.log.error(
+          `Webhook ${webhook.name} failed after ${attempt} attempts with error: ${describeError(error)}`,
+        );
 
-    if (!response.ok) {
+        return;
+      }
+
+      // eslint-disable-next-line no-await-in-loop
+      await delay(RETRY_DELAYS_MS[attempt - 1]);
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (response.ok) {
+      return;
+    }
+
+    // Client errors (4xx) mean the request itself is invalid (bad URL, auth, etc.)
+    // and retrying the exact same request will not help.
+    if (response.status < 500 || attempt === MAX_ATTEMPTS) {
+      // eslint-disable-next-line no-await-in-loop
       const message = await response.text();
 
       sails.log.error(
-        `Webhook ${webhook.name} failed with status ${response.status} and message: ${message}`,
+        `Webhook ${webhook.name} failed after ${attempt} attempt(s) with status ${response.status} and message: ${message}`,
       );
+
+      return;
     }
-  } catch (error) {
-    sails.log.error(`Webhook ${webhook.name} failed with error: ${error}`);
+
+    // eslint-disable-next-line no-await-in-loop
+    await delay(RETRY_DELAYS_MS[attempt - 1]);
   }
 }
 
@@ -102,7 +139,6 @@ module.exports = {
     },
     user: {
       type: 'ref',
-      required: true,
     },
   },
 

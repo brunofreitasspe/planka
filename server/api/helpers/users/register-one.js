@@ -37,6 +37,7 @@ module.exports = {
 
   exits: {
     emailAlreadyInUse: {},
+    usernameAlreadyInUse: {},
     activeLimitReached: {},
   },
 
@@ -44,6 +45,10 @@ module.exports = {
     const { values } = inputs;
 
     values.password = await bcrypt.hash(values.password, 10);
+
+    if (values.username) {
+      values.username = values.username.toLowerCase();
+    }
 
     let user;
     try {
@@ -57,6 +62,13 @@ module.exports = {
     } catch (error) {
       if (error.code === 'E_UNIQUE') {
         throw 'emailAlreadyInUse';
+      }
+
+      if (
+        error.name === 'AdapterError' &&
+        error.raw.constraint === 'user_account_username_unique'
+      ) {
+        throw 'usernameAlreadyInUse';
       }
 
       if (error.message === 'activeLimitReached') {

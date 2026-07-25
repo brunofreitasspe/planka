@@ -15,6 +15,7 @@ import { Input } from '../../../lib/custom-ui';
 import selectors from '../../../selectors';
 import entryActions from '../../../entry-actions';
 import { useForm, useNestedRef } from '../../../hooks';
+import { isUsername } from '../../../utils/validator';
 import Paths from '../../../constants/Paths';
 
 import logo from '../../../assets/images/logo.png';
@@ -41,6 +42,11 @@ const createMessage = (error) => {
       return {
         type: 'error',
         content: 'common.emailAlreadyInUse',
+      };
+    case 'Username already in use':
+      return {
+        type: 'error',
+        content: 'common.usernameAlreadyInUse',
       };
     case 'A previous registration request with this email was rejected':
       return {
@@ -89,6 +95,7 @@ const Content = React.memo(() => {
 
   const [data, handleFieldChange] = useForm(() => ({
     name: '',
+    username: '',
     email: '',
     password: '',
     ...defaultData,
@@ -97,18 +104,32 @@ const Content = React.memo(() => {
   const message = useMemo(() => createMessage(error), [error]);
 
   const [nameFieldRef, handleNameFieldRef] = useNestedRef('inputRef');
+  const [usernameFieldRef, handleUsernameFieldRef] = useNestedRef('inputRef');
   const [emailFieldRef, handleEmailFieldRef] = useNestedRef('inputRef');
   const [passwordFieldRef, handlePasswordFieldRef] = useNestedRef('inputRef');
 
   const handleSubmit = useCallback(() => {
+    const trimmedUsername = data.username.trim();
+
     const cleanData = {
       ...data,
       name: data.name.trim(),
       email: data.email.trim(),
     };
 
+    if (trimmedUsername) {
+      cleanData.username = trimmedUsername;
+    } else {
+      delete cleanData.username;
+    }
+
     if (!cleanData.name) {
       nameFieldRef.current.focus();
+      return;
+    }
+
+    if (cleanData.username && !isUsername(cleanData.username)) {
+      usernameFieldRef.current.select();
       return;
     }
 
@@ -123,7 +144,7 @@ const Content = React.memo(() => {
     }
 
     dispatch(entryActions.register(cleanData));
-  }, [dispatch, data, nameFieldRef, emailFieldRef, passwordFieldRef]);
+  }, [dispatch, data, nameFieldRef, usernameFieldRef, emailFieldRef, passwordFieldRef]);
 
   const handleMessageDismiss = useCallback(() => {
     dispatch(entryActions.clearRegisterError());
@@ -183,6 +204,26 @@ const Content = React.memo(() => {
                         name="name"
                         value={data.name}
                         maxLength={128}
+                        readOnly={isSubmitting}
+                        className={styles.input}
+                        onChange={handleFieldChange}
+                      />
+                    </div>
+                    <div className={styles.inputWrapper}>
+                      <div className={styles.inputLabel}>
+                        {t('common.username')} (
+                        {t('common.optional', {
+                          context: 'inline',
+                        })}
+                        )
+                      </div>
+                      <Input
+                        fluid
+                        ref={handleUsernameFieldRef}
+                        name="username"
+                        value={data.username}
+                        placeholder={t('common.registerUsernamePlaceholder')}
+                        maxLength={32}
                         readOnly={isSubmitting}
                         className={styles.input}
                         onChange={handleFieldChange}

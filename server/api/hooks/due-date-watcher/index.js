@@ -13,13 +13,20 @@
 
 module.exports = function defineDueDateWatcherHook(sails) {
   const checkExpiredDueDates = async () => {
-    const cards = await Card.qm.getWithExpiredDueDate();
+    let cards;
+    let webhooks;
+    try {
+      cards = await Card.qm.getWithExpiredDueDate();
 
-    if (cards.length === 0) {
+      if (cards.length === 0) {
+        return;
+      }
+
+      webhooks = await Webhook.qm.getAll();
+    } catch (error) {
+      sails.log.error(`Error checking expired due dates: ${error}`);
       return;
     }
-
-    const webhooks = await Webhook.qm.getAll();
 
     // eslint-disable-next-line no-restricted-syntax
     for (const card of cards) {

@@ -39,6 +39,12 @@
  *                 maxLength: 128
  *                 description: Full display name of the user
  *                 example: John Doe
+ *               username:
+ *                 type: string
+ *                 minLength: 3
+ *                 maxLength: 32
+ *                 description: Unique username, ideally matching the user's OS/network login for future LDAP linkage
+ *                 example: john.doe
  *     responses:
  *       200:
  *         description: Registration request created successfully and is pending admin approval
@@ -61,7 +67,7 @@
  *         $ref: '#/components/responses/Conflict'
  */
 
-const { isPassword } = require('../../../utils/validators');
+const { isPassword, USERNAME_REGEX } = require('../../../utils/validators');
 
 const Errors = {
   REGISTRATION_DISABLED: {
@@ -72,6 +78,9 @@ const Errors = {
   },
   EMAIL_ALREADY_IN_USE: {
     emailAlreadyInUse: 'Email already in use',
+  },
+  USERNAME_ALREADY_IN_USE: {
+    usernameAlreadyInUse: 'Username already in use',
   },
   REGISTRATION_REJECTED: {
     registrationRejected: 'A previous registration request with this email was rejected',
@@ -100,6 +109,13 @@ module.exports = {
       maxLength: 128,
       required: true,
     },
+    username: {
+      type: 'string',
+      isNotEmptyString: true,
+      minLength: 3,
+      maxLength: 32,
+      regex: USERNAME_REGEX,
+    },
   },
 
   exits: {
@@ -110,6 +126,9 @@ module.exports = {
       responseType: 'forbidden',
     },
     emailAlreadyInUse: {
+      responseType: 'conflict',
+    },
+    usernameAlreadyInUse: {
       responseType: 'conflict',
     },
     registrationRejected: {
@@ -153,10 +172,12 @@ module.exports = {
           email,
           password: inputs.password,
           name: inputs.name,
+          username: inputs.username,
         },
         request: this.req,
       })
       .intercept('emailAlreadyInUse', () => Errors.EMAIL_ALREADY_IN_USE)
+      .intercept('usernameAlreadyInUse', () => Errors.USERNAME_ALREADY_IN_USE)
       .intercept('activeLimitReached', () => Errors.ACTIVE_LIMIT_REACHED);
 
     return {

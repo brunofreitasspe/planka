@@ -48,20 +48,9 @@ const Item = React.memo(({ id }) => {
     dispatch(entryActions.rejectUser(id));
   }, [id, dispatch]);
 
-  const ApprovePopup = usePopupInClosableContext(ConfirmationStep, {
-    title: 'common.approveRegistration',
-    content: 'common.areYouSureYouWantToApproveThisRegistration',
-    buttonType: 'positive',
-    buttonContent: 'action.approve',
-    onConfirm: handleApproveConfirm,
-  });
+  const ApprovePopup = usePopupInClosableContext(ConfirmationStep);
 
-  const RejectPopup = usePopupInClosableContext(ConfirmationStep, {
-    title: 'common.rejectRegistration',
-    content: 'common.areYouSureYouWantToRejectThisRegistration',
-    buttonContent: 'action.reject',
-    onConfirm: handleRejectConfirm,
-  });
+  const RejectPopup = usePopupInClosableContext(ConfirmationStep);
 
   return (
     <Table.Row
@@ -119,12 +108,23 @@ const Item = React.memo(({ id }) => {
       <Table.Cell textAlign="right">
         {user.isPendingApproval && (
           <>
-            <ApprovePopup>
+            <ApprovePopup
+              title="common.approveRegistration"
+              content="common.areYouSureYouWantToApproveThisRegistration"
+              buttonType="positive"
+              buttonContent="action.approve"
+              onConfirm={handleApproveConfirm}
+            >
               <Button positive className={styles.button}>
                 <Icon fitted name="checkmark" />
               </Button>
             </ApprovePopup>
-            <RejectPopup>
+            <RejectPopup
+              title="common.rejectRegistration"
+              content="common.areYouSureYouWantToRejectThisRegistration"
+              buttonContent="action.reject"
+              onConfirm={handleRejectConfirm}
+            >
               <Button negative className={styles.button}>
                 <Icon fitted name="close" />
               </Button>

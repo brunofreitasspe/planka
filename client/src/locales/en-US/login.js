@@ -18,6 +18,7 @@ export default {
       poweredByPlanka: 'Powered by <1>PLANKA</1>',
       previousRegistrationWasRejected:
         'A previous registration request with this e-mail was rejected',
+      registerUsernamePlaceholder: 'Use your computer login username',
       registrationActiveLimitReached: 'Active limit reached',
       registrationApprovalRequired: 'Your account is awaiting admin approval',
       registrationDisabled: 'Registration is disabled',
