@@ -175,8 +175,8 @@ const getOneById = (id, { listId } = {}) => {
   return Card.findOne(criteria);
 };
 
-const getWithExpiredDueDate = () =>
-  defaultFind({
+const getWithExpiredDueDate = ({ afterId, limit } = {}) => {
+  const criteria = {
     dueDate: {
       '<': new Date().toISOString(),
     },
@@ -184,7 +184,18 @@ const getWithExpiredDueDate = () =>
       '!=': true,
     },
     dueDateExpirationNotifiedAt: null,
-  });
+  };
+
+  if (afterId) {
+    criteria.id = {
+      '>': afterId,
+    };
+  }
+
+  // Sorted/paginated by `id` (default sort), which is monotonically increasing —
+  // a stable cursor equivalent to `dueDate` ordering for this use case.
+  return defaultFind(criteria, { limit });
+};
 
 const update = async (criteria, values) => {
   if (!_.isUndefined(values.isClosed)) {
@@ -238,6 +249,35 @@ const updateOne = async (criteria, values) => {
   return { card };
 };
 
+// Single batch UPDATE (via CASE WHEN) instead of one UPDATE per card, for callers
+// that reposition many cards at once (e.g. drag-and-drop reindexing).
+const updatePositions = async (positionUpdates) => {
+  if (positionUpdates.length === 0) {
+    return;
+  }
+
+  const caseParts = [];
+  const conditionParts = [];
+  const values = [];
+
+  positionUpdates.forEach(({ id, listId, position }) => {
+    values.push(id, listId, position);
+
+    const idPlaceholder = `$${values.length - 2}`;
+    const listIdPlaceholder = `$${values.length - 1}`;
+    const positionPlaceholder = `$${values.length}`;
+
+    caseParts.push(
+      `WHEN id = ${idPlaceholder} AND list_id = ${listIdPlaceholder} THEN ${positionPlaceholder}::double precision`,
+    );
+    conditionParts.push(`(id = ${idPlaceholder} AND list_id = ${listIdPlaceholder})`);
+  });
+
+  const query = `UPDATE card SET position = CASE ${caseParts.join(' ')} END WHERE ${conditionParts.join(' OR ')}`;
+
+  await sails.sendNativeQuery(query, values);
+};
+
 // eslint-disable-next-line no-underscore-dangle
 const delete_ = (criteria) => Card.destroy(criteria).fetch();
 
@@ -254,6 +294,7 @@ module.exports = {
   getWithExpiredDueDate,
   update,
   updateOne,
+  updatePositions,
   deleteOne,
   delete: delete_,
 };
