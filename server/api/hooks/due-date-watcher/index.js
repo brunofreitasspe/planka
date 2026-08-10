@@ -11,24 +11,81 @@
  * @docs        :: https://sailsjs.com/docs/concepts/extending-sails/hooks
  */
 
-module.exports = function defineDueDateWatcherHook(sails) {
-  const checkExpiredDueDates = async () => {
-    const cards = await Card.qm.getWithExpiredDueDate();
+const pLimit = require('p-limit');
 
-    if (cards.length === 0) {
+module.exports = function defineDueDateWatcherHook(sails) {
+  // Prevents a slow/large tick (big backlog) from overlapping with the next
+  // scheduled tick, which would otherwise stack concurrent runs on the same
+  // small connection pool.
+  let isRunning = false;
+
+  const processBatch = async (cards, webhooks) => {
+    const limit = pLimit(sails.config.custom.dueDateExpirationCheckConcurrency);
+
+    await Promise.all(
+      cards.map((card) =>
+        limit(async () => {
+          try {
+            await sails.helpers.cards.notifyDueDateExpiration(card.id, webhooks);
+          } catch (error) {
+            sails.log.error(`Error notifying due date expiration for card ${card.id}: ${error}`);
+          }
+        }),
+      ),
+    );
+  };
+
+  const checkExpiredDueDates = async () => {
+    if (isRunning) {
+      sails.log.warn('Skipping due date expiration check: the previous run is still in progress');
       return;
     }
 
-    const webhooks = await Webhook.qm.getAll();
+    isRunning = true;
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const card of cards) {
-      try {
+    try {
+      const { dueDateExpirationCheckBatchSize: batchSize } = sails.config.custom;
+
+      let webhooks;
+      let afterId;
+
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        let cards;
+
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          cards = await Card.qm.getWithExpiredDueDate({ afterId, limit: batchSize });
+        } catch (error) {
+          sails.log.error(`Error checking expired due dates: ${error}`);
+          return;
+        }
+
+        if (cards.length === 0) {
+          return;
+        }
+
+        if (!webhooks) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            webhooks = await Webhook.qm.getAll();
+          } catch (error) {
+            sails.log.error(`Error checking expired due dates: ${error}`);
+            return;
+          }
+        }
+
         // eslint-disable-next-line no-await-in-loop
-        await sails.helpers.cards.notifyDueDateExpiration(card.id, webhooks);
-      } catch (error) {
-        sails.log.error(`Error notifying due date expiration for card ${card.id}: ${error}`);
+        await processBatch(cards, webhooks);
+
+        if (cards.length < batchSize) {
+          return;
+        }
+
+        afterId = cards[cards.length - 1].id;
       }
+    } finally {
+      isRunning = false;
     }
   };
 
@@ -36,7 +93,6 @@ module.exports = function defineDueDateWatcherHook(sails) {
     /**
      * Runs when this Sails app loads/lifts.
      */
-
     async initialize() {
       sails.log.info('Initializing custom hook (`due-date-watcher`)');
 

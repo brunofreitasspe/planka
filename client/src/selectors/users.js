@@ -55,6 +55,12 @@ export const selectActiveUsersTotal = createSelector(orm, ({ User }) =>
   User.getActiveQuerySet().count(),
 );
 
+export const selectPendingApprovalUsersTotal = createSelector(orm, ({ User }) =>
+  User.getAllQuerySet()
+    .filter((user) => user.isPendingApproval)
+    .count(),
+);
+
 export const selectActiveAdminOrProjectOwnerUsers = createSelector(orm, ({ User }) =>
   User.getActiveQuerySet()
     .filter((user) => isUserAdminOrProjectOwner(user))
@@ -348,6 +354,7 @@ export default {
   selectUsers,
   selectActiveUsers,
   selectActiveUsersTotal,
+  selectPendingApprovalUsersTotal,
   selectActiveAdminOrProjectOwnerUsers,
   selectCurrentUser,
   selectProjectIdsForCurrentUser,

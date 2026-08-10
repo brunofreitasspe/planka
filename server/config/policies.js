@@ -39,11 +39,15 @@ module.exports.policies = {
   'users/update-username': 'is-authenticated',
   'users/update-avatar': 'is-authenticated',
   'users/create-api-key': ['is-authenticated', 'is-admin'],
+  'users/approve': ['is-authenticated', 'is-admin'],
+  'users/reject': ['is-authenticated', 'is-admin'],
   'users/delete': ['is-authenticated', 'is-admin'],
 
   'projects/create': ['is-authenticated', 'is-external', 'is-admin-or-project-owner'],
 
   '_internal/update-config': ['is-authenticated', 'is-internal'],
+
+  'users/register': ['is-rate-limited-registration'],
 
   index: true,
   'swagger/show': true,

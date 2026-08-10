@@ -64,8 +64,19 @@ module.exports = {
        * More info:
        * https://sailsjs.com/config/datastores
        *
+       * Pool sizing (`min`/`max`/`idleTimeoutMillis`) is defined once in the base
+       * `config/datastores.js` (shared by every environment, env-var configurable)
+       * — see docs/backend.md finding #1.
+       *
+       * `ssl` defaults to disabled here so the bundled docker-compose PostgreSQL
+       * service (no TLS listener) keeps working out of the box. Set DB_SSL=true
+       * for managed/hosted Postgres providers that require or offer TLS.
+       *
        */
-      // ssl: true,
+      ssl:
+        process.env.DB_SSL === 'true'
+          ? { rejectUnauthorized: process.env.KNEX_REJECT_UNAUTHORIZED_SSL_CERTIFICATE !== 'false' }
+          : false,
     },
   },
 

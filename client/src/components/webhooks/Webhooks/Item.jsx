@@ -61,6 +61,25 @@ const Item = React.memo(({ id }) => {
     [data],
   );
 
+  const cleanDefaultData = useMemo(
+    () => ({
+      name: (defaultData.name || '').trim(),
+      url: (defaultData.url || '').trim(),
+      accessToken: (defaultData.accessToken || '').trim() || null,
+      events: !defaultData.events || defaultData.events.length === 0 ? null : defaultData.events,
+      excludedEvents:
+        !defaultData.excludedEvents || defaultData.excludedEvents.length === 0
+          ? null
+          : defaultData.excludedEvents,
+    }),
+    [defaultData],
+  );
+
+  const isModified = useMemo(
+    () => !dequal(cleanData, cleanDefaultData),
+    [cleanData, cleanDefaultData],
+  );
+
   const editorRef = useRef(null);
 
   const handleDeleteConfirm = useCallback(() => {
@@ -103,11 +122,7 @@ const Item = React.memo(({ id }) => {
               onFieldChange={handleFieldChange}
             />
             <div className={styles.controls}>
-              <Button
-                positive
-                disabled={dequal(cleanData, defaultData)}
-                content={t('action.save')}
-              />
+              <Button positive disabled={!isModified} content={t('action.save')} />
               <ConfirmationPopup
                 title="common.deleteWebhook"
                 content="common.areYouSureYouWantToDeleteThisWebhook"

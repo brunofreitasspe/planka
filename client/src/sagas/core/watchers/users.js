@@ -79,6 +79,8 @@ export default function* usersWatchers() {
     takeEvery(EntryActionTypes.USER_API_KEY_VALUE_CLEAR, ({ payload: { id } }) =>
       services.clearUserApiKeyValue(id),
     ),
+    takeEvery(EntryActionTypes.USER_APPROVE, ({ payload: { id } }) => services.approveUser(id)),
+    takeEvery(EntryActionTypes.USER_REJECT, ({ payload: { id } }) => services.rejectUser(id)),
     takeEvery(EntryActionTypes.USER_DELETE, ({ payload: { id } }) => services.deleteUser(id)),
     takeEvery(EntryActionTypes.USER_DELETE_HANDLE, ({ payload: { user } }) =>
       services.handleUserDelete(user),

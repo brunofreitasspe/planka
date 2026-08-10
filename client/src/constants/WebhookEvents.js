@@ -87,6 +87,9 @@ export default [
   'userCreate',
   'userUpdate',
   'userDelete',
+  'userRegistrationRequested',
+  'userRegistrationApproved',
+  'userRegistrationRejected',
 
   'webhookCreate',
   'webhookUpdate',

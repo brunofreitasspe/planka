@@ -9,6 +9,11 @@
  * https://sailsjs.com/config/bootstrap
  */
 
+const parseEnvInt = (value, fallback) => {
+  const number = parseInt(value, 10);
+  return Number.isNaN(number) ? fallback : number;
+};
+
 module.exports.bootstrap = async () => {
   // By convention, this is a good place to set up fake data during development.
   //
@@ -25,4 +30,26 @@ module.exports.bootstrap = async () => {
   //   // etc.
   // ]);
   // ```
+
+  // The pinned sails-postgresql/machinepack-postgresql adapter does not forward
+  // `statement_timeout`/`idle_in_transaction_session_timeout` from datastore config
+  // to `pg` (it whitelists which keys reach `pg.Pool` — see docs/backend.md finding #1),
+  // so they are enforced here directly on every new pooled connection instead.
+  const statementTimeoutMillis = parseEnvInt(process.env.DB_STATEMENT_TIMEOUT_MILLIS, 30000);
+  const idleInTransactionSessionTimeoutMillis = parseEnvInt(
+    process.env.DB_IDLE_IN_TRANSACTION_SESSION_TIMEOUT_MILLIS,
+    60000,
+  );
+
+  const { pool } = sails.getDatastore().manager;
+
+  pool.on('connect', (client) => {
+    client
+      .query(
+        `SET statement_timeout = ${statementTimeoutMillis}; SET idle_in_transaction_session_timeout = ${idleInTransactionSessionTimeoutMillis};`,
+      )
+      .catch((error) => {
+        sails.log.error('Failed to set PostgreSQL session timeouts on new pool connection:', error);
+      });
+  });
 };

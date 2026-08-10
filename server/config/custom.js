@@ -52,6 +52,10 @@ module.exports.custom = {
 
   // In seconds
   dueDateExpirationCheckInterval: envToNumber(process.env.DUE_DATE_EXPIRATION_CHECK_INTERVAL) || 60,
+  dueDateExpirationCheckBatchSize:
+    envToNumber(process.env.DUE_DATE_EXPIRATION_CHECK_BATCH_SIZE) || 100,
+  dueDateExpirationCheckConcurrency:
+    envToNumber(process.env.DUE_DATE_EXPIRATION_CHECK_CONCURRENCY) || 5,
 
   // Location to receive uploaded files in. Default (non-string value) is a Sails-specific location.
   uploadsTempPath: null,

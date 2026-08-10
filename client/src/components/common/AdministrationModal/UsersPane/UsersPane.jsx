@@ -41,7 +41,7 @@ const UsersPane = React.memo(() => {
           if (!user.isDeactivated) {
             return false;
           }
-        } else if (user.isDeactivated) {
+        } else if (user.isDeactivated && !user.isPendingApproval) {
           return false;
         }
 

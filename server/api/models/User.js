@@ -157,6 +157,11 @@
  *           default: false
  *           description: Whether the user account is deactivated and cannot log in
  *           example: false
+ *         isPendingApproval:
+ *           type: boolean
+ *           default: false
+ *           description: Whether the self-registered account is awaiting admin approval (private field)
+ *           example: false
  *         isDefaultAdmin:
  *           type: boolean
  *           description: Whether the user is the default admin (visible only to current user or admin)
@@ -250,6 +255,11 @@ const PRIVATE_FIELD_NAMES = [
   'isSsoUser',
   'isLdapUser',
   'apiKeyCreatedAt',
+  'isPendingApproval',
+  'approvedAt',
+  'approvedByUserId',
+  'rejectedAt',
+  'rejectedByUserId',
 ];
 
 const PERSONAL_FIELD_NAMES = [
@@ -278,6 +288,11 @@ const LDAP = {
   role: Roles.ADMIN,
 };
 
+const REGISTRATION = {
+  id: '_registration',
+  role: Roles.BOARD_USER,
+};
+
 module.exports = {
   Roles,
   EditorModes,
@@ -289,6 +304,7 @@ module.exports = {
   INTERNAL,
   OIDC,
   LDAP,
+  REGISTRATION,
 
   attributes: {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
@@ -411,6 +427,11 @@ module.exports = {
       defaultsTo: false,
       columnName: 'is_deactivated',
     },
+    isPendingApproval: {
+      type: 'boolean',
+      defaultsTo: false,
+      columnName: 'is_pending_approval',
+    },
     passwordChangedAt: {
       type: 'ref',
       columnName: 'password_changed_at',
@@ -422,6 +443,22 @@ module.exports = {
     termsAcceptedAt: {
       type: 'ref',
       columnName: 'terms_accepted_at',
+    },
+    approvedAt: {
+      type: 'ref',
+      columnName: 'approved_at',
+    },
+    approvedByUserId: {
+      model: 'User',
+      columnName: 'approved_by_user_id',
+    },
+    rejectedAt: {
+      type: 'ref',
+      columnName: 'rejected_at',
+    },
+    rejectedByUserId: {
+      model: 'User',
+      columnName: 'rejected_by_user_id',
     },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

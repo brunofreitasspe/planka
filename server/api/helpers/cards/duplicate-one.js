@@ -99,28 +99,22 @@ module.exports = {
       values.position = position;
 
       if (repositions.length > 0) {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const reposition of repositions) {
-          // eslint-disable-next-line no-await-in-loop
-          await Card.qm.updateOne(
-            {
-              id: reposition.record.id,
-              listId: reposition.record.listId,
-            },
-            {
-              position: reposition.position,
-            },
-          );
+        await Card.qm.updatePositions(
+          repositions.map((reposition) => ({
+            id: reposition.record.id,
+            listId: reposition.record.listId,
+            position: reposition.position,
+          })),
+        );
 
-          sails.sockets.broadcast(`board:${inputs.record.boardId}`, 'cardUpdate', {
-            item: {
-              id: reposition.record.id,
-              position: reposition.position,
-            },
-          });
+        sails.sockets.broadcast(`board:${inputs.record.boardId}`, 'cardsUpdate', {
+          items: repositions.map((reposition) => ({
+            id: reposition.record.id,
+            position: reposition.position,
+          })),
+        });
 
-          // TODO: send webhooks
-        }
+        // TODO: send webhooks
       }
     }
 

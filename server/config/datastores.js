@@ -17,6 +17,23 @@ const pg = require('pg');
 
 pg.types.setTypeParser(pg.types.builtins.TIMESTAMP, (value) => new Date(`${value}Z`));
 
+const parseEnvInt = (value, fallback) => {
+  const number = parseInt(value, 10);
+  return Number.isNaN(number) ? fallback : number;
+};
+
+// Pool sizing, shared by all environments (see docs/backend.md finding #1 — the `pg`
+// driver otherwise falls back to an implicit max of 10 connections with no floor).
+// `statement_timeout`/`query_timeout`/`idle_in_transaction_session_timeout` are NOT set
+// here: the pinned sails-postgresql/machinepack-postgresql adapter silently drops those
+// keys before they reach `pg.Pool`, so they are enforced instead via a `pool.on('connect', ...)`
+// hook in `config/bootstrap.js`.
+const poolConfig = {
+  min: parseEnvInt(process.env.DB_POOL_MIN, 2),
+  max: parseEnvInt(process.env.DB_POOL_MAX, 10),
+  idleTimeoutMillis: parseEnvInt(process.env.DB_POOL_IDLE_TIMEOUT_MILLIS, 30000),
+};
+
 module.exports.datastores = {
   /**
    *
@@ -52,5 +69,6 @@ module.exports.datastores = {
 
     adapter: 'sails-postgresql',
     url: process.env.DATABASE_URL,
+    ...poolConfig,
   },
 };

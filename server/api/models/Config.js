@@ -167,6 +167,15 @@
  *           type: string
  *           nullable: true
  *           description: Expected SHA256 fingerprint of the SSH jump host's public key, used to verify its identity and prevent MITM attacks
+ *         registrationEnabled:
+ *           type: boolean
+ *           description: Whether public self-registration is enabled
+ *           example: false
+ *         registrationAllowedDomains:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Email domains allowed to self-register (empty allows any domain)
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -220,10 +229,13 @@ const LDAP_FIELD_NAMES = [
   'ldapSshHostKeyFingerprint',
 ];
 
+const REGISTRATION_FIELD_NAMES = ['registrationEnabled', 'registrationAllowedDomains'];
+
 module.exports = {
   MAIN_ID,
   SMTP_FIELD_NAMES,
   LDAP_FIELD_NAMES,
+  REGISTRATION_FIELD_NAMES,
 
   attributes: {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
@@ -385,6 +397,17 @@ module.exports = {
       type: 'string',
       allowNull: true,
       columnName: 'ldap_ssh_host_key_fingerprint',
+    },
+
+    registrationEnabled: {
+      type: 'boolean',
+      required: true,
+      columnName: 'registration_enabled',
+    },
+    registrationAllowedDomains: {
+      type: 'json',
+      defaultsTo: [],
+      columnName: 'registration_allowed_domains',
     },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

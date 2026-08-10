@@ -17,6 +17,8 @@ export const selectAccessToken = ({ auth: { accessToken } }) => accessToken;
 
 export const selectAuthenticateForm = ({ ui: { authenticateForm } }) => authenticateForm;
 
+export const selectRegistrationForm = ({ ui: { registrationForm } }) => registrationForm;
+
 export const selectUserCreateForm = ({ ui: { userCreateForm } }) => userCreateForm;
 
 export const selectProjectCreateForm = ({ ui: { projectCreateForm } }) => projectCreateForm;
@@ -33,6 +35,7 @@ export default {
   selectActiveUsersLimit,
   selectAccessToken,
   selectAuthenticateForm,
+  selectRegistrationForm,
   selectUserCreateForm,
   selectProjectCreateForm,
   selectSmtpTestState,

@@ -5,5 +5,6 @@
 
 import router from './router';
 import login from './login';
+import registration from './registration';
 
-export default [router, login];
+export default [router, login, registration];

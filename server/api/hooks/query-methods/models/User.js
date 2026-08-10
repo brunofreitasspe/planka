@@ -66,6 +66,11 @@ const getAll = ({ roleOrRoles, isDeactivated } = {}) =>
     role: roleOrRoles,
   });
 
+const getPendingApproval = () =>
+  defaultFind({
+    isPendingApproval: true,
+  });
+
 const getOneById = (id, { withDeactivated = true } = {}) => {
   const criteria = {
     id,
@@ -89,6 +94,14 @@ const getOneActiveByEmailOrUsername = (emailOrUsername) => {
   return User.findOne({
     [fieldName]: emailOrUsername.toLowerCase(),
     isDeactivated: false,
+  });
+};
+
+const getOneByEmailOrUsername = (emailOrUsername) => {
+  const fieldName = emailOrUsername.includes('@') ? 'email' : 'username';
+
+  return User.findOne({
+    [fieldName]: emailOrUsername.toLowerCase(),
   });
 };
 
@@ -196,9 +209,11 @@ module.exports = {
   createOne,
   getByIds,
   getAll,
+  getPendingApproval,
   getOneById,
   getOneByEmail,
   getOneActiveByEmailOrUsername,
+  getOneByEmailOrUsername,
   getOneActiveByApiKeyHash,
   updateOne,
   deleteOne,

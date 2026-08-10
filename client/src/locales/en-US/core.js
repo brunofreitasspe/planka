@@ -36,15 +36,21 @@ export default {
       all: 'All',
       allChangesWillBeAutomaticallySavedAfterConnectionRestored:
         'All changes will be automatically saved<br />after connection restored.',
+      allowedEmailDomains: 'Allowed e-mail domains',
+      allowedEmailDomainsPlaceholder: 'example.com, example.org',
+      allowSelfRegistration: 'Allow users to create their own account',
       alphabetically: 'Alphabetically',
       alwaysDisplayCardCreator: 'Always display card creator',
       apiKeyCreated_title: 'API Key Created',
       baseDn: 'Base DN',
       apiKey_title: 'API Key',
+      approveRegistration_title: 'Approve Registration',
       archive: 'Archive',
       archiveCard_title: 'Archive Card',
       archiveCards_title: 'Archive Cards',
       areYouSureYouWantToActivateThisUser: 'Are you sure you want to activate this user?',
+      areYouSureYouWantToApproveThisRegistration:
+        'Are you sure you want to approve this registration?',
       areYouSureYouWantToArchiveCards: 'Are you sure you want to archive cards?',
       areYouSureYouWantToArchiveThisCard: 'Are you sure you want to archive this card?',
       areYouSureYouWantToAssignThisProjectManagerAsOwner:
@@ -82,6 +88,8 @@ export default {
         'Are you sure you want to make this project shared?',
       areYouSureYouWantToRegenerateThisApiKey:
         'Are you sure you want to regenerate this API key? The previous key will no longer work.',
+      areYouSureYouWantToRejectThisRegistration:
+        'Are you sure you want to reject this registration?',
       areYouSureYouWantToRemoveThisManagerFromProject:
         'Are you sure you want to remove this manager from the project?',
       areYouSureYouWantToRemoveThisMemberFromBoard:
@@ -289,6 +297,7 @@ export default {
       organization: 'Organization',
       others: 'Others',
       passwordIsSet: 'Password is set',
+      pendingApproval: 'Pending approval',
       phone: 'Phone',
       plankaUsesAppriseToSendNotificationsToOver100PopularServices:
         'PLANKA uses <1><0>Apprise</0></1> to send notifications to over 100 popular services.',
@@ -304,6 +313,9 @@ export default {
       projectOwnerRoles: 'Project owner roles',
       referenceDataAndKnowledgeStorage: 'Reference data and knowledge storage.',
       regenerateApiKey_title: 'Regenerate API Key',
+      registrationRejected: 'Registration rejected',
+      registration_title: 'Registration',
+      rejectRegistration_title: 'Reject Registration',
       rejectUnauthorizedTlsCertificates: 'Reject unauthorized TLS certificates',
       remoteHost: 'Remote host',
       remotePort: 'Remote port',
@@ -430,6 +442,7 @@ export default {
       addToCard: 'Add to card',
       addUser: 'Add user',
       addWebhook: 'Add webhook',
+      approve: 'Approve',
       archive: 'Archive',
       archiveCard: 'Archive card',
       archiveCard_title: 'Archive Card',
@@ -512,6 +525,7 @@ export default {
       move: 'Move',
       moveCard_title: 'Move Card',
       moveList_title: 'Move List',
+      reject: 'Reject',
       regenerateApiKey: 'Regenerate API key',
       remove: 'Remove',
       removeAssignee: 'Remove assignee',
