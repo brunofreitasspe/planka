@@ -11,6 +11,7 @@ import { isListKanban } from '../utils/record-helpers';
 import ActionTypes from '../constants/ActionTypes';
 import Config from '../constants/Config';
 import { BoardContexts, BoardViews } from '../constants/Enums';
+import { isCardPriorityInBands } from '../constants/CardPriorities';
 
 const prepareFetchedBoard = (board) => ({
   ...board,
@@ -402,6 +403,14 @@ export default class extends BaseModel {
         const labels = cardModel.labels.toRefArray();
         return labels.some((label) => filterLabelIds.includes(label.id));
       });
+    }
+
+    const { filterPriorityBands } = this;
+
+    if (filterPriorityBands.length > 0) {
+      cardModels = cardModels.filter((cardModel) =>
+        isCardPriorityInBands(cardModel.priority, filterPriorityBands),
+      );
     }
 
     return cardModels;

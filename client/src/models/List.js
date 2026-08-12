@@ -12,7 +12,7 @@ import ActionTypes from '../constants/ActionTypes';
 import Config from '../constants/Config';
 import { ListSortFieldNames, ListTypes, ListTypeStates, SortOrders } from '../constants/Enums';
 import LIST_TYPE_STATE_BY_TYPE from '../constants/ListTypeStateByType';
-import { compareCardPriorities } from '../constants/CardPriorities';
+import { compareCardPriorities, isCardPriorityInBands } from '../constants/CardPriorities';
 
 const POSITION_BY_LIST_TYPE = {
   [ListTypes.ARCHIVE]: Number.MAX_SAFE_INTEGER - 1,
@@ -403,6 +403,22 @@ export default class extends BaseModel {
         const labels = cardModel.labels.toRefArray();
         return labels.some((label) => filterLabelIds.includes(label.id));
       });
+    }
+
+    const boardPriorityBands = this.board.filterPriorityBands;
+
+    if (boardPriorityBands.length > 0) {
+      cardModels = cardModels.filter((cardModel) =>
+        isCardPriorityInBands(cardModel.priority, boardPriorityBands),
+      );
+    }
+
+    const listPriorityBands = this.filterPriorityBands;
+
+    if (listPriorityBands.length > 0) {
+      cardModels = cardModels.filter((cardModel) =>
+        isCardPriorityInBands(cardModel.priority, listPriorityBands),
+      );
     }
 
     return cardModels;
