@@ -114,6 +114,9 @@ export default {
       byCreationTime: 'Por ordem de criação',
       byDefault: 'Por padrão',
       byDueDate: 'Por data de vencimento',
+      byPriority: 'Por prioridade',
+      byPriorityAsc: 'Prioridade: alta → baixa',
+      byPriorityDesc: 'Prioridade: baixa → alta',
       canBeInvitedToWorkInBoards: 'Pode ser convidado para trabalhar em quadros.',
       canComment: 'Pode comentar',
       canCreateOwnProjectsAndBeInvitedToWorkInOthers:
@@ -131,6 +134,7 @@ export default {
         'Os cartões nesta lista estão completos e prontos para serem arquivados.',
       cardsOnThisListAreReadyToBeWorkedOn:
         'Os cartões nesta lista estão prontos para serem trabalhados.',
+      clear: 'Limpar',
       clickHereOrRefreshPageToUpdate: '<0>Clique aqui</0> ou atualize a página para atualizar.',
       clientHostnameInEhlo: 'Nome do host do cliente no EHLO',
       closed: 'Fechado',
@@ -222,6 +226,7 @@ export default {
       expandTaskListsByDefault: 'Expandir listas de tarefas por padrão',
       filterByLabels_title: 'Filtrar por rótulos',
       filterByMembers_title: 'Filtrar por membros',
+      filterByPriority_title: 'Filtrar por prioridade',
       forPersonalProjects: 'Para projetos pessoais.',
       forTeamBasedProjects: 'Para projetos em equipe.',
       fromComputer_title: 'Do computador',
@@ -288,6 +293,14 @@ export default {
         'PLANKA usa <1><0>Apprise</0></1> para enviar notificações para mais de 100 serviços populares.',
       port: 'Porta',
       preferences: 'Preferências',
+      priority: 'Prioridade',
+      priorityLevels: {
+        urgent: 'Urgente',
+        veryHigh: 'Muito alta',
+        high: 'Alta',
+        medium: 'Média',
+        low: 'Baixa',
+      },
       pressPasteShortcutToAddAttachmentFromClipboard:
         'Dica: pressione Ctrl-V (Cmd-V no Mac) para adicionar um anexo da área de transferência.',
       private: 'Privado',

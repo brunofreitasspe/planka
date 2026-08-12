@@ -115,6 +115,9 @@ export default {
       byCreationTime: 'By creation time',
       byDefault: 'By default',
       byDueDate: 'By due date',
+      byPriority: 'By priority',
+      byPriorityAsc: 'Priority: high to low',
+      byPriorityDesc: 'Priority: low to high',
       canBeInvitedToWorkInBoards: 'Can be invited to work in boards.',
       canComment: 'Can comment',
       canCreateOwnProjectsAndBeInvitedToWorkInOthers:
@@ -135,6 +138,7 @@ export default {
       changingTheTypeOfThisCustomFieldWillDeleteAllOfItsExistingValues:
         'Changing the type of this custom field will delete all of its existing values.',
       checkbox: 'Checkbox',
+      clear: 'Clear',
       clickHereOrRefreshPageToUpdate: '<0>Click here</0> or refresh the page to update.',
       clientHostnameInEhlo: 'Client hostname in EHLO',
       closed: 'Closed',
@@ -228,6 +232,7 @@ export default {
       expandTaskListsByDefault: 'Expand task lists by default',
       filterByLabels_title: 'Filter By Labels',
       filterByMembers_title: 'Filter By Members',
+      filterByPriority_title: 'Filter by priority',
       forPersonalProjects: 'For personal projects.',
       forTeamBasedProjects: 'For team-based projects.',
       fromComputer_title: 'From Computer',
@@ -304,6 +309,13 @@ export default {
       port: 'Port',
       preferences: 'Preferences',
       priority: 'Priority',
+      priorityLevels: {
+        urgent: 'Urgent',
+        veryHigh: 'Very high',
+        high: 'High',
+        medium: 'Medium',
+        low: 'Low',
+      },
       pressPasteShortcutToAddAttachmentFromClipboard:
         'Tip: press Ctrl-V (Cmd-V on Mac) to add an attachment from the clipboard.',
       private: 'Private',
