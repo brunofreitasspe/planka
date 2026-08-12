@@ -20,6 +20,8 @@ const Types = {
   BY_DUE_DATE: 'byDueDate',
   OLDEST_FIRST: 'oldestFirst',
   NEWEST_FIRST: 'newestFirst',
+  BY_PRIORITY_ASC: 'byPriorityAsc',
+  BY_PRIORITY_DESC: 'byPriorityDesc',
 };
 
 const DATA_BY_TYPE = {
@@ -34,6 +36,14 @@ const DATA_BY_TYPE = {
   },
   [Types.NEWEST_FIRST]: {
     fieldName: ListSortFieldNames.CREATED_AT,
+    order: SortOrders.DESC,
+  },
+  [Types.BY_PRIORITY_ASC]: {
+    fieldName: ListSortFieldNames.PRIORITY,
+    order: SortOrders.ASC,
+  },
+  [Types.BY_PRIORITY_DESC]: {
+    fieldName: ListSortFieldNames.PRIORITY,
     order: SortOrders.DESC,
   },
 };
@@ -59,18 +69,23 @@ const SortStep = React.memo(({ listId, onBack, onClose }) => {
       </Popup.Header>
       <Popup.Content>
         <Menu secondary vertical className={styles.menu}>
-          {[Types.ALPHABETICALLY, Types.BY_DUE_DATE, Types.OLDEST_FIRST, Types.NEWEST_FIRST].map(
-            (type) => (
-              <Menu.Item
-                key={type}
-                value={type}
-                className={styles.menuItem}
-                onClick={handleSelectTypeClick}
-              >
-                {t(`common.${type}`)}
-              </Menu.Item>
-            ),
-          )}
+          {[
+            Types.ALPHABETICALLY,
+            Types.BY_DUE_DATE,
+            Types.OLDEST_FIRST,
+            Types.NEWEST_FIRST,
+            Types.BY_PRIORITY_ASC,
+            Types.BY_PRIORITY_DESC,
+          ].map((type) => (
+            <Menu.Item
+              key={type}
+              value={type}
+              className={styles.menuItem}
+              onClick={handleSelectTypeClick}
+            >
+              {t(`common.${type}`)}
+            </Menu.Item>
+          ))}
         </Menu>
       </Popup.Content>
     </>
