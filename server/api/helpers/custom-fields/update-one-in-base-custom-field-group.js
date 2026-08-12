@@ -85,9 +85,8 @@ module.exports = {
     if (customField) {
       let deletedCustomFieldValues = [];
       if (customField.type !== inputs.record.type) {
-        deletedCustomFieldValues = await sails.helpers.customFields.deleteObsoleteValues(
-          customField,
-        );
+        deletedCustomFieldValues =
+          await sails.helpers.customFields.deleteObsoleteValues(customField);
       } else if (customField.type === 'dropdown' && !_.isUndefined(values.config)) {
         const validOptionIds = (customField.config.options || []).map((option) => option.id);
 
