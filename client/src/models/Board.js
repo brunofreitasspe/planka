@@ -63,6 +63,9 @@ export default class extends BaseModel {
     }),
     filterUsers: many('User', 'filterBoards'),
     filterLabels: many('Label', 'filterBoards'),
+    filterPriorityBands: attr({
+      getDefault: () => [],
+    }),
   };
 
   static reducer({ type, payload }, Board) {
@@ -164,6 +167,18 @@ export default class extends BaseModel {
       }
       case ActionTypes.USER_FROM_BOARD_FILTER_REMOVE:
         Board.withId(payload.boardId).filterUsers.remove(payload.id);
+
+        break;
+      case ActionTypes.BOARD_PRIORITY_FILTER_UPDATE:
+        Board.withId(payload.id).update({
+          filterPriorityBands: payload.bands,
+        });
+
+        break;
+      case ActionTypes.BOARD_PRIORITY_FILTER_CLEAR:
+        Board.withId(payload.id).update({
+          filterPriorityBands: [],
+        });
 
         break;
       case ActionTypes.PROJECT_CREATE_HANDLE:

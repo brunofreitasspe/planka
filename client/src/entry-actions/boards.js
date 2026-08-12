@@ -79,6 +79,18 @@ const searchInCurrentBoard = (value) => ({
   },
 });
 
+const updatePriorityFilterInCurrentBoard = (bands) => ({
+  type: EntryActionTypes.IN_CURRENT_BOARD_PRIORITY_FILTER_UPDATE,
+  payload: {
+    bands,
+  },
+});
+
+const clearPriorityFilterInCurrentBoard = () => ({
+  type: EntryActionTypes.IN_CURRENT_BOARD_PRIORITY_FILTER_CLEAR,
+  payload: {},
+});
+
 const deleteBoard = (id) => ({
   type: EntryActionTypes.BOARD_DELETE,
   payload: {
@@ -104,6 +116,8 @@ export default {
   updateContextInCurrentBoard,
   updateViewInCurrentBoard,
   searchInCurrentBoard,
+  updatePriorityFilterInCurrentBoard,
+  clearPriorityFilterInCurrentBoard,
   deleteBoard,
   handleBoardDelete,
 };

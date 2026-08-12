@@ -79,6 +79,23 @@ export const makeSelectNotificationsTotalByBoardId = () =>
 
 export const selectNotificationsTotalByBoardId = makeSelectNotificationsTotalByBoardId();
 
+export const makeSelectFilteredCardsTotalByBoardId = () =>
+  createSelector(
+    orm,
+    (_, id) => id,
+    ({ Board }, id) => {
+      const boardModel = Board.withId(id);
+
+      if (!boardModel) {
+        return boardModel;
+      }
+
+      return boardModel.getFilteredCardsModelArray().length;
+    },
+  );
+
+export const selectFilteredCardsTotalByBoardId = makeSelectFilteredCardsTotalByBoardId();
+
 export const makeSelectNotificationServiceIdsByBoardId = () =>
   createSelector(
     orm,
@@ -441,6 +458,24 @@ export const selectFilterUserIdsForCurrentBoard = createSelector(
   },
 );
 
+export const selectFilterPriorityBandsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    return boardModel.filterPriorityBands;
+  },
+);
+
 export const selectFilterLabelIdsForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -472,6 +507,8 @@ export default {
   selectCurrentUserMembershipByBoardId,
   makeSelectNotificationsTotalByBoardId,
   selectNotificationsTotalByBoardId,
+  makeSelectFilteredCardsTotalByBoardId,
+  selectFilteredCardsTotalByBoardId,
   makeSelectNotificationServiceIdsByBoardId,
   selectNotificationServiceIdsByBoardId,
   selectIsBoardWithIdAvailableForCurrentUser,
@@ -491,5 +528,6 @@ export default {
   selectActivityIdsForCurrentBoard,
   selectFilterUserIdsForCurrentBoard,
   selectFilterLabelIdsForCurrentBoard,
+  selectFilterPriorityBandsForCurrentBoard,
   selectIsBoardWithIdExists,
 };

@@ -100,6 +100,8 @@ export default class extends BaseModel {
       case ActionTypes.IN_BOARD_SEARCH:
       case ActionTypes.LABEL_TO_BOARD_FILTER_ADD:
       case ActionTypes.LABEL_FROM_BOARD_FILTER_REMOVE:
+      case ActionTypes.BOARD_PRIORITY_FILTER_UPDATE:
+      case ActionTypes.BOARD_PRIORITY_FILTER_CLEAR:
         if (payload.currentListId) {
           List.withId(payload.currentListId).update({
             lastCard: null,
