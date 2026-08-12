@@ -23,6 +23,7 @@ import { BoardMembershipRoles, ListTypes } from '../../../constants/Enums';
 import { ListTypeIcons } from '../../../constants/Icons';
 import EditName from './EditName';
 import ActionsStep from './ActionsStep';
+import SortStep from './SortStep';
 import DraggableCard from '../../cards/DraggableCard';
 import AddCard from '../../cards/AddCard';
 import ArchiveCardsStep from '../../cards/ArchiveCardsStep';
@@ -54,19 +55,21 @@ const List = React.memo(({ id, index }) => {
   const list = useSelector((state) => selectListById(state, id));
   const cardIds = useSelector((state) => selectFilteredCardIdsByListId(state, id));
 
-  const { canEdit, canArchiveCards, canAddCard, canPasteCard, canDropCard } = useSelector(
+  const { isEditor, canEdit, canArchiveCards, canAddCard, canPasteCard, canDropCard } = useSelector(
     (state) => {
       const isEditModeEnabled = selectors.selectIsEditModeEnabled(state); // TODO: move out?
 
       const boardMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
-      const isEditor = !!boardMembership && boardMembership.role === BoardMembershipRoles.EDITOR;
+      const isCurrentUserEditor =
+        !!boardMembership && boardMembership.role === BoardMembershipRoles.EDITOR;
 
       return {
-        canEdit: isEditModeEnabled && isEditor,
-        canArchiveCards: list.type === ListTypes.CLOSED && isEditor,
-        canAddCard: isEditor,
-        canPasteCard: isEditor,
-        canDropCard: isEditor,
+        isEditor: isCurrentUserEditor,
+        canEdit: isEditModeEnabled && isCurrentUserEditor,
+        canArchiveCards: list.type === ListTypes.CLOSED && isCurrentUserEditor,
+        canAddCard: isCurrentUserEditor,
+        canPasteCard: isCurrentUserEditor,
+        canDropCard: isCurrentUserEditor,
       };
     },
     shallowEqual,
@@ -149,6 +152,7 @@ const List = React.memo(({ id, index }) => {
 
   const ActionsPopup = usePopup(ActionsStep);
   const ArchiveCardsPopup = usePopup(ArchiveCardsStep);
+  const SortPopup = usePopup(SortStep);
 
   const addCardNode = canAddCard && (
     <AddCard
@@ -209,24 +213,31 @@ const List = React.memo(({ id, index }) => {
                                          jsx-a11y/no-static-element-interactions */}
             <div
               {...dragHandleProps} // eslint-disable-line react/jsx-props-no-spreading
-              className={classNames(styles.header, canEdit && styles.headerEditable)}
+              className={classNames(
+                styles.header,
+                canEdit && styles.headerEditable,
+                (canEdit || canArchiveCards) && styles.headerWithTwoButtons,
+              )}
               onClick={handleHeaderClick}
             >
               {isEditNameOpened ? (
                 <EditName listId={id} onClose={handleEditNameClose} />
               ) : (
-                <div className={styles.headerName}>
-                  {list.color && (
-                    <Icon
-                      name="circle"
-                      className={classNames(
-                        styles.headerNameColor,
-                        globalStyles[`color${upperFirst(camelCase(list.color))}`],
-                      )}
-                    />
-                  )}
-                  {list.name}
-                </div>
+                <>
+                  <div className={styles.headerName}>
+                    {list.color && (
+                      <Icon
+                        name="circle"
+                        className={classNames(
+                          styles.headerNameColor,
+                          globalStyles[`color${upperFirst(camelCase(list.color))}`],
+                        )}
+                      />
+                    )}
+                    {list.name}
+                  </div>
+                  <span className={styles.headerNameCount}>{cardIds.length}</span>
+                </>
               )}
               {list.type !== ListTypes.ACTIVE && (
                 <Icon
@@ -236,6 +247,19 @@ const List = React.memo(({ id, index }) => {
                     list.isPersisted && (canEdit || canArchiveCards) && styles.headerIconHidable,
                   )}
                 />
+              )}
+              {list.isPersisted && isEditor && (
+                <SortPopup listId={id}>
+                  <Button
+                    className={classNames(
+                      styles.headerButton,
+                      (canEdit || canArchiveCards) && styles.headerButtonShifted,
+                    )}
+                    title={t('common.sortList', { context: 'title' })}
+                  >
+                    <Icon fitted name="sort amount down" size="small" />
+                  </Button>
+                </SortPopup>
               )}
               {list.isPersisted &&
                 (canEdit ? (

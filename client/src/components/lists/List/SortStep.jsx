@@ -94,8 +94,12 @@ const SortStep = React.memo(({ listId, onBack, onClose }) => {
 
 SortStep.propTypes = {
   listId: PropTypes.string.isRequired,
-  onBack: PropTypes.func.isRequired,
+  onBack: PropTypes.func,
   onClose: PropTypes.func.isRequired,
+};
+
+SortStep.defaultProps = {
+  onBack: undefined,
 };
 
 export default SortStep;

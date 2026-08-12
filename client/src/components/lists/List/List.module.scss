@@ -93,6 +93,8 @@
   }
 
   .header {
+    align-items: center;
+    display: flex;
     outline: none;
     padding: 6px 36px 6px 8px;
     position: relative;
@@ -106,6 +108,10 @@
         opacity: 0;
       }
     }
+  }
+
+  .headerWithTwoButtons {
+    padding-right: 68px;
   }
 
   .headerEditable {
@@ -131,6 +137,10 @@
     }
   }
 
+  .headerButtonShifted {
+    right: 36px;
+  }
+
   .headerIcon {
     color: #798d99;
     position: absolute;
@@ -140,14 +150,26 @@
 
   .headerName {
     color: #17394d;
+    flex: 1;
     font-weight: bold;
     line-height: 20px;
     max-height: 256px;
+    min-width: 0;
     outline: none;
     overflow: hidden;
     overflow-wrap: break-word;
     padding: 4px 8px;
     word-break: break-word;
+  }
+
+  .headerNameCount {
+    color: #6b808c;
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    margin-left: 8px;
+    padding: 4px 8px 4px 0;
   }
 
   .headerNameColor {
