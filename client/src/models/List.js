@@ -12,6 +12,7 @@ import ActionTypes from '../constants/ActionTypes';
 import Config from '../constants/Config';
 import { ListSortFieldNames, ListTypes, ListTypeStates, SortOrders } from '../constants/Enums';
 import LIST_TYPE_STATE_BY_TYPE from '../constants/ListTypeStateByType';
+import { compareCardPriorities } from '../constants/CardPriorities';
 
 const POSITION_BY_LIST_TYPE = {
   [ListTypes.ARCHIVE]: Number.MAX_SAFE_INTEGER - 1,
@@ -418,6 +419,10 @@ export default class extends BaseModel {
         break;
       case ListSortFieldNames.CREATED_AT:
         cardModels.sort((card1, card2) => card1.createdAt - card2.createdAt);
+
+        break;
+      case ListSortFieldNames.PRIORITY:
+        cardModels.sort((card1, card2) => compareCardPriorities(card1.priority, card2.priority));
 
         break;
       default:

@@ -80,6 +80,7 @@ export const ListSortFieldNames = {
   NAME: 'name',
   DUE_DATE: 'dueDate',
   CREATED_AT: 'createdAt',
+  PRIORITY: 'priority',
 };
 
 export const CardTypes = {
