@@ -69,6 +69,20 @@ module.exports = {
         cards.sort((card1, card2) => new Date(card1.createdAt) - new Date(card2.createdAt));
 
         break;
+      case List.SortFieldNames.PRIORITY:
+        cards.sort((card1, card2) => {
+          if (card1.priority === 0) {
+            return card2.priority === 0 ? 0 : 1;
+          }
+
+          if (card2.priority === 0) {
+            return -1;
+          }
+
+          return card1.priority - card2.priority;
+        });
+
+        break;
       default:
         throw 'invalidFieldName';
     }

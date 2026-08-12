@@ -85,6 +85,7 @@ const SortFieldNames = {
   NAME: 'name',
   DUE_DATE: 'dueDate',
   CREATED_AT: 'createdAt',
+  PRIORITY: 'priority',
 };
 
 // TODO: should not be here
