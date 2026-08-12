@@ -215,6 +215,20 @@ export function* searchInCurrentBoard(value) {
   yield put(actions.searchInBoard(boardId, value, currentListId));
 }
 
+export function* updateBoardPriorityFilter(bands) {
+  const { boardId } = yield select(selectors.selectPath);
+  const currentListId = yield select(selectors.selectCurrentListId);
+
+  yield put(actions.updateBoardPriorityFilter(boardId, bands, currentListId));
+}
+
+export function* clearBoardPriorityFilter() {
+  const { boardId } = yield select(selectors.selectPath);
+  const currentListId = yield select(selectors.selectCurrentListId);
+
+  yield put(actions.clearBoardPriorityFilter(boardId, currentListId));
+}
+
 export function* deleteBoard(id) {
   const currentBoard = yield select(selectors.selectCurrentBoard);
 
@@ -259,6 +273,8 @@ export default {
   updateBoardView,
   updateViewInCurrentBoard,
   searchInCurrentBoard,
+  updateBoardPriorityFilter,
+  clearBoardPriorityFilter,
   deleteBoard,
   handleBoardDelete,
 };
