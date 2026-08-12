@@ -20,6 +20,7 @@ import MoveStep from './MoveStep';
 import SelectListTypeStep from '../SelectListTypeStep';
 import ConfirmationStep from '../../common/ConfirmationStep';
 import ArchiveCardsStep from '../../cards/ArchiveCardsStep';
+import PriorityFilterStep from '../../priorities/PriorityFilterStep';
 
 import styles from './ActionsStep.module.scss';
 
@@ -27,6 +28,7 @@ const StepTypes = {
   EDIT_TYPE: 'EDIT_TYPE',
   EDIT_COLOR: 'EDIT_COLOR',
   SORT: 'SORT',
+  FILTER_PRIORITY: 'FILTER_PRIORITY',
   MOVE: 'MOVE',
   ARCHIVE_CARDS: 'ARCHIVE_CARDS',
   DELETE: 'DELETE',
@@ -36,6 +38,9 @@ const ActionsStep = React.memo(({ listId, onNameEdit, onCardAdd, onClose }) => {
   const selectListById = useMemo(() => selectors.makeSelectListById(), []);
 
   const list = useSelector((state) => selectListById(state, listId));
+  const priorityBands = useSelector((state) =>
+    selectors.selectFilterPriorityBandsByListId(state, listId),
+  );
 
   const dispatch = useDispatch();
   const [t] = useTranslation();
@@ -78,6 +83,17 @@ const ActionsStep = React.memo(({ listId, onNameEdit, onCardAdd, onClose }) => {
     openStep(StepTypes.SORT);
   }, [openStep]);
 
+  const handleFilterPriorityClick = useCallback(() => {
+    openStep(StepTypes.FILTER_PRIORITY);
+  }, [openStep]);
+
+  const handlePriorityFilterSelect = useCallback(
+    (bands) => {
+      dispatch(entryActions.updatePriorityFilterInList(listId, bands));
+    },
+    [dispatch, listId],
+  );
+
   const handleMoveClick = useCallback(() => {
     openStep(StepTypes.MOVE);
   }, [openStep]);
@@ -108,6 +124,14 @@ const ActionsStep = React.memo(({ listId, onNameEdit, onCardAdd, onClose }) => {
         return <EditColorStep listId={listId} onBack={handleBack} onClose={onClose} />;
       case StepTypes.SORT:
         return <SortStep listId={listId} onBack={handleBack} onClose={onClose} />;
+      case StepTypes.FILTER_PRIORITY:
+        return (
+          <PriorityFilterStep
+            value={priorityBands}
+            onSelect={handlePriorityFilterSelect}
+            onClose={onClose}
+          />
+        );
       case StepTypes.MOVE:
         return <MoveStep id={listId} onBack={handleBack} onClose={onClose} />;
       case StepTypes.ARCHIVE_CARDS:
@@ -162,6 +186,12 @@ const ActionsStep = React.memo(({ listId, onNameEdit, onCardAdd, onClose }) => {
           <Menu.Item className={styles.menuItem} onClick={handleSortClick}>
             <Icon name="sort amount down" className={styles.menuItemIcon} />
             {t('action.sortList', {
+              context: 'title',
+            })}
+          </Menu.Item>
+          <Menu.Item className={styles.menuItem} onClick={handleFilterPriorityClick}>
+            <Icon name="filter" className={styles.menuItemIcon} />
+            {t('common.filterByPriority', {
               context: 'title',
             })}
           </Menu.Item>
