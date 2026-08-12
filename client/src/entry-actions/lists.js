@@ -73,6 +73,21 @@ const clearTrashListInCurrentBoard = () => ({
   payload: {},
 });
 
+const updatePriorityFilterInList = (id, bands) => ({
+  type: EntryActionTypes.LIST_PRIORITY_FILTER_UPDATE,
+  payload: {
+    id,
+    bands,
+  },
+});
+
+const clearPriorityFilterInList = (id) => ({
+  type: EntryActionTypes.LIST_PRIORITY_FILTER_CLEAR,
+  payload: {
+    id,
+  },
+});
+
 const handleListClear = (list) => ({
   type: EntryActionTypes.LIST_CLEAR_HANDLE,
   payload: {
@@ -105,6 +120,8 @@ export default {
   sortList,
   moveListCardsToArchiveList,
   clearTrashListInCurrentBoard,
+  updatePriorityFilterInList,
+  clearPriorityFilterInList,
   handleListClear,
   deleteList,
   handleListDelete,

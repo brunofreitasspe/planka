@@ -68,6 +68,9 @@ export default class extends BaseModel {
       as: 'board',
       relatedName: 'lists',
     }),
+    filterPriorityBands: attr({
+      getDefault: () => [],
+    }),
   };
 
   static reducer({ type, payload }, List) {
@@ -109,6 +112,18 @@ export default class extends BaseModel {
             isAllCardsFetched: null,
           });
         }
+
+        break;
+      case ActionTypes.LIST_PRIORITY_FILTER_UPDATE:
+        List.withId(payload.id).update({
+          filterPriorityBands: payload.bands,
+        });
+
+        break;
+      case ActionTypes.LIST_PRIORITY_FILTER_CLEAR:
+        List.withId(payload.id).update({
+          filterPriorityBands: [],
+        });
 
         break;
       case ActionTypes.BOARD_FETCH__SUCCESS:

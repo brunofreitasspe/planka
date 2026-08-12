@@ -48,6 +48,20 @@ export const makeSelectCardIdsByListId = () =>
 
 export const selectCardIdsByListId = makeSelectCardIdsByListId();
 
+export const selectFilterPriorityBandsByListId = createSelector(
+  orm,
+  (_, id) => id,
+  ({ List }, id) => {
+    const listModel = List.withId(id);
+
+    if (!listModel) {
+      return listModel;
+    }
+
+    return listModel.filterPriorityBands;
+  },
+);
+
 export const makeSelectFilteredCardIdsByListId = () =>
   createSelector(
     orm,
@@ -169,6 +183,7 @@ export default {
   selectListById,
   makeSelectCardIdsByListId,
   selectCardIdsByListId,
+  selectFilterPriorityBandsByListId,
   makeSelectFilteredCardIdsByListId,
   selectFilteredCardIdsByListId,
   selectIsListWithIdAvailableForCurrentUser,

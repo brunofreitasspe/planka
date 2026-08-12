@@ -113,6 +113,21 @@ sortList.failure = (id, error) => ({
   },
 });
 
+const updateListPriorityFilter = (id, bands) => ({
+  type: ActionTypes.LIST_PRIORITY_FILTER_UPDATE,
+  payload: {
+    id,
+    bands,
+  },
+});
+
+const clearListPriorityFilter = (id) => ({
+  type: ActionTypes.LIST_PRIORITY_FILTER_CLEAR,
+  payload: {
+    id,
+  },
+});
+
 const moveListCards = (id, nextId, cardIds) => ({
   type: ActionTypes.LIST_CARDS_MOVE,
   payload: {
@@ -207,6 +222,8 @@ export default {
   updateList,
   handleListUpdate,
   sortList,
+  updateListPriorityFilter,
+  clearListPriorityFilter,
   moveListCards,
   clearList,
   handleListClear,

@@ -174,6 +174,14 @@ export function* sortList(id, data) {
   yield put(actions.sortList.success(list, cards));
 }
 
+export function* updateListPriorityFilter(id, bands) {
+  yield put(actions.updateListPriorityFilter(id, bands));
+}
+
+export function* clearListPriorityFilter(id) {
+  yield put(actions.clearListPriorityFilter(id));
+}
+
 export function* moveListCards(id, nextId) {
   const cardIds = yield select(selectors.selectCardIdsByListId, id);
 
@@ -270,6 +278,8 @@ export default {
   moveList,
   transferList,
   sortList,
+  updateListPriorityFilter,
+  clearListPriorityFilter,
   moveListCardsToArchiveList,
   clearTrashListInCurrentBoard,
   handleListClear,

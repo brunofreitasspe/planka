@@ -44,5 +44,11 @@ export default function* listsWatchers() {
     takeEvery(EntryActionTypes.LIST_DELETE_HANDLE, ({ payload: { list, cards } }) =>
       services.handleListDelete(list, cards),
     ),
+    takeEvery(EntryActionTypes.LIST_PRIORITY_FILTER_UPDATE, ({ payload: { id, bands } }) =>
+      services.updateListPriorityFilter(id, bands),
+    ),
+    takeEvery(EntryActionTypes.LIST_PRIORITY_FILTER_CLEAR, ({ payload: { id } }) =>
+      services.clearListPriorityFilter(id),
+    ),
   ]);
 }
