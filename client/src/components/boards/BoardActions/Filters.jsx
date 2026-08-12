@@ -20,6 +20,8 @@ import UserAvatar from '../../users/UserAvatar';
 import BoardMembershipsStep from '../../board-memberships/BoardMembershipsStep';
 import LabelChip from '../../labels/LabelChip';
 import LabelsStep from '../../labels/LabelsStep';
+import PriorityFilterStep from '../../priorities/PriorityFilterStep';
+import { CardPriorityBandRanges, getCardPriorityColor } from '../../../constants/CardPriorities';
 
 import styles from './Filters.module.scss';
 
@@ -27,6 +29,7 @@ const Filters = React.memo(() => {
   const board = useSelector(selectors.selectCurrentBoard);
   const userIds = useSelector(selectors.selectFilterUserIdsForCurrentBoard);
   const labelIds = useSelector(selectors.selectFilterLabelIdsForCurrentBoard);
+  const priorityBands = useSelector(selectors.selectFilterPriorityBandsForCurrentBoard);
   const currentUserId = useSelector(selectors.selectCurrentUserId);
 
   const withCurrentUserSelector = useSelector(
@@ -109,6 +112,25 @@ const Filters = React.memo(() => {
     [dispatch],
   );
 
+  const handlePriorityBandSelect = useCallback(
+    (bands) => {
+      dispatch(entryActions.updatePriorityFilterInCurrentBoard(bands));
+    },
+    [dispatch],
+  );
+
+  const handlePriorityBandRemove = useCallback(
+    ({
+      currentTarget: {
+        dataset: { band },
+      },
+    }) => {
+      const bands = priorityBands.filter((item) => item !== band);
+      dispatch(entryActions.updatePriorityFilterInCurrentBoard(bands));
+    },
+    [dispatch, priorityBands],
+  );
+
   const handleSearchChange = useCallback(
     (_, { value }) => {
       setSearch(value);
@@ -144,6 +166,7 @@ const Filters = React.memo(() => {
 
   const BoardMembershipsPopup = usePopup(BoardMembershipsStep);
   const LabelsPopup = usePopup(LabelsStep);
+  const PriorityPopup = usePopup(PriorityFilterStep);
 
   const isSearchActive = search || isSearchFocused;
 
@@ -189,6 +212,29 @@ const Filters = React.memo(() => {
         {labelIds.map((labelId) => (
           <span key={labelId} className={styles.filterItem}>
             <LabelChip id={labelId} size="small" onClick={handleLabelClick} />
+          </span>
+        ))}
+      </span>
+      <span className={styles.filter}>
+        <PriorityPopup value={priorityBands} onSelect={handlePriorityBandSelect}>
+          <button type="button" className={styles.filterButton}>
+            <span className={styles.filterTitle}>{`${t('common.priority')}:`}</span>
+            {priorityBands.length === 0 && (
+              <span className={styles.filterLabel}>{t('common.all')}</span>
+            )}
+          </button>
+        </PriorityPopup>
+        {priorityBands.map((band) => (
+          <span key={band} className={styles.filterItem}>
+            <button
+              type="button"
+              className={styles.priorityBandChip}
+              data-band={band}
+              style={{ '--priority-color': getCardPriorityColor(CardPriorityBandRanges[band].min) }}
+              onClick={handlePriorityBandRemove}
+            >
+              {t(`common.priorityLevels.${band}`)}
+            </button>
           </span>
         ))}
       </span>

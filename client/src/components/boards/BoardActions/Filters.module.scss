@@ -57,6 +57,20 @@
     padding: 2px 12px;
   }
 
+  .priorityBandChip {
+    background: var(--priority-color);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 10px;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
   .search {
     height: 30px;
     margin: 0 12px;
