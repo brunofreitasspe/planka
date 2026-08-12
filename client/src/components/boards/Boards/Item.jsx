@@ -25,8 +25,14 @@ const Item = React.memo(({ id, index }) => {
     [],
   );
 
+  const selectFilteredCardsTotalByBoardId = useMemo(
+    () => selectors.makeSelectFilteredCardsTotalByBoardId(),
+    [],
+  );
+
   const board = useSelector((state) => selectBoardById(state, id));
   const notificationsTotal = useSelector((state) => selectNotificationsTotalByBoardId(state, id));
+  const cardsTotal = useSelector((state) => selectFilteredCardsTotalByBoardId(state, id));
   const isActive = useSelector((state) => id === selectors.selectPath(state).boardId);
 
   const canEdit = useSelector((state) => {
@@ -61,7 +67,10 @@ const Item = React.memo(({ id, index }) => {
                   {notificationsTotal > 0 && (
                     <span className={styles.notifications}>{notificationsTotal}</span>
                   )}
-                  <span className={styles.name}>{board.name}</span>
+                  <span className={styles.name}>
+                    {board.name}
+                    <span className={styles.count}>{cardsTotal}</span>
+                  </span>
                 </Link>
                 {canEdit && (
                   <Button className={styles.editButton} onClick={handleEditClick}>

@@ -4,19 +4,12 @@
  */
 
 :global(#app) {
-  .cover {
-    background: url("../../../assets/images/login-cover.jpg") left / cover;
-  }
-
-  .coverOverlay {
-    background: rgba(33, 33, 33, 0.5);
-    bottom: 0;
+  .panel {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
+    overflow-y: auto;
+    padding: 32px 48px;
   }
 
   .debugLog {
@@ -38,36 +31,41 @@
     text-align: center;
   }
 
+  .switchButton {
+    background: transparent;
+    border: none;
+    color: #4183c4;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    text-decoration: none;
+
+    &:hover {
+      color: #1e70bf;
+      text-decoration: underline;
+    }
+  }
+
   .form {
     display: flex;
-    flex: 1;
     flex-direction: column;
     justify-content: center;
+    margin: auto 0;
   }
 
   .formTitle {
-    font-size: 36px;
+    font-size: 26px;
     font-weight: bold;
   }
 
   .formSubtitle {
-    font-size: 28px;
+    font-size: 18px;
     font-weight: normal;
-    margin-bottom: 32px;
-  }
-
-  .grid {
-    height: 100%;
-    margin: 0;
-  }
-
-  .gridItem {
-    height: 100%;
-    padding: 0;
+    margin-bottom: 20px;
   }
 
   .inputLabel {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
     margin-bottom: 4px;
   }
@@ -76,43 +74,14 @@
     margin-bottom: 16px;
   }
 
-  .login {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    max-width: 440px;
-    min-height: 100vh;
-    padding: 40px;
-    row-gap: 40px;
-  }
-
   .logo {
-    max-height: 144px;
+    max-height: 72px;
     max-width: 80%;
   }
 
   .logoWrapper {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
-  }
-
-  .poweredBy {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
-    margin-top: auto;
-  }
-
-  .poweredByText {
-    color: #6b808c;
-    font-weight: lighter;
-    text-align: center;
-  }
-
-  .wrapper {
-    background: #fff;
+    margin-bottom: 12px;
   }
 }

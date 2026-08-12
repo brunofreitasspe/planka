@@ -88,6 +88,11 @@ const getOneByEmail = (email) =>
     email: email.toLowerCase(),
   });
 
+const getOneByUsername = (username) =>
+  User.findOne({
+    username: username.toLowerCase(),
+  });
+
 const getOneActiveByEmailOrUsername = (emailOrUsername) => {
   const fieldName = emailOrUsername.includes('@') ? 'email' : 'username';
 
@@ -212,6 +217,7 @@ module.exports = {
   getPendingApproval,
   getOneById,
   getOneByEmail,
+  getOneByUsername,
   getOneActiveByEmailOrUsername,
   getOneByEmailOrUsername,
   getOneActiveByApiKeyHash,

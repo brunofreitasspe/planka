@@ -274,46 +274,49 @@ module.exports = {
 
     const remoteAddress = getRemoteAddress(this.req);
     const user = await User.qm.getOneActiveByEmailOrUsername(inputs.emailOrUsername);
+    const config = await Config.qm.getOneMain();
+    const { ldapEnabled } = config;
 
-    if (!user || user.isLdapUser) {
-      const config = await Config.qm.getOneMain();
+    const loginWithLdap = async () => {
+      const ldapUser = await sails.helpers.users.getOrCreateOneWithLdap
+        .with({
+          emailOrUsername: inputs.emailOrUsername,
+          password: inputs.password,
+        })
+        .intercept('invalidLdapConfiguration', () => Errors.INVALID_LDAP_CONFIGURATION)
+        .intercept('invalidCredentials', () => {
+          sails.log.warn(
+            `Invalid LDAP credentials for: "${inputs.emailOrUsername}"! (IP: ${remoteAddress})`,
+          );
 
-      if (config.ldapEnabled) {
-        const ldapUser = await sails.helpers.users.getOrCreateOneWithLdap
-          .with({
-            emailOrUsername: inputs.emailOrUsername,
-            password: inputs.password,
-          })
-          .intercept('invalidLdapConfiguration', () => Errors.INVALID_LDAP_CONFIGURATION)
-          .intercept('invalidCredentials', () => {
-            sails.log.warn(
-              `Invalid LDAP credentials for: "${inputs.emailOrUsername}"! (IP: ${remoteAddress})`,
-            );
+          return sails.config.custom.showDetailedAuthErrors
+            ? Errors.INVALID_PASSWORD
+            : Errors.INVALID_CREDENTIALS;
+        })
+        .intercept('missingValues', () => Errors.MISSING_VALUES)
+        .intercept('emailAlreadyInUse', () => Errors.EMAIL_ALREADY_IN_USE)
+        .intercept('usernameAlreadyInUse', () => Errors.USERNAME_ALREADY_IN_USE)
+        .intercept('activeLimitReached', () => Errors.ACTIVE_USERS_LIMIT_REACHED);
 
-            return sails.config.custom.showDetailedAuthErrors
-              ? Errors.INVALID_PASSWORD
-              : Errors.INVALID_CREDENTIALS;
-          })
-          .intercept('missingValues', () => Errors.MISSING_VALUES)
-          .intercept('emailAlreadyInUse', () => Errors.EMAIL_ALREADY_IN_USE)
-          .intercept('usernameAlreadyInUse', () => Errors.USERNAME_ALREADY_IN_USE)
-          .intercept('activeLimitReached', () => Errors.ACTIVE_USERS_LIMIT_REACHED);
+      return sails.helpers.accessTokens.handleSteps
+        .with({
+          user: ldapUser,
+          remoteAddress,
+          request: this.req,
+          response: this.res,
+          withHttpOnlyToken: inputs.withHttpOnlyToken,
+        })
+        .intercept('adminLoginRequiredToInitializeInstance', (error) => ({
+          adminLoginRequiredToInitializeInstance: error.raw,
+        }))
+        .intercept('termsAcceptanceRequired', (error) => ({
+          termsAcceptanceRequired: error.raw,
+        }));
+    };
 
-        return sails.helpers.accessTokens.handleSteps
-          .with({
-            user: ldapUser,
-            remoteAddress,
-            request: this.req,
-            response: this.res,
-            withHttpOnlyToken: inputs.withHttpOnlyToken,
-          })
-          .intercept('adminLoginRequiredToInitializeInstance', (error) => ({
-            adminLoginRequiredToInitializeInstance: error.raw,
-          }))
-          .intercept('termsAcceptanceRequired', (error) => ({
-            termsAcceptanceRequired: error.raw,
-          }));
-      }
+    // LDAP-managed user, or no active local user → authenticate against LDAP.
+    if ((!user || user.isLdapUser) && ldapEnabled) {
+      return loginWithLdap();
     }
 
     if (!user) {
@@ -350,9 +353,15 @@ module.exports = {
       throw Errors.USE_SINGLE_SIGN_ON;
     }
 
+    // Try the local password first.
     const isPasswordValid = await bcrypt.compare(inputs.password, user.password);
 
     if (!isPasswordValid) {
+      // Local password failed → fall back to LDAP (by username, then by email).
+      if (ldapEnabled) {
+        return loginWithLdap();
+      }
+
       sails.log.warn(`Invalid password! (IP: ${remoteAddress})`);
 
       throw sails.config.custom.showDetailedAuthErrors

@@ -3,6 +3,9 @@ export default {
     common: {
       activeUsersLimitReached: 'Active users limit reached',
       adminLoginRequiredToInitializeInstance: 'Admin login required to initialize instance',
+      alreadyHaveAccount: 'Already have an account?',
+      alreadyHaveAccountDescription: 'Log in with your personal details to keep connected with us',
+      createAccountDescription: 'Enter your personal details and start your journey with us',
       createAccount_title: 'Create Account',
       emailAlreadyInUse: 'E-mail already in use',
       emailDomainNotAllowed: 'E-mail domain is not allowed to register',

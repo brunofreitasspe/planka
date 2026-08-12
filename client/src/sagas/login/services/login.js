@@ -18,6 +18,11 @@ import AccessTokenSteps from '../../../constants/AccessTokenSteps';
 export function* initializeLogin() {
   const { item: bootstrap } = yield call(api.getBootstrap); // TODO: handle error
 
+  // Load the core locale bundle (common.name / username / email, etc.) so the
+  // register form labels are localized on the auth screen. Without this, keys
+  // that only live in core.js fall back to English until after login.
+  yield call(i18n.loadCoreLocale);
+
   yield put(actions.initializeLogin(bootstrap));
 }
 

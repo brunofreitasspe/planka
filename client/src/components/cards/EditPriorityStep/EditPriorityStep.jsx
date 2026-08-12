@@ -72,8 +72,8 @@ const EditPriorityStep = React.memo(({ cardId, onBack, onClose }) => {
           </div>
           <input
             type="range"
-            min={CARD_PRIORITY_MIN}
-            max={CARD_PRIORITY_MAX}
+            min={CARD_PRIORITY_MAX}
+            max={CARD_PRIORITY_MIN}
             step={1}
             value={value}
             style={{

@@ -175,11 +175,7 @@ const CustomField = React.memo(({ id, customFieldGroupId }) => {
     <div>
       <div className={styles.name}>{customField.name}</div>
       <div className={styles.valueWrapper}>
-        {canEditValue ? (
-          valueEditNode
-        ) : (
-          <div className={styles.value}>{valueDisplayNode}</div>
-        )}
+        {canEditValue ? valueEditNode : <div className={styles.value}>{valueDisplayNode}</div>}
         {isCopyable && customFieldValue && customFieldValue.content && (
           <Button className={styles.copyButton} onClick={handleCopyClick}>
             <Icon fitted name={isCopied ? 'check' : 'copy'} />

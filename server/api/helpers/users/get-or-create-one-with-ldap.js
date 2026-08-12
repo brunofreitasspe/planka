@@ -59,42 +59,59 @@ module.exports = {
       const emailAttribute = config.ldapEmailAttribute || 'mail';
       const { ldapRolesAttribute: rolesAttribute } = config;
 
-      const filterTemplate = config.ldapUserFilter || `(${usernameAttribute}={{username}})`;
-      const filter = filterTemplate.replace(
-        /{{username}}/g,
-        escapeFilterValue(inputs.emailOrUsername),
-      );
-
       const attributes = [usernameAttribute, nameAttribute, emailAttribute];
       if (rolesAttribute) {
         attributes.push(rolesAttribute);
       }
 
-      let entries;
-      try {
-        entries = await search(client, config.ldapBaseDn, {
-          filter,
-          scope: 'sub',
-          attributes,
-        });
-      } catch (error) {
-        sails.log.warn(`Error while searching LDAP: ${error}`);
+      const resolveEntry = async (filter) => {
+        let entries;
+        try {
+          entries = await search(client, config.ldapBaseDn, {
+            filter,
+            scope: 'sub',
+            attributes,
+          });
+        } catch (error) {
+          sails.log.warn(`Error while searching LDAP: ${error}`);
+          return null;
+        }
+
+        if (entries.length !== 1) {
+          return null;
+        }
+
+        const [entry] = entries;
+        const entryDn = entry.pojo.objectName;
+
+        try {
+          await bind(client, entryDn, inputs.password);
+        } catch (error) {
+          return false;
+        }
+
+        return { entry, entryDn };
+      };
+
+      // Try to find and authenticate the LDAP entry by username first, then by email.
+      const escapedIdentifier = escapeFilterValue(inputs.emailOrUsername);
+      const usernameFilter = (
+        config.ldapUserFilter || `(${usernameAttribute}={{username}})`
+      ).replace(/{{username}}/g, escapedIdentifier);
+      const emailFilter = `(${emailAttribute}=${escapedIdentifier})`;
+
+      let resolved = await resolveEntry(usernameFilter);
+
+      if (resolved === null) {
+        resolved = await resolveEntry(emailFilter);
+      }
+
+      if (resolved === false || resolved === null) {
         throw 'invalidCredentials';
       }
 
-      if (entries.length !== 1) {
-        throw 'invalidCredentials';
-      }
-
-      const [entry] = entries;
-      const entryDn = entry.pojo.objectName;
+      const { entry, entryDn } = resolved;
       const attributeMap = getEntryAttributeMap(entry);
-
-      try {
-        await bind(client, entryDn, inputs.password);
-      } catch (error) {
-        throw 'invalidCredentials';
-      }
 
       const email = getFirstAttributeValue(attributeMap, emailAttribute);
       const name = getFirstAttributeValue(attributeMap, nameAttribute);
@@ -126,7 +143,8 @@ module.exports = {
         email,
         role,
         name,
-        username,
+        // Planka usernames are lowercase-only, so normalize what comes from LDAP.
+        username: username ? username.toLowerCase() : username,
         isLdapUser: true,
       };
 
@@ -145,8 +163,14 @@ module.exports = {
       if (identityProviderUser) {
         user = await User.qm.getOneById(identityProviderUser.userId);
       } else {
-        // If no IDP/User mapping exists, search for the user by email.
-        user = await User.qm.getOneByEmail(values.email);
+        // If no IDP/User mapping exists, search for the user by username first, then by email.
+        if (values.username) {
+          user = await User.qm.getOneByUsername(values.username);
+        }
+
+        if (!user) {
+          user = await User.qm.getOneByEmail(values.email);
+        }
 
         // Otherwise, create a new user.
         if (!user) {

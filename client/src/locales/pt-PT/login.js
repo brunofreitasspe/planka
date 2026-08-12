@@ -4,6 +4,10 @@ export default {
       activeUsersLimitReached: 'Limite de utilizadores activos atingido',
       adminLoginRequiredToInitializeInstance:
         'Início de sessão de administrador necessário para inicializar a instância',
+      alreadyHaveAccount: 'Já tem uma conta?',
+      alreadyHaveAccountDescription:
+        'Inicie sessão com os seus dados pessoais para se manter ligado connosco',
+      createAccountDescription: 'Introduza os seus dados pessoais e comece a sua jornada connosco',
       emailAlreadyInUse: 'E-mail já está em uso',
       emailOrUsername: 'E-mail ou nome de utilizador',
       invalidCredentials: 'Credenciais inválidas',

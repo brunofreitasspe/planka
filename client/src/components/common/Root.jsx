@@ -13,8 +13,7 @@ import { toaster } from '@gravity-ui/uikit/toaster-singleton';
 import { ReduxRouter } from '../../lib/redux-router';
 
 import Paths from '../../constants/Paths';
-import Login from './Login';
-import Register from './Register';
+import Auth from './Auth';
 import Core from './Core';
 import GhostError from './GhostError';
 
@@ -32,9 +31,9 @@ function Root({ store, history }) {
         <ThemeProvider theme="light">
           <ToasterProvider toaster={toaster}>
             <Routes>
-              <Route path={Paths.LOGIN} element={<Login />} />
-              <Route path={Paths.REGISTER} element={<Register />} />
-              <Route path={Paths.OIDC_CALLBACK} element={<Login />} />
+              <Route path={Paths.LOGIN} element={<Auth />} />
+              <Route path={Paths.REGISTER} element={<Auth />} />
+              <Route path={Paths.OIDC_CALLBACK} element={<Auth />} />
               <Route path={Paths.ROOT} element={<Core />} />
               <Route path={Paths.PROJECTS} element={<Core />} />
               <Route path={Paths.BOARDS} element={<Core />} />

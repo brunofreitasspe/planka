@@ -4,6 +4,10 @@ export default {
       activeUsersLimitReached: 'Limite de usuários ativos atingido',
       adminLoginRequiredToInitializeInstance:
         'Login de administrador necessário para inicializar a instância',
+      alreadyHaveAccount: 'Já tem uma conta?',
+      alreadyHaveAccountDescription:
+        'Entre com seus dados pessoais para continuar conectado conosco',
+      createAccountDescription: 'Digite seus dados pessoais e comece sua jornada conosco',
       createAccount_title: 'Criar Conta',
       emailAlreadyInUse: 'E-mail já está em uso',
       emailDomainNotAllowed: 'Domínio de e-mail não permitido para cadastro',

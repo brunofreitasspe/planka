@@ -1,0 +1,163 @@
+/*!
+ * Copyright (c) 2024 PLANKA Software GmbH
+ * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ */
+
+:global(#app) {
+  .container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    max-width: 920px;
+    min-height: 680px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .formContainer {
+    background: #fff;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: all 0.6s ease-in-out;
+    width: 50%;
+  }
+
+  .overlayButton {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 12px;
+    padding: 12px 40px;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .overlayContainer {
+    height: 100%;
+    left: 50%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    transition: transform 0.6s ease-in-out;
+    width: 50%;
+    z-index: 100;
+  }
+
+  .overlay {
+    background-color: #333;
+    background-image: linear-gradient(rgba(33, 33, 33, 0.5), rgba(33, 33, 33, 0.5)),
+      url('../../../assets/images/login-cover.jpg');
+    background-position: left, left;
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, cover;
+    color: #fff;
+    height: 100%;
+    left: -100%;
+    position: relative;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+    width: 200%;
+  }
+
+  .overlayPanel {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    padding: 0 40px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+    width: 50%;
+  }
+
+  .overlayLeft {
+    transform: translateX(-20%);
+  }
+
+  .overlayRight {
+    right: 0;
+    transform: translateX(0);
+  }
+
+  .overlayText {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 0 0 8px;
+    max-width: 280px;
+  }
+
+  .overlayTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 12px;
+  }
+
+  .poweredBy {
+    color: #6b808c;
+    font-weight: lighter;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .signInContainer {
+    z-index: 2;
+  }
+
+  .signUpContainer {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .wrapper {
+    align-items: center;
+    background: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .signUpMode .overlayContainer {
+    transform: translateX(-100%);
+  }
+
+  .signUpMode .overlay {
+    transform: translateX(50%);
+  }
+
+  .signUpMode .overlayLeft {
+    transform: translateX(0);
+  }
+
+  .signUpMode .overlayRight {
+    transform: translateX(20%);
+  }
+
+  .signUpMode .signInContainer {
+    transform: translateX(100%);
+  }
+
+  .signUpMode .signUpContainer {
+    opacity: 1;
+    transform: translateX(100%);
+    z-index: 5;
+  }
+}

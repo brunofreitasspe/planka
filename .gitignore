@@ -13,3 +13,5 @@ yarn.lock
 
 # Chart dependencies
 **/charts/*.tgz
+# Added by code-review-graph
+.code-review-graph/
