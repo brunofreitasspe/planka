@@ -130,7 +130,6 @@ module.exports = {
     },
     projectLabelId: {
       model: 'ProjectLabel',
-      allowNull: true,
       columnName: 'project_label_id',
     },
 

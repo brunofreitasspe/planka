@@ -374,6 +374,8 @@ export default {
   selectBackgroundImageIdsForCurrentProject,
   selectBaseCustomFieldGroupIdsForCurrentProject,
   selectBaseCustomFieldGroupsForCurrentProject,
+  selectProjectLabelIdsForCurrentProject,
+  selectProjectLabelsForCurrentProject,
   selectBoardIdsForCurrentProject,
   selectIsCurrentUserManagerForCurrentProject,
 };

@@ -15,3 +15,10 @@ yarn.lock
 **/charts/*.tgz
 # Added by code-review-graph
 .code-review-graph/
+
+# Playwright artifacts
+test-results/
+playwright-report/
+
+# SDD plan workspace (scratch)
+.superpowers/

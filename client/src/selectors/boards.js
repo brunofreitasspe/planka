@@ -586,6 +586,7 @@ export default {
   selectMemberUserIdsForCurrentBoard,
   selectCurrentUserMembershipForCurrentBoard,
   selectLabelsForCurrentBoard,
+  selectLabelsForCurrentBoardWithGlobals,
   selectArchiveListIdForCurrentBoard,
   selectTrashListIdForCurrentBoard,
   selectKanbanListIdsForCurrentBoard,

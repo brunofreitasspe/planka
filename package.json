@@ -8,6 +8,7 @@
     "client:start": "npm start --prefix client",
     "client:test": "npm test --prefix client",
     "docker:build": "docker build -t planka .",
+    "e2e": "playwright test",
     "gv": "npm i --package-lock-only --ignore-scripts && genversion --source . --template server/version-template.ejs server/version.js && genversion --source . --template client/version-template.ejs client/src/version.js",
     "postinstall": "npm i --prefix server && npm i --prefix client",
     "lint": "npm run server:lint && npm run client:lint",
@@ -40,5 +41,8 @@
     "genversion": "^3.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
   }
 }

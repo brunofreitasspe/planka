@@ -29,7 +29,7 @@ module.exports = {
 
     // Check permission
     try {
-      await sails.helpers.projectLabels.requireProjectManager(this.req.user.id, projectId);
+      await sails.helpers.projectLabels.requireProjectManager(this.req.currentUser.id, projectId);
     } catch (error) {
       throw { statusCode: 403, message: error.message };
     }

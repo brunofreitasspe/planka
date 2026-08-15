@@ -3,15 +3,15 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Button, Form } from 'semantic-ui-react';
-import { Input, Popup } from '../../../lib/custom-ui';
+import { Popup } from '../../../lib/custom-ui';
 
 import entryActions from '../../../entry-actions';
-import { useForm, useNestedRef } from '../../../hooks';
+import { useForm } from '../../../hooks';
 import LABEL_COLORS from '../../../constants/LabelColors';
 import Editor from './Editor';
 
@@ -27,28 +27,15 @@ const AddStep = React.memo(({ onClose }) => {
     canBeUsedByMembers: true,
   }));
 
-  const [nameFieldRef, handleNameFieldRef] = useNestedRef('inputRef');
-
   const handleSubmit = useCallback(() => {
     const cleanData = {
       ...data,
       name: data.name.trim(),
     };
 
-    if (!cleanData.name) {
-      nameFieldRef.current.select();
-      return;
-    }
-
     dispatch(entryActions.createProjectLabelInCurrentProject(cleanData));
     onClose();
-  }, [onClose, dispatch, data, nameFieldRef]);
-
-  useEffect(() => {
-    nameFieldRef.current.focus({
-      preventScroll: true,
-    });
-  }, [nameFieldRef]);
+  }, [onClose, dispatch, data]);
 
   return (
     <>
