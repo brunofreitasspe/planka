@@ -17,6 +17,8 @@ export default class extends BaseModel {
     name: attr(),
     color: attr(),
     canBeUsedByMembers: attr(),
+    linkedLabelCount: attr(),
+    usedInBoardCount: attr(),
     projectId: fk({
       to: 'Project',
       as: 'project',

@@ -8,7 +8,7 @@ import socket from './socket';
 /* Actions */
 
 const fetchProjectLabels = (projectId, headers) =>
-  socket.get(`/projects/${projectId}/labels`, undefined, headers);
+  socket.get(`/projects/${projectId}/labels?includeUsageStats=true`, undefined, headers);
 
 const createProjectLabel = (projectId, data, headers) =>
   socket.post(`/projects/${projectId}/labels`, data, headers);
