@@ -128,6 +128,11 @@ module.exports = {
       isIn: COLORS,
       required: true,
     },
+    projectLabelId: {
+      model: 'ProjectLabel',
+      allowNull: true,
+      columnName: 'project_label_id',
+    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
