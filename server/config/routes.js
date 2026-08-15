@@ -154,6 +154,11 @@ module.exports.routes = {
   'PATCH /api/base-custom-field-groups/:id': 'base-custom-field-groups/update',
   'DELETE /api/base-custom-field-groups/:id': 'base-custom-field-groups/delete',
 
+  'POST /api/projects/:projectId/labels': 'project-labels/create',
+  'GET /api/projects/:projectId/labels': 'project-labels/find',
+  'PATCH /api/projects/:projectId/labels/:projectLabelId': 'project-labels/update',
+  'DELETE /api/projects/:projectId/labels/:projectLabelId': 'project-labels/delete',
+
   'POST /api/projects/:projectId/boards': 'boards/create',
   'GET /api/boards/:id': 'boards/show',
   'PATCH /api/boards/:id': 'boards/update',
