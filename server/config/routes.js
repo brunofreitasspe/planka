@@ -168,7 +168,10 @@ module.exports.routes = {
   'PATCH /api/board-memberships/:id': 'board-memberships/update',
   'DELETE /api/board-memberships/:id': 'board-memberships/delete',
 
+  'GET /api/boards/:boardId/labels': 'labels/find',
   'POST /api/boards/:boardId/labels': 'labels/create',
+  'POST /api/boards/:boardId/labels/:labelId/promote': 'labels/promote',
+  'POST /api/boards/:boardId/labels/:labelId/demote': 'labels/demote',
   'PATCH /api/labels/:id': 'labels/update',
   'DELETE /api/labels/:id': 'labels/delete',
 
