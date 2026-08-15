@@ -268,6 +268,51 @@ export const selectBaseCustomFieldGroupsForCurrentProject = createSelector(
   },
 );
 
+export const selectProjectLabelIdsForCurrentProject = createSelector(
+  orm,
+  (state) => selectPath(state).projectId,
+  ({ Project }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const projectModel = Project.withId(id);
+
+    if (!projectModel) {
+      return projectModel;
+    }
+
+    return projectModel
+      .getGlobalLabelsQuerySet()
+      .toRefArray()
+      .map((projectLabel) => projectLabel.id);
+  },
+);
+
+export const selectProjectLabelsForCurrentProject = createSelector(
+  orm,
+  (state) => selectPath(state).projectId,
+  ({ Project }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const projectModel = Project.withId(id);
+
+    if (!projectModel) {
+      return projectModel;
+    }
+
+    return projectModel
+      .getGlobalLabelsQuerySet()
+      .toRefArray()
+      .map((projectLabel) => ({
+        ...projectLabel,
+        isPersisted: !isLocalId(projectLabel.id),
+      }));
+  },
+);
+
 export const selectBoardIdsForCurrentProject = createSelector(
   orm,
   (state) => selectPath(state).projectId,

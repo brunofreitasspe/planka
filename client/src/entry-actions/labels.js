@@ -64,6 +64,21 @@ const handleLabelDelete = (label) => ({
   },
 });
 
+const promoteLabel = (id, data) => ({
+  type: EntryActionTypes.LABEL_PROMOTE,
+  payload: {
+    id,
+    data,
+  },
+});
+
+const demoteLabel = (id) => ({
+  type: EntryActionTypes.LABEL_DEMOTE,
+  payload: {
+    id,
+  },
+});
+
 const addLabelToCard = (id, cardId) => ({
   type: EntryActionTypes.LABEL_TO_CARD_ADD,
   payload: {
@@ -131,6 +146,8 @@ export default {
   moveLabel,
   deleteLabel,
   handleLabelDelete,
+  promoteLabel,
+  demoteLabel,
   addLabelToCard,
   addLabelToCurrentCard,
   handleLabelToCardAdd,

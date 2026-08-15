@@ -11,6 +11,7 @@ import BackgroundImage from './BackgroundImage';
 import BaseCustomFieldGroup from './BaseCustomFieldGroup';
 import Board from './Board';
 import BoardMembership from './BoardMembership';
+import ProjectLabel from './ProjectLabel';
 import Label from './Label';
 import List from './List';
 import Card from './Card';
@@ -34,6 +35,7 @@ export {
   BaseCustomFieldGroup,
   Board,
   BoardMembership,
+  ProjectLabel,
   Label,
   List,
   Card,

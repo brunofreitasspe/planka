@@ -184,6 +184,10 @@ export default class extends BaseModel {
     return this.baseCustomFieldGroups.orderBy(['id.length', 'id']);
   }
 
+  getGlobalLabelsQuerySet() {
+    return this.globalLabels.orderBy(['position', 'id.length', 'id']);
+  }
+
   getBoardsQuerySet() {
     return this.boards.orderBy(['position', 'id.length', 'id']);
   }
@@ -241,6 +245,8 @@ export default class extends BaseModel {
     this.baseCustomFieldGroups.toModelArray().forEach((baseCustomFieldGroupModel) => {
       baseCustomFieldGroupModel.deleteWithRelated();
     });
+
+    this.globalLabels.delete();
 
     this.boards.toModelArray().forEach((boardModel) => {
       boardModel.deleteWithRelated(soft);

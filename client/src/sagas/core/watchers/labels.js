@@ -32,6 +32,10 @@ export default function* labelsWatchers() {
     takeEvery(EntryActionTypes.LABEL_DELETE_HANDLE, ({ payload: { label } }) =>
       services.handleLabelDelete(label),
     ),
+    takeEvery(EntryActionTypes.LABEL_PROMOTE, ({ payload: { id, data } }) =>
+      services.promoteLabel(id, data),
+    ),
+    takeEvery(EntryActionTypes.LABEL_DEMOTE, ({ payload: { id } }) => services.demoteLabel(id)),
     takeEvery(EntryActionTypes.LABEL_TO_CARD_ADD, ({ payload: { id, cardId } }) =>
       services.addLabelToCard(id, cardId),
     ),

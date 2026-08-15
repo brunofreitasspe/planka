@@ -65,6 +65,8 @@ module.exports = {
       canBeUsedByMembers,
     }).fetch();
 
-    return projectLabel;
+    return {
+      item: projectLabel,
+    };
   },
 };

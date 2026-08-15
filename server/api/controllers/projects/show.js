@@ -169,6 +169,8 @@ module.exports = {
     const customFields =
       await CustomField.qm.getByBaseCustomFieldGroupIds(baseCustomFieldGroupsIds);
 
+    const globalLabels = await ProjectLabel.qm.getByProjectId(project.id);
+
     let notificationServices = [];
     if (isProjectManager) {
       boardIds = sails.helpers.utils.mapRecords(boards);
@@ -180,6 +182,7 @@ module.exports = {
       included: {
         projectManagers,
         baseCustomFieldGroups,
+        globalLabels,
         boards,
         boardMemberships,
         customFields,

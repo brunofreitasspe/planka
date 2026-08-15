@@ -49,6 +49,8 @@ module.exports = {
     // Delete global label
     await ProjectLabel.destroyOne(projectLabelId);
 
-    return { statusCode: 204 };
+    return {
+      item: projectLabel,
+    };
   },
 };

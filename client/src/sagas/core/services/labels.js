@@ -131,6 +131,39 @@ export function* handleLabelDelete(label) {
   yield put(actions.handleLabelDelete(label));
 }
 
+export function* promoteLabel(id, data) {
+  yield put(actions.promoteLabel(id, data));
+
+  const { boardId } = yield select(selectors.selectLabelById, id);
+
+  let label;
+  let projectLabel;
+  try {
+    ({ label, projectLabel } = yield call(request, api.promoteLabel, boardId, id, data));
+  } catch (error) {
+    yield put(actions.promoteLabel.failure(id, error));
+    return;
+  }
+
+  yield put(actions.promoteLabel.success(label, projectLabel));
+}
+
+export function* demoteLabel(id) {
+  yield put(actions.demoteLabel(id));
+
+  const { boardId } = yield select(selectors.selectLabelById, id);
+
+  let label;
+  try {
+    ({ label } = yield call(request, api.demoteLabel, boardId, id));
+  } catch (error) {
+    yield put(actions.demoteLabel.failure(id, error));
+    return;
+  }
+
+  yield put(actions.demoteLabel.success(label));
+}
+
 export function* addLabelToCard(id, cardId) {
   yield put(actions.addLabelToCard(id, cardId));
 
@@ -215,6 +248,8 @@ export default {
   moveLabel,
   deleteLabel,
   handleLabelDelete,
+  promoteLabel,
+  demoteLabel,
   addLabelToCard,
   addLabelToCurrentCard,
   handleLabelToCardAdd,

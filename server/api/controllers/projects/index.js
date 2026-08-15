@@ -153,6 +153,8 @@ module.exports = {
     const customFields =
       await CustomField.qm.getByBaseCustomFieldGroupIds(baseCustomFieldGroupsIds);
 
+    const globalLabels = await ProjectLabel.qm.getByProjectIds(projectIds);
+
     let notificationServices = [];
     if (managerProjectIds.length > 0) {
       const managerProjectIdsSet = new Set(managerProjectIds);
@@ -182,6 +184,7 @@ module.exports = {
       included: {
         projectManagers,
         baseCustomFieldGroups,
+        globalLabels,
         boards,
         boardMemberships,
         customFields,

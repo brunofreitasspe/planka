@@ -65,6 +65,8 @@ module.exports = {
       ...(canBeUsedByMembers !== undefined && { canBeUsedByMembers }),
     });
 
-    return updated;
+    return {
+      item: updated,
+    };
   },
 };
