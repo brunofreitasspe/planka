@@ -31,7 +31,7 @@ module.exports = {
     // Filter globals by permission if user is not manager
     const isManager = await ProjectManager.findOne({
       projectId,
-      userId: this.req.user?.id,
+      userId: this.req.currentUser.id,
     });
 
     if (!isManager) {
