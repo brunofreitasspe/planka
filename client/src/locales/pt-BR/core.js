@@ -253,6 +253,12 @@ export default {
       areYouSureYouWantToDeleteThisProjectLabel:
         'Isto removerá a etiqueta global e converterá suas cópias de volta para etiquetas do quadro. Os cartões mantêm suas etiquetas.',
       usedInBoardsCards: 'Usada em {{boards}} quadros, {{cards}} cartões',
+      boardLabels: 'Etiquetas do Quadro',
+      promoteLabel_title: 'Promover Etiqueta',
+      promoteLabel: 'Promover para etiqueta global',
+      promoteLabelHint:
+        'Isto tornará a etiqueta global para todo o projeto. Etiquetas com o mesmo nome e cor em outros quadros deste projeto serão consolidadas nela.',
+      demoteLabel: 'Rebaixar para etiqueta do quadro',
       leaveBoard_title: 'Sair do quadro',
       leaveProject_title: 'Sair do projeto',
       limitCardTypesToDefaultOne: 'Limitar tipos de cartão ao padrão',

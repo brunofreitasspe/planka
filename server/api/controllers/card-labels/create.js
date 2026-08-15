@@ -121,12 +121,48 @@ module.exports = {
       throw Errors.NOT_ENOUGH_RIGHTS;
     }
 
-    const label = await Label.qm.getOneById(inputs.labelId, {
+    let label = await Label.qm.getOneById(inputs.labelId, {
       boardId: board.id,
     });
 
+    // A project-global label that is not yet linked to this board is
+    // materialized as a board label on first use, so cards can reference it.
     if (!label) {
-      throw Errors.LABEL_NOT_FOUND;
+      const projectLabel = await ProjectLabel.findOne({
+        id: inputs.labelId,
+        projectId: project.id,
+      });
+
+      if (!projectLabel) {
+        throw Errors.LABEL_NOT_FOUND;
+      }
+
+      const isManager = await ProjectManager.findOne({
+        projectId: project.id,
+        userId: currentUser.id,
+      });
+
+      if (!isManager && !projectLabel.canBeUsedByMembers) {
+        throw Errors.LABEL_NOT_FOUND;
+      }
+
+      const lastLabel = await Label.find({ boardId: board.id })
+        .sort('position DESC')
+        .limit(1);
+      const position = lastLabel.length > 0 ? lastLabel[0].position + 65536 : 65536;
+
+      label = await sails.helpers.labels.createOne.with({
+        project,
+        values: {
+          name: projectLabel.name,
+          color: projectLabel.color,
+          projectLabelId: projectLabel.id,
+          position,
+          board,
+        },
+        actorUser: currentUser,
+        request: this.req,
+      });
     }
 
     const cardLabel = await sails.helpers.cardLabels.createOne
@@ -145,6 +181,7 @@ module.exports = {
 
     return {
       item: cardLabel,
+      label,
     };
   },
 };

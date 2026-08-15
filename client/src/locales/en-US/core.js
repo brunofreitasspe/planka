@@ -259,6 +259,12 @@ export default {
       areYouSureYouWantToDeleteThisProjectLabel:
         'This will remove the global label and convert its copies back to board-level labels. Cards keep their labels.',
       usedInBoardsCards: 'Used in {{boards}} boards, {{cards}} cards',
+      boardLabels: 'Board Labels',
+      promoteLabel_title: 'Promote Label',
+      promoteLabel: 'Promote to project label',
+      promoteLabelHint:
+        'This will turn this label into a project-wide label. Labels with the same name and color in other boards of this project will be consolidated into it.',
+      demoteLabel: 'Demote to board label',
       ldap: 'LDAP',
       ldapAttributeMapping_title: 'Attribute Mapping',
       ldapRoleMapping_title: 'Role Mapping',

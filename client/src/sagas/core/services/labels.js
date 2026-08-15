@@ -168,13 +168,22 @@ export function* addLabelToCard(id, cardId) {
   yield put(actions.addLabelToCard(id, cardId));
 
   let cardLabel;
+  let label;
   try {
-    ({ item: cardLabel } = yield call(request, api.createCardLabel, cardId, {
+    ({ item: cardLabel, label } = yield call(request, api.createCardLabel, cardId, {
       labelId: id,
     }));
   } catch (error) {
     yield put(actions.addLabelToCard.failure(id, cardId, error));
     return;
+  }
+
+  // When the label was a project-global not yet linked to this board, the
+  // server materialized a new board label: persist it and drop the optimistic
+  // project-label reference so the card's association resolves to the real one.
+  if (label && label.id !== id) {
+    yield put(actions.handleLabelFromCardRemove({ cardId, labelId: id }));
+    yield put(actions.handleLabelCreate(label));
   }
 
   yield put(actions.addLabelToCard.success(cardLabel));

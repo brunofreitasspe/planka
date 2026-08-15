@@ -4,6 +4,15 @@
  */
 
 :global(#app) {
+  .sectionTitle {
+    color: #6b808c;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    margin-top: 12px;
+    text-transform: uppercase;
+  }
+
   .addButton {
     background: transparent;
     box-shadow: none;

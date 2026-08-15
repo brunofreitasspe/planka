@@ -240,6 +240,75 @@ export const selectLabelsForCurrentBoard = createSelector(
   },
 );
 
+// Board labels merged with the project's global labels. Labels already linked to
+// this board keep their real ids; project globals not yet used here get the
+// ProjectLabel id (the server materializes a board label on first use). Every
+// entry is tagged with `isGlobal` and, when available, `canBeUsedByMembers`.
+export const selectLabelsForCurrentBoardWithGlobals = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    const projectLabels = boardModel.project ? boardModel.project.globalLabels.toRefArray() : [];
+    const projectLabelById = projectLabels.reduce(
+      (result, projectLabel) => ({
+        ...result,
+        [projectLabel.id]: projectLabel,
+      }),
+      {},
+    );
+
+    const linkedGlobalIds = new Set();
+    const globals = [];
+    const locals = [];
+
+    boardModel
+      .getLabelsQuerySet()
+      .toRefArray()
+      .forEach((label) => {
+        if (label.projectLabelId) {
+          linkedGlobalIds.add(label.projectLabelId);
+
+          globals.push({
+            ...label,
+            isGlobal: true,
+            canBeUsedByMembers: projectLabelById[label.projectLabelId]?.canBeUsedByMembers,
+          });
+        } else {
+          locals.push({
+            ...label,
+            isGlobal: false,
+          });
+        }
+      });
+
+    projectLabels
+      .filter((projectLabel) => !linkedGlobalIds.has(projectLabel.id))
+      .forEach((projectLabel) => {
+        globals.push({
+          id: projectLabel.id,
+          projectLabelId: projectLabel.id,
+          position: projectLabel.position,
+          name: projectLabel.name,
+          color: projectLabel.color,
+          canBeUsedByMembers: projectLabel.canBeUsedByMembers,
+          isGlobal: true,
+        });
+      });
+
+    return [...globals, ...locals];
+  },
+);
+
 export const selectArchiveListIdForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
