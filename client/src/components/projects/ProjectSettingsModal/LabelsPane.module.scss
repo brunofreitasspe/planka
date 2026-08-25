@@ -5,24 +5,33 @@
 
 :global(#app) {
   .addButton {
-    background: rgba(9, 30, 66, 0.04);
-    border: none;
-    border-radius: 3px;
-    color: #6b808c;
+    background: transparent;
+    border: 1px solid #d9dce0;
+    border-radius: 4px;
+    color: #0052cc;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
     line-height: 20px;
-    padding: 6px 14px;
-    transition: background 0.3s ease;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
     vertical-align: top;
 
     &:hover {
-      background: rgba(9, 30, 66, 0.08);
-      color: #17394d;
+      background: #f6f7f8;
+      border-color: #091e424f;
+      color: #0039a6;
+    }
+
+    &:active {
+      background: #ebecf0;
     }
   }
 
   .addButtonIcon {
-    margin: 0 -4.3px;
+    margin: 0;
   }
 
   .header {
