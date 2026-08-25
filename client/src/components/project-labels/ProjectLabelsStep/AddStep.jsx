@@ -15,8 +15,6 @@ import { useForm } from '../../../hooks';
 import LABEL_COLORS from '../../../constants/LabelColors';
 import Editor from './Editor';
 
-import styles from './AddStep.module.scss';
-
 const AddStep = React.memo(({ onClose }) => {
   const dispatch = useDispatch();
   const [t] = useTranslation();

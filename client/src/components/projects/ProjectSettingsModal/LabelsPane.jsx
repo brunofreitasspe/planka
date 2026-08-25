@@ -4,7 +4,6 @@
  */
 
 import React, { useEffect } from 'react';
-import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Icon, Tab } from 'semantic-ui-react';

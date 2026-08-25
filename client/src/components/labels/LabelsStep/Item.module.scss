@@ -17,6 +17,26 @@
     }
   }
 
+  .checkboxContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 0 6px;
+    min-width: 36px;
+  }
+
+  .checkbox {
+    cursor: pointer;
+    font-size: 18px;
+    color: #6b808c;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #4a5f6b;
+    }
+  }
+
   .name {
     border-radius: 3px;
     color: #fff;
@@ -38,21 +58,9 @@
     margin-left: 6px;
   }
 
-  .nameActive:before {
-    bottom: 1px;
-    content: "Г";
-    font-size: 18px;
-    font-weight: normal;
-    line-height: 36px;
-    position: absolute;
-    right: 2px;
-    text-align: center;
-    transform: rotate(-135deg);
-    width: 36px;
-  }
-
   .wrapper {
     display: flex;
+    align-items: center;
     margin-bottom: 4px;
     max-width: 280px;
     white-space: nowrap;

@@ -4,6 +4,12 @@
  */
 
 :global(#app) {
+  .contentWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   .sectionTitle {
     color: #6b808c;
     font-size: 12px;
@@ -34,10 +40,15 @@
     position: fixed;
   }
 
-  .items {
-    margin-top: 8px;
+  .searchContainer {
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+
+  .itemsContainer {
+    display: flex;
+    flex-direction: column;
     max-height: 60vh;
-    overflow-x: hidden;
     overflow-y: auto;
 
     @supports (-moz-appearance: none) {
@@ -57,6 +68,14 @@
       background-clip: padding-box;
       border-left: 0.25em transparent solid;
       border-radius: 3px;
+    }
+  }
+
+  .items {
+    margin-top: 8px;
+
+    &:last-of-type {
+      margin-bottom: 8px;
     }
   }
 }

@@ -199,94 +199,98 @@ const LabelsStep = React.memo(
             context: 'title',
           })}
         </Popup.Header>
-        <Popup.Content>
-          <Input
-            fluid
-            ref={handleSearchFieldRef}
-            value={search}
-            placeholder={t('common.searchLabels')}
-            maxLength={128}
-            icon="search"
-            onChange={handleSearchChange}
-          />
+        <Popup.Content className={styles.contentWrapper}>
+          <div className={styles.searchContainer}>
+            <Input
+              fluid
+              ref={handleSearchFieldRef}
+              value={search}
+              placeholder={t('common.searchLabels')}
+              maxLength={128}
+              icon="search"
+              onChange={handleSearchChange}
+            />
+          </div>
           {(filteredGlobalLabels.length > 0 || filteredLocalLabels.length > 0) && (
-            <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-              {filteredGlobalLabels.length > 0 && (
-                <>
-                  <div className={styles.sectionTitle}>{t('common.projectLabels')}</div>
-                  <Droppable droppableId="labels:globals" type={DroppableTypes.LABEL}>
-                    {({ innerRef, droppableProps, placeholder }) => (
-                      <div
-                        {...droppableProps} // eslint-disable-line react/jsx-props-no-spreading
-                        ref={innerRef}
-                        className={styles.items}
-                      >
-                        {filteredGlobalLabels.map((item, index) => (
-                          <Item
-                            key={item.id}
-                            id={item.id}
-                            index={index}
-                            name={item.name}
-                            color={item.color}
-                            isPersisted
-                            isActive={currentIds.includes(item.id)}
-                            isGlobal
-                            isDragDisabled
-                            onSelect={onSelect}
-                            onDeselect={onDeselect}
-                            onEdit={handleEdit}
-                            onDemote={isProjectManager && item.boardId ? handleDemote : undefined}
-                          />
-                        ))}
-                        {placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </>
-              )}
-              {filteredLocalLabels.length > 0 && (
-                <>
-                  <div className={styles.sectionTitle}>{t('common.boardLabels')}</div>
-                  <Droppable droppableId="labels" type={DroppableTypes.LABEL}>
-                    {({ innerRef, droppableProps, placeholder }) => (
-                      <div
-                        {...droppableProps} // eslint-disable-line react/jsx-props-no-spreading
-                        ref={innerRef}
-                        className={styles.items}
-                      >
-                        {filteredLocalLabels.map((item, index) => (
-                          <Item
-                            key={item.id}
-                            id={item.id}
-                            index={index}
-                            name={item.name}
-                            color={item.color}
-                            isPersisted
-                            isActive={currentIds.includes(item.id)}
-                            onSelect={onSelect}
-                            onDeselect={onDeselect}
-                            onEdit={handleEdit}
-                            onPromote={isProjectManager ? handlePromote : undefined}
-                          />
-                        ))}
-                        {placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                  <Droppable droppableId="labels:hack" type={DroppableTypes.LABEL}>
-                    {({ innerRef, droppableProps, placeholder }) => (
-                      <div
-                        {...droppableProps} // eslint-disable-line react/jsx-props-no-spreading
-                        ref={innerRef}
-                        className={styles.droppableHack}
-                      >
-                        {placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </>
-              )}
-            </DragDropContext>
+            <div className={styles.itemsContainer}>
+              <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+                {filteredGlobalLabels.length > 0 && (
+                  <>
+                    <div className={styles.sectionTitle}>{t('common.projectLabels')}</div>
+                    <Droppable droppableId="labels:globals" type={DroppableTypes.LABEL}>
+                      {({ innerRef, droppableProps, placeholder }) => (
+                        <div
+                          {...droppableProps} // eslint-disable-line react/jsx-props-no-spreading
+                          ref={innerRef}
+                          className={styles.items}
+                        >
+                          {filteredGlobalLabels.map((item, index) => (
+                            <Item
+                              key={item.id}
+                              id={item.id}
+                              index={index}
+                              name={item.name}
+                              color={item.color}
+                              isPersisted
+                              isActive={currentIds.includes(item.id)}
+                              isGlobal
+                              isDragDisabled
+                              onSelect={onSelect}
+                              onDeselect={onDeselect}
+                              onEdit={handleEdit}
+                              onDemote={isProjectManager && item.boardId ? handleDemote : undefined}
+                            />
+                          ))}
+                          {placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </>
+                )}
+                {filteredLocalLabels.length > 0 && (
+                  <>
+                    <div className={styles.sectionTitle}>{t('common.boardLabels')}</div>
+                    <Droppable droppableId="labels" type={DroppableTypes.LABEL}>
+                      {({ innerRef, droppableProps, placeholder }) => (
+                        <div
+                          {...droppableProps} // eslint-disable-line react/jsx-props-no-spreading
+                          ref={innerRef}
+                          className={styles.items}
+                        >
+                          {filteredLocalLabels.map((item, index) => (
+                            <Item
+                              key={item.id}
+                              id={item.id}
+                              index={index}
+                              name={item.name}
+                              color={item.color}
+                              isPersisted
+                              isActive={currentIds.includes(item.id)}
+                              onSelect={onSelect}
+                              onDeselect={onDeselect}
+                              onEdit={handleEdit}
+                              onPromote={isProjectManager ? handlePromote : undefined}
+                            />
+                          ))}
+                          {placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                    <Droppable droppableId="labels:hack" type={DroppableTypes.LABEL}>
+                      {({ innerRef, droppableProps, placeholder }) => (
+                        <div
+                          {...droppableProps} // eslint-disable-line react/jsx-props-no-spreading
+                          ref={innerRef}
+                          className={styles.droppableHack}
+                        >
+                          {placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </>
+                )}
+              </DragDropContext>
+            </div>
           )}
           {canAdd && (
             <Button

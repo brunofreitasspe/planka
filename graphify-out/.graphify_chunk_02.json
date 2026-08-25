@@ -1,0 +1,818 @@
+{
+  "nodes": [
+    {
+      "id": "svc_planka",
+      "label": "Planka Application",
+      "type": "Service",
+      "confidence": 1.0,
+      "source_file": "charts/planka/values.yaml"
+    },
+    {
+      "id": "svc_planka_server",
+      "label": "Planka Server",
+      "type": "Service",
+      "confidence": 1.0,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "svc_planka_client",
+      "label": "Planka Client",
+      "type": "Service",
+      "confidence": 1.0,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "svc_postgres",
+      "label": "PostgreSQL Database",
+      "type": "Service",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "container_planka",
+      "label": "Planka Container Image",
+      "type": "Container",
+      "confidence": 1.0,
+      "source_file": "charts/planka/values.yaml"
+    },
+    {
+      "id": "container_planka_dev",
+      "label": "Planka Dev Container",
+      "type": "Container",
+      "confidence": 0.95,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "container_postgres",
+      "label": "PostgreSQL Alpine Container",
+      "type": "Container",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "container_postgres_helm",
+      "label": "PostgreSQL Bitnami Legacy Container",
+      "type": "Container",
+      "confidence": 0.9,
+      "source_file": "charts/planka/values.yaml"
+    },
+    {
+      "id": "container_busybox",
+      "label": "BusyBox Test Container",
+      "type": "Container",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/tests/test-connection.yaml"
+    },
+    {
+      "id": "vol_db_data",
+      "label": "Database Data Volume",
+      "type": "Volume",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "vol_planka_data",
+      "label": "Planka Data Volume",
+      "type": "Volume",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/pvc.yaml"
+    },
+    {
+      "id": "vol_app_logs",
+      "label": "Application Logs Volume",
+      "type": "Volume",
+      "confidence": 0.85,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "cfg_base_url",
+      "label": "BASE_URL Configuration",
+      "type": "Config",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "cfg_database_url",
+      "label": "DATABASE_URL Configuration",
+      "type": "Config",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "cfg_secret_key",
+      "label": "SECRET_KEY Configuration",
+      "type": "Config",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "cfg_admin_creds",
+      "label": "Admin Credentials Configuration",
+      "type": "Config",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "cfg_oidc",
+      "label": "OIDC/SSO Configuration",
+      "type": "Config",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "cfg_smtp",
+      "label": "SMTP Email Configuration",
+      "type": "Config",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "cfg_s3",
+      "label": "S3 Storage Configuration",
+      "type": "Config",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "cfg_trust_proxy",
+      "label": "TRUST_PROXY Configuration",
+      "type": "Config",
+      "confidence": 0.95,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "cfg_storage_limit",
+      "label": "STORAGE_LIMIT Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "cfg_active_users_limit",
+      "label": "ACTIVE_USERS_LIMIT Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "cfg_outgoing_proxy",
+      "label": "OUTGOING_PROXY Configuration",
+      "type": "Config",
+      "confidence": 0.95,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "cfg_swagger",
+      "label": "SWAGGER_EXPOSED Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "cfg_gravatar",
+      "label": "GRAVATAR_BASE_URL Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "tmpl_deployment",
+      "label": "Kubernetes Deployment Template",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "tmpl_service",
+      "label": "Kubernetes Service Template",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/service.yaml"
+    },
+    {
+      "id": "tmpl_ingress",
+      "label": "Kubernetes Ingress Template",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/ingress.yaml"
+    },
+    {
+      "id": "tmpl_hpa",
+      "label": "Kubernetes HPA Template",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/hpa.yaml"
+    },
+    {
+      "id": "tmpl_pvc",
+      "label": "Kubernetes PVC Template",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/pvc.yaml"
+    },
+    {
+      "id": "tmpl_test",
+      "label": "Kubernetes Test Connection Template",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/tests/test-connection.yaml"
+    },
+    {
+      "id": "feat_user_avatars",
+      "label": "User Avatar Management",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_emoji_avatars",
+      "label": "Emoji Support in Avatars",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_s3_storage",
+      "label": "S3 Object Storage Support",
+      "type": "Feature",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "feat_oidc_sso",
+      "label": "OIDC Single Sign-On",
+      "type": "Feature",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "feat_smtp_email",
+      "label": "SMTP Email Notifications",
+      "type": "Feature",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "feat_swagger_api",
+      "label": "Swagger API Specification",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "feat_custom_terms",
+      "label": "Custom Terms of Service",
+      "type": "Feature",
+      "confidence": 1.0,
+      "source_file": "charts/planka/values.yaml"
+    },
+    {
+      "id": "feat_subpath_support",
+      "label": "Subpath Deployment Support",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_card_aging",
+      "label": "Card Age Display",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_task_linking",
+      "label": "Task Linking to Cards",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_mentions",
+      "label": "User Mentions in Comments",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_file_attachments",
+      "label": "File Attachments",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_strikethrough",
+      "label": "Strikethrough for Closed Lists",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_keyboard_shortcuts",
+      "label": "Keyboard Shortcuts",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_api_keys",
+      "label": "API Key Authentication",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_gravatar",
+      "label": "Gravatar Avatar Support",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_private_projects",
+      "label": "Private Projects",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_webhooks",
+      "label": "Webhook Configuration",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "feat_copy_cards",
+      "label": "Copy/Cut Cards with Shortcuts",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "req_apprise",
+      "label": "Apprise Notifications Library",
+      "type": "Requirement",
+      "confidence": 1.0,
+      "source_file": "server/requirements.txt"
+    },
+    {
+      "id": "req_postgresql",
+      "label": "PostgreSQL Database",
+      "type": "Requirement",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "req_nodejs",
+      "label": "Node.js Runtime",
+      "type": "Requirement",
+      "confidence": 1.0,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "req_docker",
+      "label": "Docker",
+      "type": "Requirement",
+      "confidence": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "req_kubernetes",
+      "label": "Kubernetes",
+      "type": "Requirement",
+      "confidence": 1.0,
+      "source_file": "charts/planka/templates/deployment.yaml"
+    },
+    {
+      "id": "req_helm",
+      "label": "Helm Package Manager",
+      "type": "Requirement",
+      "confidence": 0.95,
+      "source_file": "charts/planka/values.yaml"
+    },
+    {
+      "id": "tool_vite",
+      "label": "Vite Build Tool",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "tool_npm",
+      "label": "NPM Package Manager",
+      "type": "Tool",
+      "confidence": 1.0,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "tool_knex",
+      "label": "Knex Query Builder",
+      "type": "Tool",
+      "confidence": 0.9,
+      "source_file": "docker-compose-dev.yml"
+    },
+    {
+      "id": "doc_terms_en",
+      "label": "Terms of Service (English)",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "server/terms/_template/en-US.md"
+    },
+    {
+      "id": "doc_terms_de",
+      "label": "Terms of Service (German)",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "server/terms/_template/de-DE.md"
+    },
+    {
+      "id": "doc_terms_cloud_de",
+      "label": "Cloud Terms of Service (German)",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "server/terms/cloud/de-DE.md"
+    },
+    {
+      "id": "doc_whats_new",
+      "label": "Release Notes",
+      "type": "Template",
+      "confidence": 1.0,
+      "source_file": "client/src/assets/docs/whats-new.md"
+    },
+    {
+      "id": "doc_robots",
+      "label": "Robots.txt SEO File",
+      "type": "Template",
+      "confidence": 0.95,
+      "source_file": "client/public/robots.txt"
+    },
+    {
+      "id": "web_client",
+      "label": "Web Client Application",
+      "type": "Service",
+      "confidence": 1.0,
+      "source_file": "client/index.html"
+    }
+  ],
+  "edges": [
+    {
+      "source": "tmpl_deployment",
+      "target": "svc_planka",
+      "label": "deploys",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "container_planka",
+      "label": "contains",
+      "confidence": 1.0
+    },
+    {
+      "source": "tmpl_service",
+      "target": "svc_planka",
+      "label": "exposes",
+      "confidence": 1.0
+    },
+    {
+      "source": "tmpl_ingress",
+      "target": "tmpl_service",
+      "label": "routes_to",
+      "confidence": 1.0
+    },
+    {
+      "source": "tmpl_hpa",
+      "target": "tmpl_deployment",
+      "label": "scales",
+      "confidence": 1.0
+    },
+    {
+      "source": "tmpl_pvc",
+      "target": "vol_planka_data",
+      "label": "defines",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "vol_planka_data",
+      "label": "mounts",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka_server",
+      "target": "container_planka_dev",
+      "label": "contains",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka_client",
+      "target": "web_client",
+      "label": "serves",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_postgres",
+      "target": "container_postgres",
+      "label": "contains",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_postgres",
+      "target": "vol_db_data",
+      "label": "mounts",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "svc_postgres",
+      "label": "depends_on",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_database_url",
+      "label": "configures",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_base_url",
+      "label": "configures",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_secret_key",
+      "label": "configures",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_admin_creds",
+      "label": "configures",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_oidc",
+      "label": "configures",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_smtp",
+      "label": "configures",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_s3",
+      "label": "configures",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_trust_proxy",
+      "label": "configures",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_outgoing_proxy",
+      "label": "configures",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_swagger",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "svc_planka",
+      "target": "cfg_gravatar",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "cfg_oidc",
+      "target": "feat_oidc_sso",
+      "label": "enables",
+      "confidence": 1.0
+    },
+    {
+      "source": "cfg_smtp",
+      "target": "feat_smtp_email",
+      "label": "enables",
+      "confidence": 1.0
+    },
+    {
+      "source": "cfg_s3",
+      "target": "feat_s3_storage",
+      "label": "enables",
+      "confidence": 1.0
+    },
+    {
+      "source": "web_client",
+      "target": "feat_user_avatars",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_emoji_avatars",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka",
+      "target": "feat_custom_terms",
+      "label": "supports",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "feat_subpath_support",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_card_aging",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_task_linking",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_mentions",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_file_attachments",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_strikethrough",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_keyboard_shortcuts",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka",
+      "target": "feat_api_keys",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "cfg_gravatar",
+      "target": "feat_gravatar",
+      "label": "enables",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_private_projects",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_webhooks",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "web_client",
+      "target": "feat_copy_cards",
+      "label": "supports",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka",
+      "target": "req_apprise",
+      "label": "requires",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "req_postgresql",
+      "label": "requires",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka_server",
+      "target": "req_nodejs",
+      "label": "requires",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "req_docker",
+      "label": "requires",
+      "confidence": 1.0
+    },
+    {
+      "source": "tmpl_deployment",
+      "target": "req_kubernetes",
+      "label": "requires",
+      "confidence": 1.0
+    },
+    {
+      "source": "tmpl_deployment",
+      "target": "req_helm",
+      "label": "requires",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka_client",
+      "target": "tool_vite",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "svc_planka",
+      "target": "tool_npm",
+      "label": "uses",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka_server",
+      "target": "tool_knex",
+      "label": "uses",
+      "confidence": 0.9
+    },
+    {
+      "source": "svc_planka",
+      "target": "doc_terms_en",
+      "label": "documents",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "doc_terms_de",
+      "label": "documents",
+      "confidence": 1.0
+    },
+    {
+      "source": "svc_planka",
+      "target": "doc_terms_cloud_de",
+      "label": "documents",
+      "confidence": 1.0
+    },
+    {
+      "source": "web_client",
+      "target": "doc_whats_new",
+      "label": "references",
+      "confidence": 1.0
+    },
+    {
+      "source": "web_client",
+      "target": "doc_robots",
+      "label": "serves",
+      "confidence": 0.95
+    },
+    {
+      "source": "tmpl_test",
+      "target": "container_busybox",
+      "label": "uses",
+      "confidence": 1.0
+    },
+    {
+      "source": "container_planka_dev",
+      "target": "svc_postgres",
+      "label": "depends_on",
+      "confidence": 0.95
+    },
+    {
+      "source": "container_postgres_helm",
+      "target": "svc_postgres",
+      "label": "alternative_to",
+      "confidence": 0.9
+    },
+    {
+      "source": "svc_planka",
+      "target": "vol_app_logs",
+      "label": "mounts",
+      "confidence": 0.85
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 8500,
+  "output_tokens": 4200
+}

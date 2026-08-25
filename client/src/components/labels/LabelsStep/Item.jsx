@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 
 import selectors from '../../../selectors';
 import { BoardMembershipRoles } from '../../../constants/Enums';
@@ -64,13 +64,20 @@ const Item = React.memo(
           const contentNode = (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <div {...draggableProps} ref={innerRef} className={styles.wrapper}>
+              <div className={styles.checkboxContainer}>
+                <Icon
+                  name={isActive ? 'check square' : 'square outline'}
+                  className={styles.checkbox}
+                  onClick={handleToggleClick}
+                  style={{ cursor: 'pointer' }}
+                />
+              </div>
               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,
                                            jsx-a11y/no-static-element-interactions */}
               <span
                 {...dragHandleProps} // eslint-disable-line react/jsx-props-no-spreading
                 className={classNames(
                   styles.name,
-                  isActive && styles.nameActive,
                   globalStyles[`background${upperFirst(camelCase(color))}`],
                 )}
                 onClick={handleToggleClick}

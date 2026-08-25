@@ -1,0 +1,349 @@
+{
+  "nodes": [
+    {
+      "id": "planka_software",
+      "label": "PLANKA",
+      "type": "Asset",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\server\\terms\\cloud\\en-US.md"
+    },
+    {
+      "id": "planka_saas",
+      "label": "PLANKA SaaS",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\server\\terms\\cloud\\en-US.md"
+    },
+    {
+      "id": "kanban_board_logo",
+      "label": "Kanban Board Logo",
+      "type": "Logo",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\assets\\logo.png"
+    },
+    {
+      "id": "logo_192px",
+      "label": "Logo 192px",
+      "type": "Asset",
+      "confidence": 0.90,
+      "source_file": "C:\\planka\\client\\public\\logo192.png"
+    },
+    {
+      "id": "logo_512px",
+      "label": "Logo 512px",
+      "type": "Asset",
+      "confidence": 0.90,
+      "source_file": "C:\\planka\\client\\public\\logo512.png"
+    },
+    {
+      "id": "about_logo",
+      "label": "Community PLANKA Branding Logo",
+      "type": "Logo",
+      "confidence": 0.92,
+      "source_file": "C:\\planka\\client\\src\\assets\\images\\about-logo.png"
+    },
+    {
+      "id": "demo_gif",
+      "label": "Planka Demo Animation",
+      "type": "Image",
+      "confidence": 0.93,
+      "source_file": "C:\\planka\\assets\\demo.gif"
+    },
+    {
+      "id": "deleted_user_icon",
+      "label": "Deleted User Ghost Icon",
+      "type": "Icon",
+      "confidence": 0.90,
+      "source_file": "C:\\planka\\client\\src\\assets\\images\\deleted-user.png"
+    },
+    {
+      "id": "login_cover_image",
+      "label": "Login Cover - Workspace Styling",
+      "type": "Image",
+      "confidence": 0.88,
+      "source_file": "C:\\planka\\client\\src\\assets\\images\\login-cover.jpg"
+    },
+    {
+      "id": "plus_icon",
+      "label": "Plus Icon SVG",
+      "type": "Icon",
+      "confidence": 0.92,
+      "source_file": "C:\\planka\\client\\src\\assets\\images\\plus-icon.svg"
+    },
+    {
+      "id": "plus_math_icon",
+      "label": "Plus Math Icon SVG",
+      "type": "Icon",
+      "confidence": 0.92,
+      "source_file": "C:\\planka\\client\\src\\assets\\images\\plus-math-icon.svg"
+    },
+    {
+      "id": "brand_icons_font",
+      "label": "Brand Icons SVG Font",
+      "type": "Asset",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\client\\src\\lib\\custom-ui\\assets\\fonts\\brand-icons.svg"
+    },
+    {
+      "id": "icons_font_awesome",
+      "label": "Font Awesome 5 Free Icons",
+      "type": "Icon",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\client\\src\\lib\\custom-ui\\assets\\fonts\\icons.svg"
+    },
+    {
+      "id": "outline_icons_font_awesome",
+      "label": "Font Awesome 5 Free Outline Icons",
+      "type": "Icon",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\client\\src\\lib\\custom-ui\\assets\\fonts\\outline-icons.svg"
+    },
+    {
+      "id": "flags_sprite",
+      "label": "International Flags Sprite Sheet",
+      "type": "Image",
+      "confidence": 0.92,
+      "source_file": "C:\\planka\\client\\src\\lib\\custom-ui\\assets\\images\\flags.png"
+    },
+    {
+      "id": "codepen_favicon",
+      "label": "CodePen Preloaded Favicon",
+      "type": "Icon",
+      "confidence": 0.90,
+      "source_file": "C:\\planka\\server\\public\\preloaded-favicons\\codepen.io.png"
+    },
+    {
+      "id": "terms_of_service",
+      "label": "End User Terms of Service",
+      "type": "Document",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\server\\terms\\cloud\\en-US.md"
+    },
+    {
+      "id": "privacy_notice",
+      "label": "Privacy Notice & GDPR Compliance",
+      "type": "Document",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\server\\terms\\cloud\\en-US.md"
+    },
+    {
+      "id": "planka_software_gmbh",
+      "label": "PLANKA Software GmbH",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\server\\terms\\cloud\\en-US.md"
+    },
+    {
+      "id": "user_account_management",
+      "label": "User Account Management",
+      "type": "Feature",
+      "confidence": 0.92,
+      "source_file": "C:\\planka\\server\\terms\\cloud\\en-US.md"
+    },
+    {
+      "id": "data_protection_gdpr",
+      "label": "GDPR Data Protection",
+      "type": "Feature",
+      "confidence": 0.93,
+      "source_file": "C:\\planka\\server\\terms\\cloud\\en-US.md"
+    },
+    {
+      "id": "board_management",
+      "label": "Board & Card Management",
+      "type": "Feature",
+      "confidence": 0.92,
+      "source_file": "C:\\planka\\assets\\demo.gif"
+    },
+    {
+      "id": "kanban_columns",
+      "label": "Kanban Columns (To Do, Doing, Testing, Done)",
+      "type": "UI_Component",
+      "confidence": 0.93,
+      "source_file": "C:\\planka\\assets\\demo.gif"
+    },
+    {
+      "id": "team_collaboration",
+      "label": "Team Collaboration & Member Tagging",
+      "type": "Feature",
+      "confidence": 0.90,
+      "source_file": "C:\\planka\\assets\\demo.gif"
+    },
+    {
+      "id": "card_labels_tags",
+      "label": "Card Labels & Tags System",
+      "type": "Feature",
+      "confidence": 0.90,
+      "source_file": "C:\\planka\\assets\\demo.gif"
+    },
+    {
+      "id": "ui_add_action",
+      "label": "Add/Create Action UI",
+      "type": "UI_Component",
+      "confidence": 0.90,
+      "source_file": "C:\\planka\\client\\src\\assets\\images\\plus-icon.svg"
+    },
+    {
+      "id": "localization_support",
+      "label": "Multi-language Localization",
+      "type": "Feature",
+      "confidence": 0.88,
+      "source_file": "C:\\planka\\client\\src\\lib\\custom-ui\\assets\\images\\flags.png"
+    },
+    {
+      "id": "icon_system_fontawesome",
+      "label": "Font Awesome Icon System",
+      "type": "UI_Component",
+      "confidence": 0.93,
+      "source_file": "C:\\planka\\client\\src\\lib\\custom-ui\\assets\\fonts\\icons.svg"
+    }
+  ],
+  "edges": [
+    {
+      "source": "kanban_board_logo",
+      "target": "planka_software",
+      "label": "represents",
+      "confidence": 0.95
+    },
+    {
+      "source": "logo_192px",
+      "target": "kanban_board_logo",
+      "label": "depicts",
+      "confidence": 0.90
+    },
+    {
+      "source": "logo_512px",
+      "target": "kanban_board_logo",
+      "label": "depicts",
+      "confidence": 0.90
+    },
+    {
+      "source": "about_logo",
+      "target": "planka_software",
+      "label": "branding",
+      "confidence": 0.92
+    },
+    {
+      "source": "demo_gif",
+      "target": "planka_saas",
+      "label": "illustrates",
+      "confidence": 0.93
+    },
+    {
+      "source": "board_management",
+      "target": "demo_gif",
+      "label": "depicts",
+      "confidence": 0.92
+    },
+    {
+      "source": "kanban_columns",
+      "target": "board_management",
+      "label": "component_of",
+      "confidence": 0.93
+    },
+    {
+      "source": "team_collaboration",
+      "target": "planka_saas",
+      "label": "feature_of",
+      "confidence": 0.90
+    },
+    {
+      "source": "card_labels_tags",
+      "target": "planka_saas",
+      "label": "feature_of",
+      "confidence": 0.90
+    },
+    {
+      "source": "user_account_management",
+      "target": "terms_of_service",
+      "label": "documents",
+      "confidence": 0.92
+    },
+    {
+      "source": "data_protection_gdpr",
+      "target": "privacy_notice",
+      "label": "documents",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_software_gmbh",
+      "target": "planka_software",
+      "label": "provides",
+      "confidence": 0.95
+    },
+    {
+      "source": "terms_of_service",
+      "target": "planka_software_gmbh",
+      "label": "published_by",
+      "confidence": 0.93
+    },
+    {
+      "source": "privacy_notice",
+      "target": "planka_software_gmbh",
+      "label": "published_by",
+      "confidence": 0.93
+    },
+    {
+      "source": "plus_icon",
+      "target": "ui_add_action",
+      "label": "implements",
+      "confidence": 0.92
+    },
+    {
+      "source": "plus_math_icon",
+      "target": "ui_add_action",
+      "label": "implements",
+      "confidence": 0.92
+    },
+    {
+      "source": "deleted_user_icon",
+      "target": "user_account_management",
+      "label": "represents",
+      "confidence": 0.88
+    },
+    {
+      "source": "login_cover_image",
+      "target": "planka_software",
+      "label": "branding",
+      "confidence": 0.88
+    },
+    {
+      "source": "flags_sprite",
+      "target": "localization_support",
+      "label": "implements",
+      "confidence": 0.88
+    },
+    {
+      "source": "icons_font_awesome",
+      "target": "icon_system_fontawesome",
+      "label": "provides",
+      "confidence": 0.93
+    },
+    {
+      "source": "outline_icons_font_awesome",
+      "target": "icon_system_fontawesome",
+      "label": "provides",
+      "confidence": 0.93
+    },
+    {
+      "source": "brand_icons_font",
+      "target": "planka_software",
+      "label": "custom_ui",
+      "confidence": 0.85
+    },
+    {
+      "source": "codepen_favicon",
+      "target": "planka_software",
+      "label": "external_reference",
+      "confidence": 0.80
+    },
+    {
+      "source": "icon_system_fontawesome",
+      "target": "planka_saas",
+      "label": "ui_library_for",
+      "confidence": 0.92
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 8250,
+  "output_tokens": 2150
+}
