@@ -15,6 +15,7 @@ import EndlessContent from './EndlessContent';
 import ShortcutsProvider from './ShortcutsProvider';
 import CardModal from '../../cards/CardModal';
 import BoardActivitiesModal from '../../activities/BoardActivitiesModal';
+import ExportModal from '../ExportModal';
 
 const Board = React.memo(() => {
   const board = useSelector(selectors.selectCurrentBoard);
@@ -46,6 +47,10 @@ const Board = React.memo(() => {
     switch (modal.type) {
       case ModalTypes.BOARD_ACTIVITIES:
         modalNode = <BoardActivitiesModal />;
+
+        break;
+      case ModalTypes.BOARD_EXPORT:
+        modalNode = <ExportModal />;
 
         break;
       default:
