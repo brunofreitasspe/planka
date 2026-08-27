@@ -146,7 +146,6 @@ module.exports = {
     }
 
     const listIds = sails.helpers.utils.mapRecords(lists);
-    const listById = new Map(lists.map((list) => [list.id, list]));
 
     let cards = await Card.qm.getByListIds(listIds);
     cards = cards.filter((card) => !card.isClosed);
@@ -170,10 +169,23 @@ module.exports = {
     }
 
     if (inputs.assigneeId) {
-      const cardMemberships = await CardMembership.qm.getByCardIds(cardIds);
-      const cardIdsWithAssignee = new Set(
-        cardMemberships.filter((cm) => cm.userId === inputs.assigneeId).map((cm) => cm.cardId),
+      const values = [inputs.assigneeId];
+      const placeholders = cardIds.map((cardId) => {
+        values.push(cardId);
+        return `$${values.length}`;
+      });
+
+      // Matches the client board filter: card members OR task-level assignees.
+      const queryResult = await sails.sendNativeQuery(
+        `SELECT DISTINCT card.id FROM card
+          LEFT JOIN card_membership ON card.id = card_membership.card_id
+          LEFT JOIN task_list ON card.id = task_list.card_id
+          LEFT JOIN task ON task_list.id = task.task_list_id
+          WHERE card.id IN (${placeholders.join(', ')}) AND (card_membership.user_id = $1 OR task.assignee_user_id = $1)`,
+        values,
       );
+
+      const cardIdsWithAssignee = new Set(queryResult.rows.map((row) => row.id));
       cards = cards.filter((card) => cardIdsWithAssignee.has(card.id));
       cardIds = sails.helpers.utils.mapRecords(cards);
     }
@@ -212,29 +224,35 @@ module.exports = {
       };
     });
 
-    const details = cards.map((card) => {
-      const comment = commentByCardId.get(card.id);
-      const cardLabelIds = labelIdsByCardId[card.id] || [];
+    // Grouped by list order (card positions are per-list, so a global sort would
+    // interleave lists); matches the summary ordering.
+    const details = lists.flatMap((list) =>
+      cards
+        .filter((card) => card.listId === list.id)
+        .map((card) => {
+          const comment = commentByCardId.get(card.id);
+          const cardLabelIds = labelIdsByCardId[card.id] || [];
 
-      return {
-        listName: listById.get(card.listId).name,
-        card: {
-          id: card.id,
-          name: card.name,
-          priority: getCardPriorityName(card.priority),
-          description: card.description || '',
-          dueDate: formatDateForReport(card.dueDate),
-          labels: cardLabelIds.map((labelId) => labelById.get(labelId)).filter(Boolean),
-          lastComment: comment
-            ? {
-                authorName: (userById.get(comment.userId) || {}).name || '',
-                createdAt: formatDateForReport(comment.createdAt),
-                text: comment.text || '',
-              }
-            : null,
-        },
-      };
-    });
+          return {
+            listName: list.name,
+            card: {
+              id: card.id,
+              name: card.name,
+              priority: getCardPriorityName(card.priority),
+              description: card.description || '',
+              dueDate: formatDateForReport(card.dueDate),
+              labels: cardLabelIds.map((labelId) => labelById.get(labelId)).filter(Boolean),
+              lastComment: comment
+                ? {
+                    authorName: (userById.get(comment.userId) || {}).name || '',
+                    createdAt: formatDateForReport(comment.createdAt),
+                    text: comment.text || '',
+                  }
+                : null,
+            },
+          };
+        }),
+    );
 
     const data = {
       boardName: board.name,
