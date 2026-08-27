@@ -90,7 +90,10 @@ export const makeSelectFilteredCardsTotalByBoardId = () =>
         return boardModel;
       }
 
-      return boardModel.getFilteredCardsModelArray().length;
+      // Count only open cards — closed cards stay visible in the views but
+      // don't count toward the board badge (they disappear only when archived).
+      return boardModel.getFilteredCardsModelArray().filter((cardModel) => !cardModel.isClosed)
+        .length;
     },
   );
 
