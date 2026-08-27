@@ -155,6 +155,7 @@ const toPDF = (data) =>
       doc.font('Helvetica-Bold').fontSize(13).text(card.name);
       doc.moveDown(0.4);
 
+      drawDetail(doc, 'Prioridade', card.priority || 'Sem prioridade');
       drawDetail(doc, 'Descrição', card.description || '');
       drawDetail(doc, 'Vencimento', card.dueDate || 'Sem data');
       drawDetail(
