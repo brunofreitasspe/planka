@@ -20,19 +20,30 @@ const useExport = () => {
       setError(null);
 
       try {
+        const payload = {
+          format,
+          priority,
+        };
+
+        // Optional filters: omit when empty — the API's idInput/idsInput
+        // validators reject null/empty values (see server/utils/inputs.js).
+        if (assigneeId) {
+          payload.assigneeId = assigneeId;
+        }
+        if (labelIds && labelIds.length > 0) {
+          payload.labelIds = labelIds.join(',');
+        }
+        if (listIds && listIds.length > 0) {
+          payload.listIds = listIds.join(',');
+        }
+
         const response = await fetch(`${Config.BASE_PATH}/api/boards/${boardId}/export`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            format,
-            priority,
-            assigneeId: assigneeId || null,
-            labelIds: (labelIds || []).join(','),
-            listIds: (listIds || []).join(','),
-          }),
+          body: JSON.stringify(payload),
           credentials: 'include',
         });
 
