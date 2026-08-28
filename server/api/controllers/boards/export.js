@@ -112,7 +112,7 @@ module.exports = {
     },
   },
 
-  async fn(inputs) {
+  async fn(inputs, exits) {
     const { currentUser } = this.req;
 
     const { board, project } = await sails.helpers.boards
