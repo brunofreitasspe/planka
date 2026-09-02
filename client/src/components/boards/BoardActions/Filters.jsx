@@ -201,6 +201,7 @@ const Filters = React.memo(() => {
         <LabelsPopup
           currentIds={labelIds}
           title="common.filterByLabels"
+          withProjectGlobals={false}
           onSelect={handleLabelSelect}
           onDeselect={handleLabelDeselect}
         >

@@ -1,0 +1,20 @@
+C:\planka\LICENSES\PLANKA Commercial License DE.md
+C:\planka\LICENSES\PLANKA Commercial License EN.md
+C:\planka\LICENSES\PLANKA Community License DE.md
+C:\planka\LICENSES\PLANKA Community License EN.md
+C:\planka\LICENSES\PLANKA License Guide DE.md
+C:\planka\LICENSES\PLANKA License Guide EN.md
+C:\planka\README.md
+C:\planka\SECURITY.md
+C:\planka\charts\planka\Chart.yaml
+C:\planka\charts\planka\README.md
+C:\planka\charts\planka\templates\NOTES.txt
+C:\planka\charts\planka\templates\configmap-terms.yaml
+C:\planka\charts\planka\templates\deployment.yaml
+C:\planka\charts\planka\templates\hpa.yaml
+C:\planka\charts\planka\templates\ingress.yaml
+C:\planka\charts\planka\templates\pvc.yaml
+C:\planka\charts\planka\templates\service.yaml
+C:\planka\charts\planka\templates\tests\test-connection.yaml
+C:\planka\charts\planka\values.yaml
+C:\planka\client\index.html

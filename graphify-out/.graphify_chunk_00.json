@@ -1,0 +1,723 @@
+{
+  "nodes": [
+    {
+      "id": "planka_project",
+      "label": "PLANKA",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Title and introduction"
+    },
+    {
+      "id": "feature_collaborative_kanban",
+      "label": "Collaborative Kanban Boards",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features section"
+    },
+    {
+      "id": "feature_realtime_updates",
+      "label": "Real-Time Updates",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features section"
+    },
+    {
+      "id": "feature_markdown_support",
+      "label": "Rich Markdown Support",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features section"
+    },
+    {
+      "id": "feature_notifications",
+      "label": "Flexible Notifications",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features section"
+    },
+    {
+      "id": "feature_authentication",
+      "label": "Seamless Authentication",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features section"
+    },
+    {
+      "id": "feature_multilingual",
+      "label": "Multilingual & Easy to Translate",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features section"
+    },
+    {
+      "id": "component_server",
+      "label": "Planka Server",
+      "type": "Component",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose-dev.yml",
+      "source_location": "planka-server service definition"
+    },
+    {
+      "id": "component_client",
+      "label": "Planka Client",
+      "type": "Component",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose-dev.yml",
+      "source_location": "planka-client service definition"
+    },
+    {
+      "id": "component_database",
+      "label": "PostgreSQL Database",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "postgres service definition"
+    },
+    {
+      "id": "config_base_url",
+      "label": "BASE_URL",
+      "type": "Config",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Environment configuration section"
+    },
+    {
+      "id": "config_database_url",
+      "label": "DATABASE_URL",
+      "type": "Config",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Environment configuration section"
+    },
+    {
+      "id": "config_secret_key",
+      "label": "SECRET_KEY",
+      "type": "Config",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Environment configuration section"
+    },
+    {
+      "id": "config_oidc_issuer",
+      "label": "OIDC_ISSUER",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "OIDC configuration section"
+    },
+    {
+      "id": "config_oidc_client_id",
+      "label": "OIDC_CLIENT_ID",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "OIDC configuration section"
+    },
+    {
+      "id": "config_oidc_client_secret",
+      "label": "OIDC_CLIENT_SECRET",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "OIDC configuration section"
+    },
+    {
+      "id": "config_smtp_host",
+      "label": "SMTP_HOST",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Email Notifications configuration section"
+    },
+    {
+      "id": "config_smtp_port",
+      "label": "SMTP_PORT",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Email Notifications configuration section"
+    },
+    {
+      "id": "config_s3_endpoint",
+      "label": "S3_ENDPOINT",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "S3 storage configuration section"
+    },
+    {
+      "id": "config_s3_bucket",
+      "label": "S3_BUCKET",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "S3 storage configuration section"
+    },
+    {
+      "id": "config_log_level",
+      "label": "LOG_LEVEL",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Logging configuration section"
+    },
+    {
+      "id": "config_max_upload_file_size",
+      "label": "MAX_UPLOAD_FILE_SIZE",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Upload configuration section"
+    },
+    {
+      "id": "config_token_expires_in",
+      "label": "TOKEN_EXPIRES_IN",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Token configuration section"
+    },
+    {
+      "id": "tool_oidc",
+      "label": "OpenID Connect",
+      "type": "Tool",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features - Seamless Authentication"
+    },
+    {
+      "id": "tool_postgresql",
+      "label": "PostgreSQL",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "postgres service uses postgres:16-alpine image"
+    },
+    {
+      "id": "tool_docker",
+      "label": "Docker",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Docker Compose configuration"
+    },
+    {
+      "id": "tool_nodemailer",
+      "label": "Nodemailer",
+      "type": "Tool",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Email Notifications comment mentioning nodemailer.com/smtp"
+    },
+    {
+      "id": "tool_apprise",
+      "label": "Apprise",
+      "type": "Tool",
+      "confidence": 0.7,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Comment mentions Apprise notifications in outgoing HTTP requests"
+    },
+    {
+      "id": "tool_s3",
+      "label": "Amazon S3",
+      "type": "Tool",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "S3 storage configuration section"
+    },
+    {
+      "id": "file_docker_compose",
+      "label": "docker-compose.yml",
+      "type": "File",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Production deployment configuration"
+    },
+    {
+      "id": "file_docker_compose_dev",
+      "label": "docker-compose-dev.yml",
+      "type": "File",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\docker-compose-dev.yml",
+      "source_location": "Development environment configuration"
+    },
+    {
+      "id": "file_readme",
+      "label": "README.md",
+      "type": "File",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Project documentation"
+    },
+    {
+      "id": "file_contributing",
+      "label": "CONTRIBUTING.md",
+      "type": "File",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\CONTRIBUTING.md",
+      "source_location": "Contribution guidelines"
+    },
+    {
+      "id": "concept_fair_code",
+      "label": "Fair Code",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "License section - fairly Code distributed"
+    },
+    {
+      "id": "concept_self_hostable",
+      "label": "Self-Hostable",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "License section - Self-Hostable capability"
+    },
+    {
+      "id": "concept_extensible",
+      "label": "Extensible",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "License section - Extensible capability"
+    },
+    {
+      "id": "api_swagger",
+      "label": "Swagger API",
+      "type": "API",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "SWAGGER_EXPOSED configuration option"
+    },
+    {
+      "id": "config_trust_proxy",
+      "label": "TRUST_PROXY",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Proxy configuration section"
+    },
+    {
+      "id": "config_default_admin_email",
+      "label": "DEFAULT_ADMIN_EMAIL",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Default admin configuration section"
+    },
+    {
+      "id": "config_default_admin_password",
+      "label": "DEFAULT_ADMIN_PASSWORD",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Default admin configuration section"
+    },
+    {
+      "id": "config_default_language",
+      "label": "DEFAULT_LANGUAGE",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Language configuration section"
+    },
+    {
+      "id": "config_show_detailed_auth_errors",
+      "label": "SHOW_DETAILED_AUTH_ERRORS",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Authentication configuration section"
+    },
+    {
+      "id": "config_outgoing_proxy",
+      "label": "OUTGOING_PROXY",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "C:\\planka\\docker-compose.yml",
+      "source_location": "Proxy configuration section"
+    },
+    {
+      "id": "contact_security_email",
+      "label": "Security Contact",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Contact section - security@planka.group email"
+    },
+    {
+      "id": "community_discord",
+      "label": "Discord Community",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Contact section - Discord server link"
+    },
+    {
+      "id": "resource_contributing_guide",
+      "label": "Contributing Guide",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\CONTRIBUTING.md",
+      "source_location": "Contribution process documentation"
+    },
+    {
+      "id": "resource_code_of_conduct",
+      "label": "Code of Conduct",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\CODE_OF_CONDUCT.md",
+      "source_location": "Community standards"
+    },
+    {
+      "id": "convention_conventional_commits",
+      "label": "Conventional Commits",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\CONTRIBUTING.md",
+      "source_location": "Styleguides - Git Commit Messages section"
+    },
+    {
+      "id": "code_style_airbnb",
+      "label": "Airbnb JavaScript Style Guide",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\CONTRIBUTING.md",
+      "source_location": "Styleguides - JavaScript section"
+    },
+    {
+      "id": "process_pull_request",
+      "label": "Pull Request Process",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\CONTRIBUTING.md",
+      "source_location": "Pull Requests section"
+    },
+    {
+      "id": "license_fair_use",
+      "label": "Fair Use License",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "License section"
+    },
+    {
+      "id": "license_commercial",
+      "label": "PLANKA Commercial License",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "License section - Enterprise Licenses"
+    },
+    {
+      "id": "tool_mcp_code_review_graph",
+      "label": "MCP Code Review Graph",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "C:\\planka\\CLAUDE.md",
+      "source_location": "MCP Tools section"
+    },
+    {
+      "id": "feature_drag_drop_interface",
+      "label": "Drag-and-Drop Interface",
+      "type": "Feature",
+      "confidence": 0.9,
+      "source_file": "C:\\planka\\README.md",
+      "source_location": "Key Features - Collaborative Kanban Boards"
+    }
+  ],
+  "edges": [
+    {
+      "source": "planka_project",
+      "target": "feature_collaborative_kanban",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "feature_realtime_updates",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "feature_markdown_support",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "feature_notifications",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "feature_authentication",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "feature_multilingual",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "component_server",
+      "target": "component_database",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "component_client",
+      "target": "component_server",
+      "label": "uses",
+      "confidence": 0.9
+    },
+    {
+      "source": "component_server",
+      "target": "tool_postgresql",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "tool_docker",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "feature_notifications",
+      "target": "tool_nodemailer",
+      "label": "uses",
+      "confidence": 0.85
+    },
+    {
+      "source": "feature_notifications",
+      "target": "tool_apprise",
+      "label": "uses",
+      "confidence": 0.7
+    },
+    {
+      "source": "planka_project",
+      "target": "tool_s3",
+      "label": "uses",
+      "confidence": 0.85
+    },
+    {
+      "source": "feature_authentication",
+      "target": "tool_oidc",
+      "label": "uses",
+      "confidence": 0.9
+    },
+    {
+      "source": "file_docker_compose",
+      "target": "component_server",
+      "label": "contains",
+      "confidence": 0.95
+    },
+    {
+      "source": "file_docker_compose",
+      "target": "component_database",
+      "label": "contains",
+      "confidence": 0.95
+    },
+    {
+      "source": "file_docker_compose_dev",
+      "target": "component_server",
+      "label": "contains",
+      "confidence": 0.95
+    },
+    {
+      "source": "file_docker_compose_dev",
+      "target": "component_client",
+      "label": "contains",
+      "confidence": 0.95
+    },
+    {
+      "source": "config_base_url",
+      "target": "component_server",
+      "label": "configures",
+      "confidence": 0.95
+    },
+    {
+      "source": "config_database_url",
+      "target": "component_database",
+      "label": "configures",
+      "confidence": 0.95
+    },
+    {
+      "source": "config_secret_key",
+      "target": "component_server",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "config_oidc_issuer",
+      "target": "tool_oidc",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "config_oidc_client_id",
+      "target": "tool_oidc",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "config_oidc_client_secret",
+      "target": "tool_oidc",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "config_smtp_host",
+      "target": "tool_nodemailer",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_smtp_port",
+      "target": "tool_nodemailer",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_s3_endpoint",
+      "target": "tool_s3",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "config_s3_bucket",
+      "target": "tool_s3",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "file_readme",
+      "target": "planka_project",
+      "label": "documents",
+      "confidence": 0.95
+    },
+    {
+      "source": "file_contributing",
+      "target": "resource_contributing_guide",
+      "label": "documents",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "resource_code_of_conduct",
+      "label": "requires",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "convention_conventional_commits",
+      "label": "requires",
+      "confidence": 0.9
+    },
+    {
+      "source": "planka_project",
+      "target": "code_style_airbnb",
+      "label": "requires",
+      "confidence": 0.9
+    },
+    {
+      "source": "planka_project",
+      "target": "concept_fair_code",
+      "label": "implements",
+      "confidence": 0.9
+    },
+    {
+      "source": "planka_project",
+      "target": "concept_self_hostable",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka_project",
+      "target": "concept_extensible",
+      "label": "implements",
+      "confidence": 0.9
+    },
+    {
+      "source": "api_swagger",
+      "target": "component_server",
+      "label": "documents",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_trust_proxy",
+      "target": "component_server",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_default_admin_email",
+      "target": "component_server",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_default_admin_password",
+      "target": "component_server",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_default_language",
+      "target": "feature_multilingual",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_show_detailed_auth_errors",
+      "target": "feature_authentication",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_outgoing_proxy",
+      "target": "component_server",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "feature_drag_drop_interface",
+      "target": "feature_collaborative_kanban",
+      "label": "extends",
+      "confidence": 0.9
+    },
+    {
+      "source": "tool_mcp_code_review_graph",
+      "target": "planka_project",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "config_max_upload_file_size",
+      "target": "component_server",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "config_token_expires_in",
+      "target": "feature_authentication",
+      "label": "configures",
+      "confidence": 0.85
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

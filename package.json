@@ -9,6 +9,7 @@
     "client:test": "npm test --prefix client",
     "e2e": "playwright test",
     "docker:build": "docker build -t planka .",
+    "e2e": "playwright test",
     "gv": "npm i --package-lock-only --ignore-scripts && genversion --source . --template server/version-template.ejs server/version.js && genversion --source . --template client/version-template.ejs client/src/version.js",
     "postinstall": "npm i --prefix server && npm i --prefix client",
     "lint": "npm run server:lint && npm run client:lint",

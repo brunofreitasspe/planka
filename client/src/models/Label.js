@@ -16,6 +16,9 @@ export default class extends BaseModel {
     position: attr(),
     name: attr(),
     color: attr(),
+    projectLabelId: attr({
+      getDefault: () => null,
+    }),
     boardId: fk({
       to: 'Board',
       as: 'board',
@@ -75,6 +78,18 @@ export default class extends BaseModel {
         break;
       case ActionTypes.LABEL_UPDATE:
         Label.withId(payload.id).update(payload.data);
+
+        break;
+      case ActionTypes.LABEL_PROMOTE__SUCCESS:
+        Label.withId(payload.label.id).update({
+          projectLabelId: payload.projectLabel.id,
+        });
+
+        break;
+      case ActionTypes.LABEL_DEMOTE__SUCCESS:
+        Label.withId(payload.label.id).update({
+          projectLabelId: null,
+        });
 
         break;
       case ActionTypes.LABEL_DELETE:

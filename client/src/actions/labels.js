@@ -120,6 +120,52 @@ const handleLabelDelete = (label) => ({
   },
 });
 
+const promoteLabel = (id, data) => ({
+  type: ActionTypes.LABEL_PROMOTE,
+  payload: {
+    id,
+    data,
+  },
+});
+
+promoteLabel.success = (label, projectLabel) => ({
+  type: ActionTypes.LABEL_PROMOTE__SUCCESS,
+  payload: {
+    label,
+    projectLabel,
+  },
+});
+
+promoteLabel.failure = (id, error) => ({
+  type: ActionTypes.LABEL_PROMOTE__FAILURE,
+  payload: {
+    id,
+    error,
+  },
+});
+
+const demoteLabel = (id) => ({
+  type: ActionTypes.LABEL_DEMOTE,
+  payload: {
+    id,
+  },
+});
+
+demoteLabel.success = (label) => ({
+  type: ActionTypes.LABEL_DEMOTE__SUCCESS,
+  payload: {
+    label,
+  },
+});
+
+demoteLabel.failure = (id, error) => ({
+  type: ActionTypes.LABEL_DEMOTE__FAILURE,
+  payload: {
+    id,
+    error,
+  },
+});
+
 const addLabelToCard = (id, cardId) => ({
   type: ActionTypes.LABEL_TO_CARD_ADD,
   payload: {
@@ -208,6 +254,8 @@ export default {
   handleLabelUpdate,
   deleteLabel,
   handleLabelDelete,
+  promoteLabel,
+  demoteLabel,
   addLabelToCard,
   handleLabelToCardAdd,
   removeLabelFromCard,

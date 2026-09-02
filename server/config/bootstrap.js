@@ -52,4 +52,28 @@ module.exports.bootstrap = async () => {
         sails.log.error('Failed to set PostgreSQL session timeouts on new pool connection:', error);
       });
   });
+
+  // One-time consolidation for global labels (spec 3.2): on deploy, group
+  // duplicate local labels (same name + color across boards) into project
+  // globals. This is idempotent — after a run the grouped labels are linked to
+  // a ProjectLabel, so they are no longer local duplicates and later lifts no-op.
+  try {
+    const projects = await Project.find();
+
+    for (const project of projects) {
+      const result = await sails.helpers.labels.consolidateDuplicates(project.id);
+
+      if (result.totalConsolidated > 0) {
+        const groups = result.consolidatedGroups
+          .map((group) => `"${group.name}" (${group.count})`)
+          .join(', ');
+
+        sails.log.info(
+          `[project-labels] consolidated ${result.totalConsolidated} duplicate group(s) in project ${project.id}: ${groups}`,
+        );
+      }
+    }
+  } catch (error) {
+    sails.log.warn('[project-labels] automatic consolidation skipped:', error.message);
+  }
 };

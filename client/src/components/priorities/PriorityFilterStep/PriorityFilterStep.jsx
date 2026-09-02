@@ -6,7 +6,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Checkbox, Form, Radio } from 'semantic-ui-react';
+import { Button, Form, Icon, Radio } from 'semantic-ui-react';
 import { Popup } from '../../../lib/custom-ui';
 
 import {
@@ -46,6 +46,16 @@ const PriorityFilterStep = React.memo(({ value, onSelect, onClose }) => {
     onClose();
   }, [onClose, onSelect]);
 
+  const handleKeyPress = useCallback(
+    (event, band, isChecked) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        handleBandChange(null, { value: band, checked: !isChecked });
+      }
+    },
+    [handleBandChange],
+  );
+
   return (
     <>
       <Popup.Header>{t('common.filterByPriority', { context: 'title' })}</Popup.Header>
@@ -61,23 +71,32 @@ const PriorityFilterStep = React.memo(({ value, onSelect, onClose }) => {
           </Form.Field>
           {BANDS.map((band) => {
             const { min, max } = CardPriorityBandRanges[band];
+            const isChecked = value.includes(band);
 
             return (
-              <Form.Field key={band}>
-                <Checkbox
-                  label={
-                    <span className={styles.bandLabel}>
-                      <span
-                        className={styles.bandDot}
-                        style={{ '--priority-color': getCardPriorityColor(min) }}
-                      />
-                      {t(`common.priorityLevels.${band}`)} ({min}–{max})
-                    </span>
-                  }
-                  checked={value.includes(band)}
-                  value={band}
-                  onChange={handleBandChange}
-                />
+              <Form.Field key={band} className={styles.priorityField}>
+                <div
+                  role="checkbox"
+                  tabIndex={0}
+                  aria-checked={isChecked}
+                  className={styles.priorityRow}
+                  onClick={() => handleBandChange(null, { value: band, checked: !isChecked })}
+                  onKeyPress={(event) => handleKeyPress(event, band, isChecked)}
+                >
+                  <div className={styles.checkboxWrapper}>
+                    <Icon
+                      name={isChecked ? 'check square' : 'square outline'}
+                      className={styles.checkboxIcon}
+                    />
+                  </div>
+                  <span className={styles.bandLabel}>
+                    <span
+                      className={styles.bandDot}
+                      style={{ '--priority-color': getCardPriorityColor(min) }}
+                    />
+                    {t(`common.priorityLevels.${band}`)} ({min}–{max})
+                  </span>
+                </div>
               </Form.Field>
             );
           })}

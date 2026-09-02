@@ -1,0 +1,710 @@
+{
+  "nodes": [
+    {
+      "id": "planka",
+      "label": "PLANKA",
+      "type": "Component",
+      "confidence": 1.0,
+      "source_file": "README.md"
+    },
+    {
+      "id": "feature_kanban_boards",
+      "label": "Collaborative Kanban Boards",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "feature_real_time_updates",
+      "label": "Real-Time Updates",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "feature_markdown",
+      "label": "Rich Markdown Support",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "feature_notifications",
+      "label": "Flexible Notifications",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "feature_oidc",
+      "label": "Seamless Authentication with OpenID Connect",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "feature_multilingual",
+      "label": "Multilingual & Easy to Translate",
+      "type": "Feature",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "license_fair_use",
+      "label": "Fair Use License",
+      "type": "License_Type",
+      "confidence": 1.0,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    },
+    {
+      "id": "license_community",
+      "label": "PLANKA Community License",
+      "type": "License",
+      "confidence": 1.0,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    },
+    {
+      "id": "license_commercial",
+      "label": "PLANKA Pro/Enterprise License",
+      "type": "License",
+      "confidence": 1.0,
+      "source_file": "LICENSES/PLANKA Commercial License EN.md"
+    },
+    {
+      "id": "concept_faircode",
+      "label": "fair-code Model",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "LICENSES/PLANKA License Guide EN.md"
+    },
+    {
+      "id": "org_planka_software",
+      "label": "PLANKA Software GmbH",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "CONTRIBUTOR_LICENSE_AGREEMENT.md"
+    },
+    {
+      "id": "tool_docker",
+      "label": "Docker",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "tool_kubernetes",
+      "label": "Kubernetes",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "tool_helm",
+      "label": "Helm Chart",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "charts/planka/Chart.yaml"
+    },
+    {
+      "id": "tool_postgresql",
+      "label": "PostgreSQL",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "charts/planka/Chart.yaml"
+    },
+    {
+      "id": "component_helm_chart",
+      "label": "PLANKA Helm Chart",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "charts/planka/Chart.yaml"
+    },
+    {
+      "id": "component_api",
+      "label": "PLANKA API",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "component_docker_image",
+      "label": "PLANKA Docker Image",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "component_notes_app",
+      "label": "PLANKA Notes App",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "tool_openid_connect",
+      "label": "OpenID Connect",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "config_secretkey",
+      "label": "Secret Key Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "config_admin_user",
+      "label": "Admin User Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "config_ingress",
+      "label": "Ingress Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "config_tls",
+      "label": "TLS Configuration",
+      "type": "Config",
+      "confidence": 0.9,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "config_oidc_keycloak",
+      "label": "OIDC Keycloak Configuration",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "concept_security",
+      "label": "Security Reporting",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "SECURITY.md"
+    },
+    {
+      "id": "doc_contributing",
+      "label": "Contributing Guide",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "CONTRIBUTING.md"
+    },
+    {
+      "id": "doc_license_guide",
+      "label": "License Guide",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "LICENSES/PLANKA License Guide EN.md"
+    },
+    {
+      "id": "doc_cla",
+      "label": "Contributor License Agreement",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "CONTRIBUTOR_LICENSE_AGREEMENT.md"
+    },
+    {
+      "id": "use_case_personal",
+      "label": "Personal Use",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    },
+    {
+      "id": "use_case_education",
+      "label": "Educational Use",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    },
+    {
+      "id": "use_case_nonprofit",
+      "label": "Non-Profit Use",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    },
+    {
+      "id": "use_case_internal_business",
+      "label": "Internal Business Use",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    },
+    {
+      "id": "use_case_commercial_hosting",
+      "label": "Commercial Hosting Service",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    },
+    {
+      "id": "concept_code_of_conduct",
+      "label": "Code of Conduct",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "CONTRIBUTING.md"
+    },
+    {
+      "id": "tool_n8n",
+      "label": "n8n",
+      "type": "Tool",
+      "confidence": 0.85,
+      "source_file": "LICENSES/PLANKA License Guide EN.md"
+    },
+    {
+      "id": "tool_bitnami",
+      "label": "Bitnami",
+      "type": "Tool",
+      "confidence": 0.9,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "platform_ios",
+      "label": "iOS",
+      "type": "Component",
+      "confidence": 0.85,
+      "source_file": "README.md"
+    },
+    {
+      "id": "platform_windows",
+      "label": "Windows",
+      "type": "Component",
+      "confidence": 0.85,
+      "source_file": "README.md"
+    },
+    {
+      "id": "platform_android",
+      "label": "Android",
+      "type": "Component",
+      "confidence": 0.85,
+      "source_file": "README.md"
+    },
+    {
+      "id": "channel_github",
+      "label": "GitHub",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "CONTRIBUTING.md"
+    },
+    {
+      "id": "channel_discord",
+      "label": "Discord Community",
+      "type": "Tool",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "feature_translation",
+      "label": "Translation Support",
+      "type": "Feature",
+      "confidence": 0.9,
+      "source_file": "CONTRIBUTING.md"
+    },
+    {
+      "id": "chart_version_2_1_0",
+      "label": "Helm Chart v2.1.0",
+      "type": "Component",
+      "confidence": 0.95,
+      "source_file": "charts/planka/Chart.yaml"
+    },
+    {
+      "id": "config_custom_ca",
+      "label": "Custom CA Certificate Configuration",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "config_extra_mounts",
+      "label": "Extra Volume Mounts Configuration",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "config_terms_of_service",
+      "label": "Custom Terms of Service Configuration",
+      "type": "Config",
+      "confidence": 0.85,
+      "source_file": "charts/planka/README.md"
+    },
+    {
+      "id": "concept_source_available",
+      "label": "Source-Available Software",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "concept_self_hostable",
+      "label": "Self-Hostable",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "concept_extensible",
+      "label": "Extensible",
+      "type": "Concept",
+      "confidence": 0.95,
+      "source_file": "README.md"
+    },
+    {
+      "id": "restriction_white_label",
+      "label": "White-Labeling Restriction",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "LICENSES/PLANKA License Guide EN.md"
+    },
+    {
+      "id": "restriction_account_sharing",
+      "label": "Account Sharing for Commercial Gain Restriction",
+      "type": "Concept",
+      "confidence": 0.9,
+      "source_file": "LICENSES/PLANKA Community License EN.md"
+    }
+  ],
+  "edges": [
+    {
+      "source": "planka",
+      "target": "feature_kanban_boards",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "feature_real_time_updates",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "feature_markdown",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "feature_notifications",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "feature_oidc",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "feature_multilingual",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "license_community",
+      "label": "licensed_under",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "license_commercial",
+      "label": "licensed_under",
+      "confidence": 0.95
+    },
+    {
+      "source": "license_community",
+      "target": "license_fair_use",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "license_commercial",
+      "target": "org_planka_software",
+      "label": "documents",
+      "confidence": 0.9
+    },
+    {
+      "source": "org_planka_software",
+      "target": "planka",
+      "label": "develops",
+      "confidence": 0.95
+    },
+    {
+      "source": "license_fair_use",
+      "target": "concept_faircode",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "concept_faircode",
+      "target": "tool_n8n",
+      "label": "influenced_by",
+      "confidence": 0.85
+    },
+    {
+      "source": "planka",
+      "target": "tool_docker",
+      "label": "uses",
+      "confidence": 0.9
+    },
+    {
+      "source": "planka",
+      "target": "tool_postgresql",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "tool_openid_connect",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "planka",
+      "label": "configures",
+      "confidence": 0.95
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "tool_kubernetes",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "tool_helm",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "tool_postgresql",
+      "label": "uses",
+      "confidence": 0.9
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "tool_bitnami",
+      "label": "uses",
+      "confidence": 0.85
+    },
+    {
+      "source": "planka",
+      "target": "component_api",
+      "label": "implements",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "component_docker_image",
+      "label": "implements",
+      "confidence": 0.9
+    },
+    {
+      "source": "planka",
+      "target": "component_notes_app",
+      "label": "implements",
+      "confidence": 0.85
+    },
+    {
+      "source": "component_notes_app",
+      "target": "platform_ios",
+      "label": "supports",
+      "confidence": 0.85
+    },
+    {
+      "source": "component_notes_app",
+      "target": "platform_windows",
+      "label": "supports",
+      "confidence": 0.85
+    },
+    {
+      "source": "component_notes_app",
+      "target": "platform_android",
+      "label": "supports",
+      "confidence": 0.85
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_secretkey",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_admin_user",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_ingress",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_tls",
+      "label": "configures",
+      "confidence": 0.9
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_oidc_keycloak",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_custom_ca",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_extra_mounts",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "config_terms_of_service",
+      "label": "configures",
+      "confidence": 0.85
+    },
+    {
+      "source": "license_fair_use",
+      "target": "use_case_personal",
+      "label": "permits",
+      "confidence": 0.9
+    },
+    {
+      "source": "license_fair_use",
+      "target": "use_case_education",
+      "label": "permits",
+      "confidence": 0.9
+    },
+    {
+      "source": "license_fair_use",
+      "target": "use_case_nonprofit",
+      "label": "permits",
+      "confidence": 0.9
+    },
+    {
+      "source": "license_fair_use",
+      "target": "use_case_internal_business",
+      "label": "permits",
+      "confidence": 0.9
+    },
+    {
+      "source": "license_fair_use",
+      "target": "use_case_commercial_hosting",
+      "label": "prohibits",
+      "confidence": 0.95
+    },
+    {
+      "source": "license_fair_use",
+      "target": "restriction_white_label",
+      "label": "prohibits",
+      "confidence": 0.95
+    },
+    {
+      "source": "license_fair_use",
+      "target": "restriction_account_sharing",
+      "label": "prohibits",
+      "confidence": 0.95
+    },
+    {
+      "source": "doc_contributing",
+      "target": "planka",
+      "label": "documents",
+      "confidence": 0.95
+    },
+    {
+      "source": "doc_license_guide",
+      "target": "license_fair_use",
+      "label": "documents",
+      "confidence": 0.95
+    },
+    {
+      "source": "doc_cla",
+      "target": "org_planka_software",
+      "label": "documents",
+      "confidence": 0.95
+    },
+    {
+      "source": "concept_code_of_conduct",
+      "target": "planka",
+      "label": "governs",
+      "confidence": 0.95
+    },
+    {
+      "source": "concept_security",
+      "target": "planka",
+      "label": "documents",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "channel_github",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "planka",
+      "target": "channel_discord",
+      "label": "uses",
+      "confidence": 0.95
+    },
+    {
+      "source": "feature_translation",
+      "target": "planka",
+      "label": "contributes_to",
+      "confidence": 0.9
+    },
+    {
+      "source": "concept_source_available",
+      "target": "planka",
+      "label": "describes",
+      "confidence": 0.95
+    },
+    {
+      "source": "concept_self_hostable",
+      "target": "planka",
+      "label": "describes",
+      "confidence": 0.95
+    },
+    {
+      "source": "concept_extensible",
+      "target": "planka",
+      "label": "describes",
+      "confidence": 0.95
+    },
+    {
+      "source": "chart_version_2_1_0",
+      "target": "component_helm_chart",
+      "label": "versions",
+      "confidence": 0.95
+    },
+    {
+      "source": "component_helm_chart",
+      "target": "chart_version_2_1_0",
+      "label": "has_version",
+      "confidence": 0.95
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

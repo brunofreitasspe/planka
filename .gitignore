@@ -16,6 +16,9 @@ yarn.lock
 # Added by code-review-graph
 .code-review-graph/
 
-# Playwright E2E artifacts
+# Playwright artifacts
 test-results/
 playwright-report/
+
+# SDD plan workspace (scratch)
+.superpowers/

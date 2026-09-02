@@ -14,8 +14,16 @@ const updateLabel = (id, data, headers) => socket.patch(`/labels/${id}`, data, h
 
 const deleteLabel = (id, headers) => socket.delete(`/labels/${id}`, undefined, headers);
 
+const promoteLabel = (boardId, id, data, headers) =>
+  socket.post(`/boards/${boardId}/labels/${id}/promote`, data, headers);
+
+const demoteLabel = (boardId, id, headers) =>
+  socket.post(`/boards/${boardId}/labels/${id}/demote`, undefined, headers);
+
 export default {
   createLabel,
   updateLabel,
   deleteLabel,
+  promoteLabel,
+  demoteLabel,
 };
