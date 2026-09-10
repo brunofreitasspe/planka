@@ -25,9 +25,10 @@ Content-Type: application/json
 ### Response
 
 `200` — the exported file, `Content-Disposition: attachment` with filename
-`board-export-YYYY-MM-DD.{csv,pdf}`.
+`board-export-YYYY-MM-DD.{csv,pdf}`. An empty result (no matching cards) still
+returns `200` with a valid file: CSV header only / PDF with zero totals.
 
-`404` — board not found (or no access). `422` — no cards match the filters.
+`404` — board not found (or no access).
 
 ### Example
 

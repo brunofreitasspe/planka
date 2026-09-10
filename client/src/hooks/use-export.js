@@ -22,11 +22,13 @@ const useExport = () => {
       try {
         const payload = {
           format,
-          priority,
         };
 
         // Optional filters: omit when empty — the API's idInput/idsInput
         // validators reject null/empty values (see server/utils/inputs.js).
+        if (priority && priority.length > 0) {
+          payload.priority = priority;
+        }
         if (assigneeId) {
           payload.assigneeId = assigneeId;
         }
@@ -49,7 +51,7 @@ const useExport = () => {
 
         if (!response.ok) {
           const body = await response.json().catch(() => ({}));
-          throw new Error(body.noCards || body.error || 'Export failed');
+          throw new Error(body.message || body.error || 'Export failed');
         }
 
         const blob = await response.blob();

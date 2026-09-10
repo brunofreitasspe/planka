@@ -8,7 +8,7 @@
  * /boards/{id}/export:
  *   post:
  *     summary: Export board cards as PDF or CSV
- *     description: Generates a report of the board's open cards (excluding archive/trash lists and closed cards), optionally filtered by priority, assignee, labels and lists.
+ *     description: Generates a report of the board's open cards (excluding archive/trash lists and closed cards), optionally filtered by priority, assignee, labels and lists. When no cards match, still returns a valid empty file with zero totals.
  *     tags:
  *       - Boards
  *     operationId: exportBoard
@@ -60,8 +60,6 @@
  *         $ref: '#/components/responses/Unauthorized'
  *       404:
  *         $ref: '#/components/responses/NotFound'
- *       422:
- *         $ref: '#/components/responses/UnprocessableEntity'
  */
 
 const { idInput, idsInput } = require('../../../utils/inputs');
@@ -75,9 +73,6 @@ const { formatDateForReport, toCSV, toPDF } = require('../../../utils/export-for
 const Errors = {
   BOARD_NOT_FOUND: {
     boardNotFound: 'Board not found',
-  },
-  NO_CARDS: {
-    noCards: 'No cards to export',
   },
 };
 
@@ -106,9 +101,6 @@ module.exports = {
   exits: {
     boardNotFound: {
       responseType: 'notFound',
-    },
-    noCards: {
-      responseType: 'unprocessableEntity',
     },
   },
 
@@ -156,7 +148,7 @@ module.exports = {
 
     let cardIds = sails.helpers.utils.mapRecords(cards);
 
-    if (inputs.labelIds) {
+    if (inputs.labelIds && cardIds.length > 0) {
       const filterLabelIds = inputs.labelIds.split(',');
       const cardLabels = await CardLabel.qm.getByCardIds(cardIds);
       const cardIdsWithLabels = new Set(
@@ -166,9 +158,12 @@ module.exports = {
       );
       cards = cards.filter((card) => cardIdsWithLabels.has(card.id));
       cardIds = sails.helpers.utils.mapRecords(cards);
+    } else if (inputs.labelIds) {
+      cards = [];
+      cardIds = [];
     }
 
-    if (inputs.assigneeId) {
+    if (inputs.assigneeId && cardIds.length > 0) {
       const values = [inputs.assigneeId];
       const placeholders = cardIds.map((cardId) => {
         values.push(cardId);
@@ -188,13 +183,13 @@ module.exports = {
       const cardIdsWithAssignee = new Set(queryResult.rows.map((row) => row.id));
       cards = cards.filter((card) => cardIdsWithAssignee.has(card.id));
       cardIds = sails.helpers.utils.mapRecords(cards);
+    } else if (inputs.assigneeId) {
+      cards = [];
+      cardIds = [];
     }
 
-    if (cards.length === 0) {
-      throw Errors.NO_CARDS;
-    }
-
-    const cardLabels = await CardLabel.qm.getByCardIds(cardIds);
+    // Empty result is allowed: still return PDF/CSV with zero totals.
+    const cardLabels = cardIds.length > 0 ? await CardLabel.qm.getByCardIds(cardIds) : [];
     const labelIds = _.uniq(sails.helpers.utils.mapRecords(cardLabels, 'labelId'));
     const labels = await Label.qm.getByIds(labelIds);
     const labelById = new Map(labels.map((label) => [label.id, label]));
@@ -208,7 +203,7 @@ module.exports = {
       labelIdsByCardId[cardLabel.cardId].push(cardLabel.labelId);
     });
 
-    const comments = await Comment.qm.getLatestByCardIds(cardIds);
+    const comments = cardIds.length > 0 ? await Comment.qm.getLatestByCardIds(cardIds) : [];
     const commentByCardId = new Map(comments.map((comment) => [comment.cardId, comment]));
     const commentUserIds = sails.helpers.utils.mapRecords(comments, 'userId', true, true);
     const commentUsers = await User.qm.getByIds(commentUserIds);

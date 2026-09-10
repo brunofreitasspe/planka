@@ -309,16 +309,42 @@ const toPDF = (data) =>
       doc.y = boxTop + cardH + 14;
     };
 
-    // Page 1: header + summary mini-dashboard.
+    // Page 1: header + summary mini-dashboard (totals may be zero).
     drawHeader(data);
-    drawSummaryGrid(data.summary);
+
+    if (data.summary.length > 0) {
+      drawSummaryGrid(data.summary);
+    } else {
+      doc
+        .font('Helvetica-Oblique')
+        .fontSize(10)
+        .fillColor(COLORS.muted)
+        .text('Nenhuma lista ativa neste board.', doc.page.margins.left, doc.y);
+      doc.moveDown(1);
+    }
+
+    const totalCards = data.summary.reduce((sum, section) => sum + section.total, 0);
+    doc
+      .font('Helvetica')
+      .fontSize(9)
+      .fillColor(COLORS.secondary)
+      .text(`Total de cards: ${totalCards}`, doc.page.margins.left, doc.y);
+    doc.moveDown(1);
 
     // Pages 2+: card details, one card box per card, kept whole per page.
     doc.addPage();
     doc.font('Helvetica-Bold').fontSize(13).fillColor(COLORS.ink).text('Detalhes dos cards');
     doc.moveDown(0.6);
 
-    data.details.forEach((detail) => drawDetailCard(detail));
+    if (data.details.length === 0) {
+      doc
+        .font('Helvetica-Oblique')
+        .fontSize(10)
+        .fillColor(COLORS.muted)
+        .text('Nenhum card para exportar com os filtros aplicados.');
+    } else {
+      data.details.forEach((detail) => drawDetailCard(detail));
+    }
 
     doc.end();
   });

@@ -66,11 +66,35 @@ describe('export-formatters', () => {
       const csv = toCSV(mockData);
       expect(csv.charCodeAt(0)).to.equal(0xfeff);
     });
+
+    it('returns header-only CSV when there are no cards', () => {
+      const csv = toCSV({
+        ...mockData,
+        summary: [{ listName: 'Backlog', cards: [], total: 0 }],
+        details: [],
+      });
+      const lines = csv.replace(/^\uFEFF/, '').split('\r\n');
+
+      expect(lines).to.have.length(1);
+      expect(lines[0]).to.contain('List');
+    });
   });
 
   describe('#toPDF', () => {
     it('returns a Buffer starting with the PDF header', async () => {
       const buffer = await toPDF(mockData);
+
+      expect(buffer).to.be.instanceOf(Buffer);
+      expect(buffer.length).to.be.greaterThan(0);
+      expect(buffer.toString('utf8', 0, 5)).to.contain('%PDF');
+    });
+
+    it('returns a valid PDF when there are no cards (zero totals)', async () => {
+      const buffer = await toPDF({
+        ...mockData,
+        summary: [{ listName: 'Backlog', cards: [], total: 0 }],
+        details: [],
+      });
 
       expect(buffer).to.be.instanceOf(Buffer);
       expect(buffer.length).to.be.greaterThan(0);
