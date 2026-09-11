@@ -14,6 +14,7 @@ import { Button, Icon } from 'semantic-ui-react';
 import selectors from '../../../selectors';
 import entryActions from '../../../entry-actions';
 import { buildCustomFieldValueId } from '../../../models/CustomFieldValue';
+import copyToClipboard from '../../../utils/copy-to-clipboard';
 import { isListArchiveOrTrash } from '../../../utils/record-helpers';
 import { BoardMembershipRoles } from '../../../constants/Enums';
 import CustomFieldTypes from '../../../constants/CustomFieldTypes';
@@ -75,12 +76,16 @@ const CustomField = React.memo(({ id, customFieldGroupId }) => {
     [id, customFieldGroupId, cardId, dispatch],
   );
 
-  const handleCopyClick = useCallback(() => {
+  const handleCopyClick = useCallback(async () => {
     if (isCopied) {
       return;
     }
 
-    navigator.clipboard.writeText(customFieldValue.content);
+    const succeeded = await copyToClipboard(customFieldValue.content);
+
+    if (!succeeded) {
+      return;
+    }
 
     setIsCopied(true);
     setTimeout(() => {
