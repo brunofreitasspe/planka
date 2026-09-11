@@ -31,6 +31,12 @@ describe('custom-field-search', () => {
       expect(sql).to.include("option ->> 'name' ILIKE");
     });
 
+    it('scopes the dropdown match to the selected option id', () => {
+      const { sql } = buildCustomFieldSearchClause({ startIndex: 1 });
+
+      expect(sql).to.include("option ->> 'id' = cfv.content");
+    });
+
     it('uses exactly one placeholder, at the provided index', () => {
       const { sql } = buildCustomFieldSearchClause({ startIndex: 4 });
 
