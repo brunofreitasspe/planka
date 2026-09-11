@@ -61,4 +61,14 @@ describe('copyToClipboard', () => {
 
     expect(document.querySelectorAll('textarea')).toHaveLength(0);
   });
+
+  test('removes the temporary textarea even when execCommand throws', async () => {
+    Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true });
+    document.execCommand = jest.fn().mockImplementation(() => {
+      throw new Error('boom');
+    });
+
+    await expect(copyToClipboard('hello')).resolves.toBe(false);
+    expect(document.querySelectorAll('textarea')).toHaveLength(0);
+  });
 });
