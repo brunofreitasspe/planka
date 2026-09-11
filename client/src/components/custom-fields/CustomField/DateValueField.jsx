@@ -5,31 +5,34 @@
 
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import DatePicker from 'react-datepicker';
+
+import {
+  formatCustomFieldDate,
+  isValidCustomFieldDate,
+  parseCustomFieldDate,
+} from '../../../utils/custom-field-date';
 
 import styles from './DateValueField.module.scss';
 
-const parseIsoDate = (value) => {
-  if (!value) {
-    return null;
-  }
-
-  const date = new Date(`${value}T00:00:00`);
-
-  return Number.isNaN(date.getTime()) ? null : date;
-};
-
-const formatIsoDate = (date) =>
-  [
-    date.getFullYear(),
-    `${date.getMonth() + 1}`.padStart(2, '0'),
-    `${date.getDate()}`.padStart(2, '0'),
-  ].join('-');
-
 const DateValueField = React.memo(({ defaultValue, onUpdate }) => {
+  const [t] = useTranslation();
+
   const handleChange = useCallback(
     (date) => {
-      onUpdate(date ? formatIsoDate(date) : null);
+      if (date === null) {
+        onUpdate(null);
+        return;
+      }
+
+      // react-datepicker hands back an Invalid Date while the user is mid-typing.
+      // Reporting that upstream would persist the string 'NaN-NaN-NaN'.
+      if (!isValidCustomFieldDate(date)) {
+        return;
+      }
+
+      onUpdate(formatCustomFieldDate(date));
     },
     [onUpdate],
   );
@@ -38,7 +41,8 @@ const DateValueField = React.memo(({ defaultValue, onUpdate }) => {
     <DatePicker
       isClearable
       className={styles.field}
-      selected={parseIsoDate(defaultValue)}
+      dateFormat={t('format:date')}
+      selected={parseCustomFieldDate(defaultValue)}
       onChange={handleChange}
     />
   );
