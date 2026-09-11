@@ -6,6 +6,7 @@
 import { attr, fk, many } from 'redux-orm';
 
 import BaseModel from './BaseModel';
+import buildCardSearchStrings from '../utils/build-card-search-strings';
 import buildSearchParts from '../utils/build-search-parts';
 import { isListKanban } from '../utils/record-helpers';
 import ActionTypes from '../constants/ActionTypes';
@@ -346,6 +347,11 @@ export default class extends BaseModel {
     }
 
     if (this.search) {
+      const searchStringsByCardId = cardModels.map((cardModel) => ({
+        cardModel,
+        searchStrings: buildCardSearchStrings(cardModel),
+      }));
+
       if (this.search.startsWith('/')) {
         let searchRegex;
         try {
@@ -354,23 +360,19 @@ export default class extends BaseModel {
           return [];
         }
 
-        cardModels = cardModels.filter(
-          (cardModel) =>
-            searchRegex.test(cardModel.name) ||
-            (cardModel.description && searchRegex.test(cardModel.description)),
-        );
+        cardModels = searchStringsByCardId
+          .filter(({ searchStrings }) => searchStrings.some((str) => searchRegex.test(str)))
+          .map(({ cardModel }) => cardModel);
       } else {
         const searchParts = buildSearchParts(this.search);
 
-        cardModels = cardModels.filter((cardModel) => {
-          const name = cardModel.name.toLowerCase();
-          const description = cardModel.description && cardModel.description.toLowerCase();
-
-          return searchParts.every(
-            (searchPart) =>
-              name.includes(searchPart) || (description && description.includes(searchPart)),
-          );
-        });
+        cardModels = searchStringsByCardId
+          .filter(({ searchStrings }) =>
+            searchParts.every((searchPart) =>
+              searchStrings.some((str) => str.includes(searchPart)),
+            ),
+          )
+          .map(({ cardModel }) => cardModel);
       }
     }
 

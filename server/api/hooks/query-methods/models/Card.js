@@ -4,6 +4,7 @@
  */
 
 const buildSearchParts = require('../../../../utils/build-query-parts');
+const { buildCustomFieldSearchClause } = require('../../../../utils/custom-field-search');
 const { makeRowToModelTransformer } = require('../helpers');
 
 const LIMIT = 50;
@@ -75,7 +76,15 @@ const getByEndlessListId = async (listId, { before, search, userIds, labelIds })
     if (search) {
       if (search.startsWith('/')) {
         queryValues.push(search.substring(1));
-        query += ` AND (card.name ~* $${queryValues.length} OR card.description ~* $${queryValues.length})`;
+        const termPlaceholder = `$${queryValues.length}`;
+
+        // The regex branch searches the whole term; the custom field fragment
+        // reuses the same placeholder so no extra value is needed.
+        const { sql: customFieldSql } = buildCustomFieldSearchClause({
+          startIndex: queryValues.length,
+        });
+
+        query += ` AND (card.name ~* ${termPlaceholder} OR card.description ~* ${termPlaceholder} OR ${customFieldSql})`;
       } else {
         const searchParts = buildSearchParts(search);
 
@@ -85,7 +94,18 @@ const getByEndlessListId = async (listId, { before, search, userIds, labelIds })
             return `'%' || $${queryValues.length} || '%'`;
           });
 
-          query += ` AND ((card.name ILIKE ALL(ARRAY[${ilikeValues.join(', ')}])) OR (card.description ILIKE ALL(ARRAY[${ilikeValues.join(', ')}])))`;
+          // Custom field values match ANY of the parts (a card would rarely carry
+          // every part in a single field), unlike name/description which require all.
+          const customFieldClauses = searchParts.map((searchPart) => {
+            queryValues.push(searchPart);
+            const { sql: customFieldSql } = buildCustomFieldSearchClause({
+              startIndex: queryValues.length,
+            });
+
+            return customFieldSql;
+          });
+
+          query += ` AND ((card.name ILIKE ALL(ARRAY[${ilikeValues.join(', ')}])) OR (card.description ILIKE ALL(ARRAY[${ilikeValues.join(', ')}])) OR ${customFieldClauses.join(' OR ')})`;
         }
       }
     }
