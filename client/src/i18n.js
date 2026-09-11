@@ -4,7 +4,6 @@
  */
 
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import formatDate from 'date-fns/format';
 import parseDate from 'date-fns/parse';
@@ -20,7 +19,7 @@ import { i18n as markdownEditorI18n } from '@gravity-ui/markdown-editor/_/i18n/i
 
 import { embeddedLocales, languages } from './locales';
 
-const FALLBACK_LANGUAGE = 'en-US';
+export const FALLBACK_LANGUAGE = 'pt-BR';
 
 i18n.dateFns = {
   locales: {},
@@ -103,7 +102,6 @@ const parseDatePostProcessor = {
 };
 
 i18n
-  .use(LanguageDetector)
   .use(formatDatePostProcessor)
   .use(parseDatePostProcessor)
   .use(initReactI18next)

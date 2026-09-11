@@ -10,7 +10,7 @@ import requests from '../requests';
 import selectors from '../../../selectors';
 import actions from '../../../actions';
 import api from '../../../api';
-import i18n from '../../../i18n';
+import i18n, { FALLBACK_LANGUAGE } from '../../../i18n';
 import { removeAccessToken } from '../../../utils/access-token-storage';
 
 export function* initializeCore() {
@@ -46,7 +46,7 @@ export function* initializeCore() {
     notificationServices,
   } = yield call(requests.fetchCore); // TODO: handle error
 
-  yield call(i18n.changeLanguage, user.language);
+  yield call(i18n.changeLanguage, user.language || FALLBACK_LANGUAGE);
   yield call(i18n.loadCoreLocale);
 
   yield put(
