@@ -581,6 +581,32 @@
         </div>
       </div>
 
+      <div style="margin-bottom: 12px; padding-top: 8px; border-top: 1px solid var(--border);">
+        <strong style="font-size: 12px; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 6px;">Custom Fields</strong>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px;">
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .02em;">Nº Processo</div>
+            <div style="color: var(--ink);">HMMG.2026.00000705-83</div>
+          </div>
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .02em;">Valor Estimado</div>
+            <div style="color: var(--ink);">R$ 45.230,00</div>
+          </div>
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .02em;">Data de Início</div>
+            <div style="color: var(--ink);">12/09/2026</div>
+          </div>
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .02em;">Status</div>
+            <span class="pill" style="background:#e8f5e8;color:#1A1A18; font-size: 12px;">Em Análise</span>
+          </div>
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .02em;">Aprovado</div>
+            <div style="color: var(--ink);">☑ Sim</div>
+          </div>
+        </div>
+      </div>
+
       <div style="border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px;">
         <strong style="font-size: 12px; color: var(--muted);">Último comentário</strong>
         <div style="font-size: 13px;">Aline Monteiro — 09/09/2026</div>
@@ -592,14 +618,27 @@
       <strong style="color: #1b5e20;">✓ O que foi corrigido aqui:</strong><br/>
       • <strong>Descrição:</strong> antes saía com <code>**Processo anterior:**</code> literal e o link em URL crua (4+ linhas invadir...); agora é texto plano, máx 4 linhas, com ellipsis<br/>
       • <strong>URL:</strong> encurtada de uma string gigante para <code>sei.campinas.sp.gov.br/sei/...</code> (padrão: domínio + `/sei/...`)<br/>
-      • <strong>Labels:</strong> "Pesquisa" e "C. Vinicius" aparecem com suas cores reais do sistema (verde-tanque = <code>tank-green #8aa177</code>, azul-céu-manhã = <code>morning-sky #52b9d5</code>)<br/>
-      • <strong>Altura:</strong> do bloco inteiro cresce só até o limite da descrição 4-linhas + labels, não invade o card seguinte
+      • <strong>Labels:</strong> "Pesquisa" e "C. Vinicius" aparecem com suas cores reais do sistema<br/>
+      • <strong>Custom Fields:</strong> adicionados numa grade de 2 colunas, abaixo dos labels; cada um com seu label (maiúsculo, cinza pequeno) e valor<br/>
+      • <strong>Altura:</strong> do bloco inteiro cresce com custom fields, mas sem invadir o card seguinte
+    </div>
+
+    <div style="background: #f9f9f9; border: 1px solid #e0e0e0; padding: 12px; margin-bottom: 12px; font-size: 13px;">
+      <strong>Renderização de Custom Fields:</strong><br/>
+      • <strong>TEXT:</strong> texto simples (ex: "HMMG.2026.00000705-83")<br/>
+      • <strong>NUMBER:</strong> número sem zeros à esquerda (ex: "45230" ou "45.230,00" formatado)<br/>
+      • <strong>DATE:</strong> formato DD/MM/YYYY (ex: "12/09/2026")<br/>
+      • <strong>DROPDOWN:</strong> renderizado como pill com a opção selecionada (ex: "Em Análise" com cor de fundo)<br/>
+      • <strong>CHECKBOX:</strong> ☑ se marcado, ☐ se desmarcado (ex: "☑ Sim")<br/>
+      <br/>
+      <strong>Layout:</strong> grid 2 colunas (ajustar conforme espaço disponível). Label do custom field em maiúsculo cinza pequeno (11px), valor em 13px preto.
     </div>
 
     <p style="color: var(--muted); font-size: 13px; font-style: italic;">
-      <strong>Nota de implementação:</strong> As cores dos labels mostrados acima são exemplos. O gerador deve ler a cor real
-      de cada label do banco de dados (conforme mapeado no início da Task 6). Se um label não tiver correspondência no mapa,
-      usar uma cor padrão (ex: `#8aa177` como fallback).
+      <strong>Notas de implementação:</strong><br/>
+      • Labels de card usam cores reais do mapa. Dropdowns de custom fields também devem usar cores se tiverem a propriedade color definida.<br/>
+      • Se um custom field não tiver valor, renderizar como vazio (sem linha) ou com um placeholder tipo "—".<br/>
+      • A altura do bloco inteiro (Descrição + Labels + Custom Fields + Último Comentário) não deve ultrapassar uma altura fixa — o card é quebrado em múltiplas páginas se necessário.
     </p>
   </section>
 
