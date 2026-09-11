@@ -51,14 +51,17 @@ comentários, `TimeAgo`.
 
 ### Migração de usuários existentes
 
-Por decisão do usuário, sobrescrever `user.language = 'pt-BR'` para **todos** os usuários
+Por decisão do usuário, definir `user.language = 'pt-BR'` para **todos** os usuários
 existentes, inclusive quem escolheu outro idioma.
 
 - Migration Sails em `server/db/migrations/`
 - Operação: `UPDATE "user" SET language = 'pt-BR'` (mais um `UPDATE` em registros com
   `language IS NULL` para uniformizar)
-- **Não reversível pelo usuário** — a preferência anterior é perdida. Requer backup antes
-  do deploy.
+- É um **reset pontual do padrão**, não uma remoção da funcionalidade: a troca de idioma
+  continua disponível no perfil e quem quiser voltar ao idioma anterior pode fazê-lo. A
+  preferência anterior à migration é que se perde.
+- Ainda assim, **backup do banco antes do deploy** — recomendação padrão para qualquer
+  migration que escreve em massa.
 
 ### Fora de escopo
 
