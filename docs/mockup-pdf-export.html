@@ -550,6 +550,59 @@
     </p>
   </section>
 
+  <!-- ===================== SECTION 5 ===================== -->
+  <section>
+    <h2>5. Exemplo do PDF de referência <small>(card real com correções aplicadas)</small></h2>
+
+    <div class="card-detail" style="background: var(--bg-card); border: 1px solid var(--border); padding: 16px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+        <div style="flex: 1;">
+          <h3 style="font-size: 16px; margin: 0 0 8px; font-weight: 600;">Engenharia clínica - Manutenção e peças raio x politécnica - Vencimento: 15/02/2027</h3>
+          <div style="font-size: 13px; color: var(--muted);">
+            <div><strong>Prioridade:</strong> Sem prioridade &nbsp;&nbsp; <strong>Vencimento:</strong> 19/09/2026</div>
+          </div>
+        </div>
+        <span class="pill" style="background:#c8e6c9;color:#1A1A18; margin-left: 12px; flex-shrink: 0;">Compras</span>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <strong style="font-size: 12px; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 4px;">Descrição</strong>
+        <div style="font-size: 13px; color: var(--ink); height: 52px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;">
+          Processo anterior: HMMG.2021.00001650-88
+          Novo processo: HMMG.2026.00000705-83 (sei.campinas.sp.gov.br/sei/...)
+        </div>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <strong style="font-size: 12px; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 6px;">Labels</strong>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <span class="pill" style="background:#8aa177;color:#FFFFFF">Pesquisa</span>
+          <span class="pill" style="background:#52b9d5;color:#FFFFFF">C. Vinicius</span>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px;">
+        <strong style="font-size: 12px; color: var(--muted);">Último comentário</strong>
+        <div style="font-size: 13px;">Aline Monteiro — 09/09/2026</div>
+        <div style="font-size: 13px; color: var(--muted);">09/09/2026 - Inicio da pesquisa com prazo até 19/09.</div>
+      </div>
+    </div>
+
+    <div style="background: var(--bg-fix); border: 1px solid #c8e6c9; padding: 12px; margin-bottom: 12px; font-size: 13px;">
+      <strong style="color: #1b5e20;">✓ O que foi corrigido aqui:</strong><br/>
+      • <strong>Descrição:</strong> antes saía com <code>**Processo anterior:**</code> literal e o link em URL crua (4+ linhas invadir...); agora é texto plano, máx 4 linhas, com ellipsis<br/>
+      • <strong>URL:</strong> encurtada de uma string gigante para <code>sei.campinas.sp.gov.br/sei/...</code> (padrão: domínio + `/sei/...`)<br/>
+      • <strong>Labels:</strong> "Pesquisa" e "C. Vinicius" aparecem com suas cores reais do sistema (verde-tanque = <code>tank-green #8aa177</code>, azul-céu-manhã = <code>morning-sky #52b9d5</code>)<br/>
+      • <strong>Altura:</strong> do bloco inteiro cresce só até o limite da descrição 4-linhas + labels, não invade o card seguinte
+    </div>
+
+    <p style="color: var(--muted); font-size: 13px; font-style: italic;">
+      <strong>Nota de implementação:</strong> As cores dos labels mostrados acima são exemplos. O gerador deve ler a cor real
+      de cada label do banco de dados (conforme mapeado no início da Task 6). Se um label não tiver correspondência no mapa,
+      usar uma cor padrão (ex: `#8aa177` como fallback).
+    </p>
+  </section>
+
 </div>
 </body>
 </html>
