@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — layout corrigido do export PDF</title>
+<style>
+  :root {
+    --ink: #1a1a18;
+    --muted: #5b5b57;
+    --border: #d8d6d0;
+    --bg-page: #f4f3f0;
+    --bg-card: #ffffff;
+    --bg-defect: #fdeceb;
+    --bg-fix: #eaf7ee;
+    --accent: #0a63a0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 24px 80px;
+    background: var(--bg-page);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .subtitle { color: var(--muted); margin: 0 0 32px; }
+  section { margin-bottom: 48px; }
+  h2 {
+    font-size: 16px;
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+  }
+  h2 small { color: var(--muted); font-weight: normal; }
+
+  /* Section 1 — defects table */
+  table.defects { width: 100%; border-collapse: collapse; background: var(--bg-card); }
+  table.defects th, table.defects td {
+    text-align: left;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.defects th { background: #ece9e2; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+  table.defects td { font-size: 13px; }
+  table.defects td.n { width: 28px; text-align: center; font-weight: bold; color: var(--muted); }
+  table.defects td.where { width: 220px; color: var(--muted); }
+
+  /* Section 2 — before/after cards */
+  .compare { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  .compare-col { flex: 1 1 300px; min-width: 260px; }
+  .compare-col h3 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin: 0 0 8px;
+  }
+  .compare-col.before h3 { color: #a4342a; }
+  .compare-col.after h3 { color: #1f7a43; }
+
+  .mock-card {
+    width: 260px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06);
+    position: relative;
+    z-index: 2;
+  }
+  .before .mock-card { border-color: #e2a6a0; }
+  .after .mock-card { border-color: #a8d9bb; }
+  .mock-card .card-title { font-weight: 600; margin-bottom: 8px; }
+
+  /* label row */
+  .labels-row { margin-bottom: 8px; }
+
+  /* BEFORE pill: fixed small box, text allowed to wrap and spill past the
+     background because the box height does not grow with content. This is
+     the actual defect (pill background clipped, second line rendered
+     outside/over it), not a simulation of it. */
+  .pill-broken {
+    display: inline-block;
+    width: 62px;
+    height: 15px;
+    overflow: visible;
+    background: #ed9223;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.05;
+    padding: 2px 6px;
+    border-radius: 8px;
+    white-space: normal;
+    word-break: break-all;
+  }
+
+  /* AFTER pill: width computed with slack (px-per-char + padding), single
+     line, ellipsis if it would still exceed the card's usable width. */
+  .pill-fixed {
+    display: inline-block;
+    max-width: 150px;
+    background: #ed9223;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 2px 8px;
+    border-radius: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+  }
+
+  /* BEFORE description: literal markdown + raw long URL. Fixed height with
+     overflow:visible so the real text genuinely spills past the card into
+     the box below it — the same defect seen in the reference PDF. */
+  .desc-broken {
+    height: 44px;
+    overflow: visible;
+    font-size: 12px;
+    color: var(--ink);
+    word-break: break-word;
+  }
+
+  /* AFTER description: plain text, hard 4-line cap with ellipsis. */
+  .desc-fixed {
+    font-size: 12px;
+    color: var(--ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 4.2em;
+  }
+
+  .next-section-box {
+    margin-top: 6px;
+    width: 260px;
+    height: 34px;
+    background: #f0f0ec;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--muted);
+    padding: 4px 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .defect-flag, .fix-flag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+  }
+  .defect-flag { background: var(--bg-defect); color: #a4342a; }
+  .fix-flag { background: var(--bg-fix); color: #1f7a43; }
+
+  /* Section 3 — label grid */
+  .label-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 14px 10px;
+  }
+  .label-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .pill {
+    display: inline-block;
+    max-width: 118px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .label-name { font-size: 10px; color: var(--muted); font-family: "Consolas", monospace; }
+  .grid-note { font-size: 12px; color: var(--muted); margin: 8px 0 16px; }
+
+  /* Section 4 — header + summary */
+  .pdf-header {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .pdf-header .title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .pdf-header .exclusion-note { font-size: 12px; color: #a4342a; margin-bottom: 4px; }
+  .pdf-header .generated-at { font-size: 11px; color: var(--muted); }
+
+  .summary-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+  .list-summary {
+    flex: 1 1 220px;
+    min-width: 200px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .list-summary .list-name { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .list-summary .label-rows {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 6px;
+  }
+  .list-summary .label-rows .pill { max-width: 96px; font-size: 10px; }
+  .row-count {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 8px;
+    border-top: 1px dashed var(--border);
+    padding-top: 6px;
+  }
+
+  code { background: #ece9e2; padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Mockup — layout corrigido do export PDF</h1>
+  <p class="subtitle">
+    Artefato de validação (não executável). Baseado na investigação de
+    <code>docs/board-export-2026-09-10.pdf</code>. As decisões aprovadas aqui
+    tornam-se os valores da Task 6, aplicados em
+    <code>server/utils/export-formatters.js</code>.
+  </p>
+
+  <!-- ===================== SECTION 1 ===================== -->
+  <section>
+    <h2>1. Defeitos encontrados no PDF de referência</h2>
+    <table class="defects">
+      <thead>
+        <tr>
+          <th class="n">#</th>
+          <th>Defeito</th>
+          <th class="where">Onde ocorre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="n">1</td>
+          <td>Pill de label quebra o texto em duas linhas; a segunda linha é desenhada fora do fundo colorido do pill, ficando ilegível sobre o fundo do card.</td>
+          <td class="where">Área de labels dos cards (ex.: label <code>INEX...</code>)</td>
+        </tr>
+        <tr>
+          <td class="n">2</td>
+          <td>Descrição do cartão renderiza a sintaxe Markdown literalmente — <code>**negrito**</code> e <code>[texto](url)</code> aparecem como texto puro, sem negrito nem link.</td>
+          <td class="where">Bloco de descrição dos cards</td>
+        </tr>
+        <tr>
+          <td class="n">3</td>
+          <td>URLs longas (ex.: processo SEI) não são truncadas nem quebradas com bom senso; ocupam até 4 linhas e o texto invade visualmente a seção seguinte do documento.</td>
+          <td class="where">Descrição dos cards com links longos</td>
+        </tr>
+        <tr>
+          <td class="n">4</td>
+          <td>A grade de resumo por lista calcula a altura do bloco assumindo uma única linha de labels; quando os labels quebram em múltiplas linhas, o bloco seguinte se sobrepõe.</td>
+          <td class="where">Cabeçalho / grade de resumo por lista</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================== SECTION 2 ===================== -->
+  <section>
+    <h2>2. Comparação antes / depois — mesmo card</h2>
+    <div class="compare">
+
+      <div class="compare-col before">
+        <h3>Antes (defeituoso)</h3>
+        <div class="mock-card">
+          <div class="card-title">Homologar processo licitatório</div>
+          <div class="labels-row">
+            <span class="defect-flag">defeito 1</span><br />
+            <span class="pill-broken">INEXEQUIBILIDADE-CONTRATUAL</span>
+          </div>
+          <div class="desc-broken">
+            <span class="defect-flag">defeitos 2 e 3</span><br />
+            **Processo de aquisição** conforme
+            [SEI 0001234-56.2024.6.02.8000](https://sei.mg.gov.br/sei/controlador_externo.php?acao=documento_visualizar&id_orgao_acesso_externo=0&codigo_verificador=123456789)
+          </div>
+        </div>
+        <div class="next-section-box">próxima seção do PDF (invadida pelo texto acima)</div>
+      </div>
+
+      <div class="compare-col after">
+        <h3>Depois (corrigido)</h3>
+        <div class="mock-card">
+          <div class="card-title">Homologar processo licitatório</div>
+          <div class="labels-row">
+            <span class="fix-flag">correção 1</span><br />
+            <span class="pill-fixed" title="INEXEQUIBILIDADE-CONTRATUAL">INEXEQUIBILIDADE-CONTRATUAL</span>
+          </div>
+          <div class="desc-fixed">
+            <span class="fix-flag">correções 2 e 3</span><br />
+            Processo de aquisição conforme SEI 0001234-56.2024.6.02.8000 (sei.mg.gov.br). Aguardando parecer da procuradoria antes de seguir para a fase de homologação e publicação do resultado final do certame.
+          </div>
+        </div>
+        <div class="next-section-box">próxima seção do PDF (intacta)</div>
+      </div>
+
+    </div>
+    <p class="grid-note">
+      Correção 1: largura do pill = <code>largura do texto + folga</code>, com <code>ellipsis</code> quando ainda assim exceder a largura útil do card.
+      Correções 2/3: Markdown é convertido para texto plano; links tornam-se <code>texto (url-curta)</code>; descrição limitada a 4 linhas com ellipsis.
+    </p>
+  </section>
+
+  <!-- ===================== SECTION 3 ===================== -->
+  <section>
+    <h2>3. Todos os 42 labels com cor real <small>(fundo real + texto por luminância, limiar 0.45)</small></h2>
+    <p class="grid-note">
+      <code>silver-glint</code> e <code>pirate-gold</code> são gradientes no SCSS original; aqui usam o hex sólido equivalente (1ª e 2ª parada, respectivamente), pois é o que o <code>pdfkit</code> consegue desenhar.
+    </p>
+    <div class="label-grid">
+          <div class="label-cell">
+            <span class="pill" style="background:#69655a;color:#FFFFFF">muddy-grey</span>
+            <span class="label-name">#69655a</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#c9b037;color:#FFFFFF">autumn-leafs</span>
+            <span class="label-name">#c9b037</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#52b9d5;color:#FFFFFF">morning-sky</span>
+            <span class="label-name">#52b9d5</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#6c99bb;color:#FFFFFF">antique-blue</span>
+            <span class="label-name">#6c99bb</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#f9c423;color:#1A1A18">egg-yellow</span>
+            <span class="label-name">#f9c423</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#fad371;color:#1A1A18">desert-sand</span>
+            <span class="label-name">#fad371</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#8b8680;color:#FFFFFF">dark-granite</span>
+            <span class="label-name">#8b8680</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#ced85e;color:#1A1A18">fresh-salad</span>
+            <span class="label-name">#ced85e</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#109dc0;color:#FFFFFF">lagoon-blue</span>
+            <span class="label-name">#109dc0</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#0a63a0;color:#FFFFFF">midnight-blue</span>
+            <span class="label-name">#0a63a0</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#fdae5f;color:#1A1A18">light-orange</span>
+            <span class="label-name">#fdae5f</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#ed9223;color:#FFFFFF">pumpkin-orange</span>
+            <span class="label-name">#ed9223</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#afb0a4;color:#FFFFFF">light-concrete</span>
+            <span class="label-name">#afb0a4</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#beca02;color:#1A1A18">sunny-grass</span>
+            <span class="label-name">#beca02</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#1d7299;color:#FFFFFF">navy-blue</span>
+            <span class="label-name">#1d7299</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#406cbd;color:#FFFFFF">lilac-eyes</span>
+            <span class="label-name">#406cbd</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#fc736c;color:#FFFFFF">apricot-red</span>
+            <span class="label-name">#fc736c</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#de692f;color:#FFFFFF">orange-peel</span>
+            <span class="label-name">#de692f</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#adadad;color:#FFFFFF">silver-glint</span>
+            <span class="label-name">#adadad</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#96b352;color:#FFFFFF">bright-moss</span>
+            <span class="label-name">#96b352</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#004c70;color:#FFFFFF">deep-ocean</span>
+            <span class="label-name">#004c70</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#5d9cec;color:#FFFFFF">summer-sky</span>
+            <span class="label-name">#5d9cec</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#e83855;color:#FFFFFF">berry-red</span>
+            <span class="label-name">#e83855</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#a85540;color:#FFFFFF">light-cocoa</span>
+            <span class="label-name">#a85540</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#aab2bd;color:#FFFFFF">grey-stone</span>
+            <span class="label-name">#aab2bd</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#8aa177;color:#FFFFFF">tank-green</span>
+            <span class="label-name">#8aa177</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#2b6a6c;color:#FFFFFF">coral-green</span>
+            <span class="label-name">#2b6a6c</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#7e86c7;color:#FFFFFF">sugar-plum</span>
+            <span class="label-name">#7e86c7</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#e34f7c;color:#FFFFFF">pink-tulip</span>
+            <span class="label-name">#e34f7c</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#87564a;color:#FFFFFF">shady-rust</span>
+            <span class="label-name">#87564a</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#83949b;color:#FFFFFF">wet-rock</span>
+            <span class="label-name">#83949b</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#4a8753;color:#FFFFFF">wet-moss</span>
+            <span class="label-name">#4a8753</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#00858a;color:#FFFFFF">turquoise-sea</span>
+            <span class="label-name">#00858a</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#b287bd;color:#FFFFFF">lavender-fields</span>
+            <span class="label-name">#b287bd</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#f97394;color:#FFFFFF">piggy-red</span>
+            <span class="label-name">#f97394</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#c7a57a;color:#FFFFFF">light-mud</span>
+            <span class="label-name">#c7a57a</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#4f6573;color:#FFFFFF">gun-metal</span>
+            <span class="label-name">#4f6573</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#77ce87;color:#1A1A18">modern-green</span>
+            <span class="label-name">#77ce87</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#00b4b1;color:#FFFFFF">french-coast</span>
+            <span class="label-name">#00b4b1</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#975298;color:#FFFFFF">sweet-lilac</span>
+            <span class="label-name">#975298</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#ad5f7d;color:#FFFFFF">red-burgundy</span>
+            <span class="label-name">#ad5f7d</span>
+          </div>
+          <div class="label-cell">
+            <span class="pill" style="background:#b47e11;color:#FFFFFF">pirate-gold</span>
+            <span class="label-name">#b47e11</span>
+          </div>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION 4 ===================== -->
+  <section>
+    <h2>4. Cabeçalho do PDF e resumo por lista <small>(altura acompanhando múltiplas linhas de label)</small></h2>
+
+    <div class="pdf-header">
+      <div class="title">Quadro — Secretaria de Obras (Board)</div>
+      <div class="exclusion-note">3 cartões arquivados não incluídos neste export</div>
+      <div class="generated-at">Gerado em 11/09/2026 14:32</div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="list-summary">
+        <div class="list-name">A Fazer</div>
+        <div class="label-rows">
+          <span class="pill" style="background:#f9c423;color:#1A1A18">egg-yellow</span>
+          <span class="pill" style="background:#ed9223;color:#FFFFFF">pumpkin-orange</span>
+          <span class="pill" style="background:#e83855;color:#FFFFFF">berry-red</span>
+          <span class="pill" style="background:#406cbd;color:#FFFFFF">lilac-eyes</span>
+          <span class="pill" style="background:#8aa177;color:#FFFFFF">tank-green</span>
+          <span class="pill" style="background:#975298;color:#FFFFFF">sweet-lilac</span>
+          <span class="pill" style="background:#00858a;color:#FFFFFF">turquoise-sea</span>
+        </div>
+        <div class="row-count">7 labels — quebra em 3 linhas nesta largura</div>
+      </div>
+
+      <div class="list-summary">
+        <div class="list-name">Em Andamento</div>
+        <div class="label-rows">
+          <span class="pill" style="background:#69655a;color:#FFFFFF">muddy-grey</span>
+          <span class="pill" style="background:#c9b037;color:#FFFFFF">autumn-leafs</span>
+          <span class="pill" style="background:#52b9d5;color:#FFFFFF">morning-sky</span>
+          <span class="pill" style="background:#fad371;color:#1A1A18">desert-sand</span>
+          <span class="pill" style="background:#e34f7c;color:#FFFFFF">pink-tulip</span>
+        </div>
+        <div class="row-count">5 labels — quebra em 2 linhas nesta largura</div>
+      </div>
+
+      <div class="list-summary">
+        <div class="list-name">Concluído</div>
+        <div class="label-rows">
+          <span class="pill" style="background:#77ce87;color:#1A1A18">modern-green</span>
+          <span class="pill" style="background:#00b4b1;color:#FFFFFF">french-coast</span>
+        </div>
+        <div class="row-count">2 labels — cabe em 1 linha</div>
+      </div>
+    </div>
+    <p class="grid-note">
+      As colunas "A Fazer" e "Em Andamento" mostram mais de uma linha de labels: a altura de cada bloco
+      (<code>.list-summary</code>) cresce com o conteúdo em vez de ser fixa, então o próximo card do resumo
+      não se sobrepõe — o mesmo cálculo (altura acumulada por linha quebrada, não altura fixa por lista) é
+      o que a Task 6 deve replicar no gerador de PDF.
+    </p>
+  </section>
+
+</div>
+</body>
+</html>
