@@ -100,5 +100,85 @@ describe('export-formatters', () => {
       expect(buffer.length).to.be.greaterThan(0);
       expect(buffer.toString('utf8', 0, 5)).to.contain('%PDF');
     });
+
+    it('does not throw on a description with a very long unbroken token', async () => {
+      const longUrl = `https://sei.exemplo.test/controlador.php?${'a'.repeat(400)}`;
+      const pdf = await toPDF({
+        ...mockData,
+        details: [
+          {
+            listName: 'Backlog',
+            card: { ...mockData.details[0].card, description: `Veja ${longUrl}` },
+          },
+        ],
+      });
+
+      expect(pdf.slice(0, 4).toString()).to.equal('%PDF');
+    });
+
+    it('does not throw on a label name longer than the card width', async () => {
+      const pdf = await toPDF({
+        ...mockData,
+        details: [
+          {
+            listName: 'Backlog',
+            card: {
+              ...mockData.details[0].card,
+              labels: [{ id: 'l1', name: 'L'.repeat(200), color: 'berry-red' }],
+            },
+          },
+        ],
+      });
+
+      expect(pdf.slice(0, 4).toString()).to.equal('%PDF');
+    });
+  });
+});
+
+const { toPlainText } = require('../../utils/export-formatters');
+const { SERVER_LABEL_COLORS, textColorFor } = require('../../utils/label-colors');
+
+describe('label-colors', () => {
+  it('maps the label color name to a solid hex', () => {
+    expect(SERVER_LABEL_COLORS['berry-red']).to.equal('#e83855');
+  });
+
+  it('maps the gradient colors to a solid fallback', () => {
+    expect(SERVER_LABEL_COLORS['pirate-gold']).to.equal('#b47e11');
+    expect(SERVER_LABEL_COLORS['silver-glint']).to.equal('#adadad');
+  });
+
+  it('picks a dark text color on a light background', () => {
+    expect(textColorFor('#f9c423')).to.equal('#1A1A18');
+  });
+
+  it('picks a light text color on a dark background', () => {
+    expect(textColorFor('#004c70')).to.equal('#FFFFFF');
+  });
+});
+
+describe('#toPlainText', () => {
+  it('strips bold and italic markers', () => {
+    expect(toPlainText('**Processo anterior:** nada')).to.equal('Processo anterior: nada');
+    expect(toPlainText('*itálico* aqui')).to.equal('itálico aqui');
+  });
+
+  it('leaves underscores inside identifiers alone', () => {
+    expect(toPlainText('HMMG_2026_001')).to.equal('HMMG_2026_001');
+  });
+
+  it('turns a markdown link into text plus its url', () => {
+    expect(toPlainText('[Protocolo](https://exemplo.test/a)')).to.equal(
+      'Protocolo (https://exemplo.test/a)',
+    );
+  });
+
+  it('leaves plain text untouched', () => {
+    expect(toPlainText('HMMG.2026.00001721-57')).to.equal('HMMG.2026.00001721-57');
+  });
+
+  it('tolerates an empty value', () => {
+    expect(toPlainText('')).to.equal('');
+    expect(toPlainText(null)).to.equal('');
   });
 });

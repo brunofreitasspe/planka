@@ -5,6 +5,8 @@
 
 const PDFDocument = require('pdfkit');
 
+const { getLabelColor, textColorFor } = require('./label-colors');
+
 const formatDateForReport = (date) => {
   if (!date) {
     return null;
@@ -37,6 +39,54 @@ const truncate = (value, maxLength) => {
   }
 
   return `${value.substring(0, maxLength)}...`;
+};
+
+const MARKDOWN_LINK_REGEX = /\[([^\]]+)\]\(([^)]+)\)/g;
+// Deliberately excludes single-underscore emphasis: `_` shows up inside real
+// identifiers (HMMG_2026_001) and stripping it would corrupt the text.
+const BOLD_ITALIC_REGEX = /(\*\*|__)(.*?)\1|\*([^*]+)\*/g;
+
+// The PDF draws plain text, so markdown syntax has to go. Links keep their target
+// so the reader can still reach the URL.
+const toPlainText = (value) => {
+  if (!value) {
+    return '';
+  }
+
+  return String(value)
+    .replace(MARKDOWN_LINK_REGEX, '$1 ($2)')
+    .replace(BOLD_ITALIC_REGEX, (match, boldMarker, boldText, italicText) => {
+      if (boldText !== undefined && boldText !== null) {
+        return boldText;
+      }
+
+      return italicText !== undefined && italicText !== null ? italicText : match;
+    })
+    .trim();
+};
+
+// pdfkit wraps on spaces only, so a long unbroken token (typically a URL) would
+// otherwise run past the card. Insert break opportunities every N characters.
+const breakLongTokens = (value, maxTokenLength = 40) => {
+  if (!value) {
+    return '';
+  }
+
+  return String(value)
+    .split(/(\s+)/)
+    .map((token) => {
+      if (token.length <= maxTokenLength || /^\s+$/.test(token)) {
+        return token;
+      }
+
+      const chunks = [];
+      for (let i = 0; i < token.length; i += maxTokenLength) {
+        chunks.push(token.slice(i, i + maxTokenLength));
+      }
+
+      return chunks.join(' ');
+    })
+    .join('');
 };
 
 const toCSV = (data) => {
@@ -181,10 +231,18 @@ const toPDF = (data) =>
       const titleRowH = Math.max(titleH, 14);
 
       doc.font('Helvetica').fontSize(9);
-      const descH = doc.heightOfString(card.description || 'Sem descrição', {
-        width: innerW,
-        lineGap: 2,
-      });
+      const plainDescription = breakLongTokens(toPlainText(card.description));
+
+      const descText = plainDescription || 'Sem descrição';
+      let descH = doc.heightOfString(descText, { width: innerW, lineGap: 2 });
+
+      // Cap the description at 4 lines so one pathological card cannot push the rest
+      // of the page. The ellipsis is applied at draw time via the height option.
+      const maxDescH = doc.heightOfString('X\nX\nX\nX', { width: innerW, lineGap: 2 });
+      const isDescriptionTruncated = descH > maxDescH;
+      if (isDescriptionTruncated) {
+        descH = maxDescH;
+      }
 
       const commentTextH = card.lastComment
         ? doc.heightOfString(card.lastComment.text, { width: innerW, lineGap: 2 })
@@ -192,15 +250,31 @@ const toPDF = (data) =>
       const commentH = (card.lastComment ? 10 : 0) + commentTextH + 10;
 
       doc.font('Helvetica').fontSize(8);
-      const pillWidths = card.labels.map((label) => doc.widthOfString(label.name) + 14);
+      const PILL_PAD = 8;
+      const MAX_PILL_W = innerW;
+
+      const labelTexts = card.labels.map((label) =>
+        truncate(label.name, Math.max(4, Math.floor((MAX_PILL_W - PILL_PAD * 2) / 4.6))),
+      );
+
+      // Round the measured width up before doing arithmetic with it: pillW - PILL_PAD * 2
+      // is a different float expression than the original widthOfString() call, and without
+      // ceil() the two can differ by a sub-point epsilon (e.g. 18.671999999999997 vs 18.672).
+      // With zero slack that's enough for pdfkit's line-wrapper to consider the text "too wide"
+      // and wrap it mid-word (this is how "INEX" broke into "INE"/"X").
+      const pillWidths = labelTexts.map(
+        (text) => Math.ceil(doc.widthOfString(text)) + PILL_PAD * 2,
+      );
       let labelRows = 1;
       let used = 0;
       pillWidths.forEach((pillW) => {
-        if (used + pillW > innerW) {
+        const cappedPillW = Math.min(pillW, MAX_PILL_W);
+
+        if (used + cappedPillW > innerW) {
           labelRows += 1;
-          used = pillW + 4;
+          used = cappedPillW + 4;
         } else {
-          used += pillW + 4;
+          used += cappedPillW + 4;
         }
       });
       const labelsH = card.labels.length > 0 ? labelRows * 18 : 10;
@@ -258,7 +332,12 @@ const toPDF = (data) =>
       doc.font('Helvetica').fontSize(9);
       if (card.description) {
         doc.fillColor(COLORS.ink);
-        doc.text(card.description, innerX, y + 4, { width: innerW, lineGap: 2 });
+        doc.text(descText, innerX, y + 4, {
+          width: innerW,
+          lineGap: 2,
+          height: descH,
+          ellipsis: isDescriptionTruncated,
+        });
       } else {
         doc.font('Helvetica-Oblique').fillColor(COLORS.muted);
         doc.text('Sem descrição', innerX, y + 4, { width: innerW });
@@ -273,17 +352,26 @@ const toPDF = (data) =>
       if (card.labels.length > 0) {
         let pillX = innerX;
         let pillRowY = y;
-        doc.font('Helvetica').fontSize(8).fillColor(COLORS.labelInk);
-        card.labels.forEach((label) => {
-          const pillW = doc.widthOfString(label.name) + 14;
+
+        card.labels.forEach((label, index) => {
+          const pillW = Math.min(pillWidths[index], MAX_PILL_W);
+          const background = getLabelColor(label.color);
+          const foreground = textColorFor(background);
+
           if (pillX + pillW > innerX + innerW) {
             pillX = innerX;
             pillRowY += 18;
           }
-          doc.roundedRect(pillX, pillRowY, pillW, 14, 7).fill(COLORS.labelBg);
-          doc.text(label.name, pillX + 7, pillRowY + 3, { width: pillW - 14, align: 'center' });
+
+          doc.roundedRect(pillX, pillRowY, pillW, 14, 7).fill(background);
+          doc.font('Helvetica').fontSize(8).fillColor(foreground);
+          doc.text(labelTexts[index], pillX + PILL_PAD, pillRowY + 3, {
+            width: pillW - PILL_PAD * 2,
+            align: 'center',
+          });
           pillX += pillW + 4;
         });
+
         y += labelsH;
       } else {
         doc.font('Helvetica-Oblique').fontSize(9).fillColor(COLORS.muted);
@@ -353,4 +441,5 @@ module.exports = {
   formatDateForReport,
   toCSV,
   toPDF,
+  toPlainText,
 };
