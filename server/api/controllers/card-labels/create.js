@@ -146,9 +146,7 @@ module.exports = {
         throw Errors.LABEL_NOT_FOUND;
       }
 
-      const lastLabel = await Label.find({ boardId: board.id })
-        .sort('position DESC')
-        .limit(1);
+      const lastLabel = await Label.find({ boardId: board.id }).sort('position DESC').limit(1);
       const position = lastLabel.length > 0 ? lastLabel[0].position + 65536 : 65536;
 
       label = await sails.helpers.labels.createOne.with({

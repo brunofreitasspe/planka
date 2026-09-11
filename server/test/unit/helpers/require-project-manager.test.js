@@ -10,10 +10,7 @@ describe('Require Project Manager Helper', () => {
       userId: user.id,
     });
 
-    const result = await sails.helpers.projectLabels.requireProjectManager(
-      user.id,
-      project.id
-    );
+    const result = await sails.helpers.projectLabels.requireProjectManager(user.id, project.id);
 
     assert.strictEqual(result, true);
   });

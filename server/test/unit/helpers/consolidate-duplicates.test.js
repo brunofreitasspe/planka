@@ -3,8 +3,6 @@ const assert = require('assert');
 describe('Consolidate Duplicates Helper', () => {
   it('consolidates duplicate labels by name and color', async () => {
     const projectId = 'project-1';
-    const boardId1 = 'board-1';
-    const boardId2 = 'board-2';
 
     // Create boards
     const board1 = await Board.create({ projectId, name: 'Board 1', position: 65536 }).fetch();
@@ -64,7 +62,7 @@ describe('Consolidate Duplicates Helper', () => {
     const board = await Board.create({ projectId, name: 'Board', position: 65536 }).fetch();
 
     // Create global label
-    const projectLabel = await ProjectLabel.create({
+    await ProjectLabel.create({
       projectId,
       name: 'Bug',
       color: 'berry-red',

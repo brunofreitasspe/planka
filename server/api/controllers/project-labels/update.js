@@ -18,7 +18,7 @@ module.exports = {
     },
     color: {
       type: 'string',
-      isIn: require('../../models/Label').COLORS,
+      isIn: Label.COLORS,
     },
     canBeUsedByMembers: {
       type: 'boolean',

@@ -37,7 +37,7 @@ module.exports = {
             linkedLabelCount: linkedCount,
             usedInBoardCount: usedInBoardIds.size,
           };
-        })
+        }),
       );
     }
 

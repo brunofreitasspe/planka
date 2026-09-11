@@ -20,7 +20,7 @@ module.exports = {
       throw { statusCode: 404, message: 'Board not found' };
     }
 
-    const projectId = board.projectId;
+    const { projectId } = board;
 
     // Get local labels
     const localLabels = await Label.find({ boardId, projectLabelId: null }).sort('position ASC');

@@ -39,7 +39,7 @@ module.exports = {
 
     // Get board and project
     const board = await Board.findOne(boardId);
-    const projectId = board.projectId;
+    const { projectId } = board;
 
     // Check permission
     try {

@@ -47,7 +47,7 @@ module.exports = {
 
     // Get board and project
     const board = await Board.findOne(boardId);
-    const projectId = board.projectId;
+    const { projectId } = board;
 
     // Check permission
     try {
@@ -61,9 +61,7 @@ module.exports = {
 
     if (!projectLabel) {
       // Create new ProjectLabel
-      const maxPosLabel = await ProjectLabel.find({ projectId })
-        .sort('position DESC')
-        .limit(1);
+      const maxPosLabel = await ProjectLabel.find({ projectId }).sort('position DESC').limit(1);
       const position = maxPosLabel.length > 0 ? maxPosLabel[0].position + 65536 : 65536;
 
       projectLabel = await ProjectLabel.create({
@@ -91,8 +89,10 @@ module.exports = {
       projectLabelId: null,
     });
 
+    // eslint-disable-next-line no-restricted-syntax -- sequential update, preserves pre-existing behavior
     for (const dup of duplicates) {
       if (dup.id !== labelId) {
+        // eslint-disable-next-line no-await-in-loop -- sequential update, preserves pre-existing behavior
         await Label.updateOne(dup.id).set({ projectLabelId: projectLabel.id });
       }
     }

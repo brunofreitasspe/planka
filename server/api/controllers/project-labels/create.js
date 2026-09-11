@@ -17,7 +17,7 @@ module.exports = {
     color: {
       type: 'string',
       required: true,
-      isIn: require('../../models/Label').COLORS,
+      isIn: Label.COLORS,
     },
     canBeUsedByMembers: {
       type: 'boolean',
@@ -51,9 +51,7 @@ module.exports = {
     }
 
     // Get max position
-    const maxPosLabel = await ProjectLabel.find({ projectId })
-      .sort('position DESC')
-      .limit(1);
+    const maxPosLabel = await ProjectLabel.find({ projectId }).sort('position DESC').limit(1);
     const position = maxPosLabel.length > 0 ? maxPosLabel[0].position + 65536 : 65536;
 
     // Create

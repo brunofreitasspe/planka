@@ -60,7 +60,9 @@ module.exports.bootstrap = async () => {
   try {
     const projects = await Project.find();
 
+    // eslint-disable-next-line no-restricted-syntax -- deliberately sequential, one project consolidated (and logged) at a time
     for (const project of projects) {
+      // eslint-disable-next-line no-await-in-loop -- see above
       const result = await sails.helpers.labels.consolidateDuplicates(project.id);
 
       if (result.totalConsolidated > 0) {
