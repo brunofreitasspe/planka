@@ -154,16 +154,25 @@ module.exports.routes = {
   'PATCH /api/base-custom-field-groups/:id': 'base-custom-field-groups/update',
   'DELETE /api/base-custom-field-groups/:id': 'base-custom-field-groups/delete',
 
+  'POST /api/projects/:projectId/labels': 'project-labels/create',
+  'GET /api/projects/:projectId/labels': 'project-labels/find',
+  'PATCH /api/projects/:projectId/labels/:projectLabelId': 'project-labels/update',
+  'DELETE /api/projects/:projectId/labels/:projectLabelId': 'project-labels/delete',
+
   'POST /api/projects/:projectId/boards': 'boards/create',
   'GET /api/boards/:id': 'boards/show',
   'PATCH /api/boards/:id': 'boards/update',
   'DELETE /api/boards/:id': 'boards/delete',
+  'POST /api/boards/:id/export': 'boards/export',
 
   'POST /api/boards/:boardId/board-memberships': 'board-memberships/create',
   'PATCH /api/board-memberships/:id': 'board-memberships/update',
   'DELETE /api/board-memberships/:id': 'board-memberships/delete',
 
+  'GET /api/boards/:boardId/labels': 'labels/find',
   'POST /api/boards/:boardId/labels': 'labels/create',
+  'POST /api/boards/:boardId/labels/:labelId/promote': 'labels/promote',
+  'POST /api/boards/:boardId/labels/:labelId/demote': 'labels/demote',
   'PATCH /api/labels/:id': 'labels/update',
   'DELETE /api/labels/:id': 'labels/delete',
 

@@ -1,0 +1,64 @@
+C:\planka\.claude\skills\debug-issue.md
+C:\planka\.claude\skills\explore-codebase.md
+C:\planka\.claude\skills\refactor-safely.md
+C:\planka\.claude\skills\review-changes.md
+C:\planka\.github\ISSUE_TEMPLATE\1-bug-report.yml
+C:\planka\.github\ISSUE_TEMPLATE\2-feature-request.yml
+C:\planka\.github\workflows\build-and-publish-release-package.yml
+C:\planka\.github\workflows\build-and-push-docker-image.yml
+C:\planka\.github\workflows\build-and-push-docker-nightly-image.yml
+C:\planka\.github\workflows\build-and-test.yml
+C:\planka\.github\workflows\lint.yml
+C:\planka\.github\workflows\release-helm-chart.yml
+C:\planka\.kiro\steering\code-review-graph.md
+C:\planka\AGENTS.md
+C:\planka\CLAUDE.md
+C:\planka\CODE_OF_CONDUCT.md
+C:\planka\CONTRIBUTING.md
+C:\planka\CONTRIBUTOR_LICENSE_AGREEMENT.md
+C:\planka\GEMINI.md
+C:\planka\LICENSE.md
+C:\planka\LICENSES\PLANKA Commercial License DE.md
+C:\planka\LICENSES\PLANKA Commercial License EN.md
+C:\planka\LICENSES\PLANKA Community License DE.md
+C:\planka\LICENSES\PLANKA Community License EN.md
+C:\planka\LICENSES\PLANKA License Guide DE.md
+C:\planka\LICENSES\PLANKA License Guide EN.md
+C:\planka\README.md
+C:\planka\SECURITY.md
+C:\planka\charts\planka\Chart.yaml
+C:\planka\charts\planka\README.md
+C:\planka\charts\planka\templates\NOTES.txt
+C:\planka\charts\planka\templates\configmap-terms.yaml
+C:\planka\charts\planka\templates\deployment.yaml
+C:\planka\charts\planka\templates\hpa.yaml
+C:\planka\charts\planka\templates\ingress.yaml
+C:\planka\charts\planka\templates\pvc.yaml
+C:\planka\charts\planka\templates\service.yaml
+C:\planka\charts\planka\templates\tests\test-connection.yaml
+C:\planka\charts\planka\values.yaml
+C:\planka\client\index.html
+C:\planka\client\public\robots.txt
+C:\planka\client\src\assets\docs\whats-new.md
+C:\planka\docker-compose-dev.yml
+C:\planka\docker-compose.yml
+C:\planka\server\requirements.txt
+C:\planka\server\terms\_template\de-DE.md
+C:\planka\server\terms\_template\en-US.md
+C:\planka\server\terms\cloud\de-DE.md
+C:\planka\server\terms\cloud\en-US.md
+C:\planka\assets\demo.gif
+C:\planka\assets\logo.png
+C:\planka\client\public\logo192.png
+C:\planka\client\public\logo512.png
+C:\planka\client\src\assets\images\about-logo.png
+C:\planka\client\src\assets\images\deleted-user.png
+C:\planka\client\src\assets\images\login-cover.jpg
+C:\planka\client\src\assets\images\logo.png
+C:\planka\client\src\assets\images\plus-icon.svg
+C:\planka\client\src\assets\images\plus-math-icon.svg
+C:\planka\client\src\lib\custom-ui\assets\fonts\brand-icons.svg
+C:\planka\client\src\lib\custom-ui\assets\fonts\icons.svg
+C:\planka\client\src\lib\custom-ui\assets\fonts\outline-icons.svg
+C:\planka\client\src\lib\custom-ui\assets\images\flags.png
+C:\planka\server\public\preloaded-favicons\codepen.io.png

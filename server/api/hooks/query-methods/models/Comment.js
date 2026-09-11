@@ -3,7 +3,11 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
+const { makeRowToModelTransformer } = require('../helpers');
+
 const LIMIT = 50;
+
+const transformRowToModel = makeRowToModelTransformer(Comment);
 
 const defaultFind = (criteria, { limit } = {}) =>
   Comment.find(criteria).sort('id DESC').limit(limit);
@@ -44,6 +48,26 @@ const getByCardId = (cardId, { beforeId } = {}) => {
   }
 
   return defaultFind(criteria, { limit: LIMIT });
+};
+
+// Most recent comment per card, in a single query (avoids N+1 for board exports).
+const getLatestByCardIds = async (cardIds) => {
+  if (cardIds.length === 0) {
+    return [];
+  }
+
+  const values = [];
+  const placeholders = cardIds.map((cardId) => {
+    values.push(cardId);
+    return `$${values.length}`;
+  });
+
+  const queryResult = await sails.sendNativeQuery(
+    `SELECT DISTINCT ON (card_id) * FROM comment WHERE card_id IN (${placeholders.join(', ')}) ORDER BY card_id, id DESC`,
+    values,
+  );
+
+  return queryResult.rows.map((row) => transformRowToModel(row));
 };
 
 const getOneById = (id) => Comment.findOne(id);
@@ -117,6 +141,7 @@ module.exports = {
   createOne,
   getByIds,
   getByCardId,
+  getLatestByCardIds,
   getOneById,
   update,
   updateOne,

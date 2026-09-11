@@ -1,0 +1,4 @@
+C:\planka\client\src\lib\custom-ui\assets\fonts\icons.svg
+C:\planka\client\src\lib\custom-ui\assets\fonts\outline-icons.svg
+C:\planka\client\src\lib\custom-ui\assets\images\flags.png
+C:\planka\server\public\preloaded-favicons\codepen.io.png

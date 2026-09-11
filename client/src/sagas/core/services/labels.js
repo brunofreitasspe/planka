@@ -131,17 +131,59 @@ export function* handleLabelDelete(label) {
   yield put(actions.handleLabelDelete(label));
 }
 
+export function* promoteLabel(id, data) {
+  yield put(actions.promoteLabel(id, data));
+
+  const { boardId } = yield select(selectors.selectLabelById, id);
+
+  let label;
+  let projectLabel;
+  try {
+    ({ label, projectLabel } = yield call(request, api.promoteLabel, boardId, id, data));
+  } catch (error) {
+    yield put(actions.promoteLabel.failure(id, error));
+    return;
+  }
+
+  yield put(actions.promoteLabel.success(label, projectLabel));
+}
+
+export function* demoteLabel(id) {
+  yield put(actions.demoteLabel(id));
+
+  const { boardId } = yield select(selectors.selectLabelById, id);
+
+  let label;
+  try {
+    ({ label } = yield call(request, api.demoteLabel, boardId, id));
+  } catch (error) {
+    yield put(actions.demoteLabel.failure(id, error));
+    return;
+  }
+
+  yield put(actions.demoteLabel.success(label));
+}
+
 export function* addLabelToCard(id, cardId) {
   yield put(actions.addLabelToCard(id, cardId));
 
   let cardLabel;
+  let label;
   try {
-    ({ item: cardLabel } = yield call(request, api.createCardLabel, cardId, {
+    ({ item: cardLabel, label } = yield call(request, api.createCardLabel, cardId, {
       labelId: id,
     }));
   } catch (error) {
     yield put(actions.addLabelToCard.failure(id, cardId, error));
     return;
+  }
+
+  // When the label was a project-global not yet linked to this board, the
+  // server materialized a new board label: persist it and drop the optimistic
+  // project-label reference so the card's association resolves to the real one.
+  if (label && label.id !== id) {
+    yield put(actions.handleLabelFromCardRemove({ cardId, labelId: id }));
+    yield put(actions.handleLabelCreate(label));
   }
 
   yield put(actions.addLabelToCard.success(cardLabel));
@@ -215,6 +257,8 @@ export default {
   moveLabel,
   deleteLabel,
   handleLabelDelete,
+  promoteLabel,
+  demoteLabel,
   addLabelToCard,
   addLabelToCurrentCard,
   handleLabelToCardAdd,

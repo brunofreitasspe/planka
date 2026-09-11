@@ -74,6 +74,11 @@ const ActionsStep = React.memo(({ onClose }) => {
     onClose();
   }, [onClose, dispatch]);
 
+  const handleExportClick = useCallback(() => {
+    dispatch(entryActions.openBoardExportModal());
+    onClose();
+  }, [onClose, dispatch]);
+
   const handleEmptyTrashConfirm = useCallback(() => {
     dispatch(entryActions.clearTrashListInCurrentBoard());
     onClose();
@@ -133,6 +138,12 @@ const ActionsStep = React.memo(({ onClose }) => {
               })}
             </Menu.Item>
           )}
+          <Menu.Item className={styles.menuItem} onClick={handleExportClick}>
+            <Icon name="download" className={styles.menuItemIcon} />
+            {t('action.export', {
+              context: 'title',
+            })}
+          </Menu.Item>
           <Menu.Item className={styles.menuItem} onClick={handleActivitiesClick}>
             <Icon name="list ul" className={styles.menuItemIcon} />
             {t('common.actions', {
