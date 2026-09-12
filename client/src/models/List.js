@@ -6,7 +6,7 @@
 import { attr, fk } from 'redux-orm';
 
 import BaseModel from './BaseModel';
-import buildSearchParts from '../utils/build-search-parts';
+import filterCardsBySearch from '../utils/filter-cards-by-search';
 import { isListFinite } from '../utils/record-helpers';
 import ActionTypes from '../constants/ActionTypes';
 import Config from '../constants/Config';
@@ -346,32 +346,7 @@ export default class extends BaseModel {
     }
 
     if (this.board.search) {
-      if (this.board.search.startsWith('/')) {
-        let searchRegex;
-        try {
-          searchRegex = new RegExp(this.board.search.substring(1), 'i');
-        } catch {
-          return [];
-        }
-
-        cardModels = cardModels.filter(
-          (cardModel) =>
-            searchRegex.test(cardModel.name) ||
-            (cardModel.description && searchRegex.test(cardModel.description)),
-        );
-      } else {
-        const searchParts = buildSearchParts(this.board.search);
-
-        cardModels = cardModels.filter((cardModel) => {
-          const name = cardModel.name.toLowerCase();
-          const description = cardModel.description && cardModel.description.toLowerCase();
-
-          return searchParts.every(
-            (searchPart) =>
-              name.includes(searchPart) || (description && description.includes(searchPart)),
-          );
-        });
-      }
+      cardModels = filterCardsBySearch(cardModels, this.board.search);
     }
 
     const filterUserIds = this.board.filterUsers.toRefArray().map((user) => user.id);

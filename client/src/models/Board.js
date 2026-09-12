@@ -6,8 +6,7 @@
 import { attr, fk, many } from 'redux-orm';
 
 import BaseModel from './BaseModel';
-import buildCardSearchStrings from '../utils/build-card-search-strings';
-import buildSearchParts from '../utils/build-search-parts';
+import filterCardsBySearch from '../utils/filter-cards-by-search';
 import { isListKanban } from '../utils/record-helpers';
 import ActionTypes from '../constants/ActionTypes';
 import Config from '../constants/Config';
@@ -347,33 +346,7 @@ export default class extends BaseModel {
     }
 
     if (this.search) {
-      const searchStringsByCardId = cardModels.map((cardModel) => ({
-        cardModel,
-        searchStrings: buildCardSearchStrings(cardModel),
-      }));
-
-      if (this.search.startsWith('/')) {
-        let searchRegex;
-        try {
-          searchRegex = new RegExp(this.search.substring(1), 'i');
-        } catch {
-          return [];
-        }
-
-        cardModels = searchStringsByCardId
-          .filter(({ searchStrings }) => searchStrings.some((str) => searchRegex.test(str)))
-          .map(({ cardModel }) => cardModel);
-      } else {
-        const searchParts = buildSearchParts(this.search);
-
-        cardModels = searchStringsByCardId
-          .filter(({ searchStrings }) =>
-            searchParts.every((searchPart) =>
-              searchStrings.some((str) => str.includes(searchPart)),
-            ),
-          )
-          .map(({ cardModel }) => cardModel);
-      }
+      cardModels = filterCardsBySearch(cardModels, this.search);
     }
 
     const filterUserIds = this.filterUsers.toRefArray().map((user) => user.id);
