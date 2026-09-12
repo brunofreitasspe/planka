@@ -93,13 +93,25 @@ const toCSV = (data) => {
   const rows = [];
 
   rows.push(
-    ['List', 'Card', 'Prioridade', 'Descrição', 'Vencimento', 'Labels', 'Último Comentário']
+    [
+      'List',
+      'Card',
+      'Prioridade',
+      'Descrição',
+      'Vencimento',
+      'Labels',
+      'Custom Fields',
+      'Último Comentário',
+    ]
       .map(escapeCsvValue)
       .join(','),
   );
 
   data.details.forEach(({ listName, card }) => {
     const labels = card.labels.map((label) => label.name).join('; ');
+    const customFields = (card.customFields || [])
+      .map((customField) => `${customField.name}: ${customField.value}`)
+      .join('; ');
     const comment = card.lastComment
       ? `${card.lastComment.authorName}: ${truncate(card.lastComment.text, 80)}`
       : '';
@@ -112,6 +124,7 @@ const toCSV = (data) => {
         truncate(card.description, 100),
         card.dueDate || '',
         labels,
+        truncate(customFields, 200),
         comment,
       ]
         .map(escapeCsvValue)
@@ -216,6 +229,89 @@ const toPDF = (data) =>
       doc.y = startY + Math.ceil(summary.length / columns) * (cardH + gutter) + 8;
     };
 
+    // Custom fields render as a 2-column grid below the labels (Task 7). Height is
+    // measured from the actual wrapped text, same principle as the summary grid and
+    // the label rows above — never a fixed guess, or a long value would overlap the
+    // next block.
+    const CUSTOM_FIELD_GUTTER = 8;
+    const CUSTOM_FIELD_PILL_PAD = 8;
+
+    const measureCustomFieldGrid = (customFields, gridW) => {
+      const colW = (gridW - CUSTOM_FIELD_GUTTER) / 2;
+
+      doc.font('Helvetica').fontSize(9);
+      const rows = [];
+      for (let i = 0; i < customFields.length; i += 2) {
+        const rowFields = [customFields[i], customFields[i + 1]].filter(Boolean);
+        const rowValueH = Math.max(
+          ...rowFields.map((field) =>
+            field.color ? 14 : doc.heightOfString(field.value, { width: colW, lineGap: 2 }),
+          ),
+        );
+        rows.push({ fields: rowFields, height: 8 + 3 + rowValueH });
+      }
+
+      const height =
+        rows.reduce((sum, row) => sum + row.height, 0) + CUSTOM_FIELD_GUTTER * (rows.length - 1);
+
+      return { height, colW, rows };
+    };
+
+    const drawCustomFieldGrid = (customFields, x, y, gridW) => {
+      const { rows, colW } = measureCustomFieldGrid(customFields, gridW);
+
+      let cursorY = y;
+      rows.forEach((row) => {
+        row.fields.forEach((field, index) => {
+          const cellX = x + index * (colW + CUSTOM_FIELD_GUTTER);
+
+          doc.font('Helvetica-Bold').fontSize(8).fillColor(COLORS.muted);
+          doc.text(field.name.toUpperCase(), cellX, cursorY, { width: colW });
+
+          const valueY = cursorY + 8 + 3;
+
+          if (field.color) {
+            const background = getLabelColor(field.color);
+            const foreground = textColorFor(background);
+
+            doc.font('Helvetica').fontSize(8);
+            const text = truncate(
+              field.value,
+              Math.max(4, Math.floor((colW - CUSTOM_FIELD_PILL_PAD * 2) / 4.6)),
+            );
+            // See the label-pill comment below for why ceil() is required here too.
+            const pillW = Math.min(
+              Math.ceil(doc.widthOfString(text)) + CUSTOM_FIELD_PILL_PAD * 2,
+              colW,
+            );
+
+            doc.roundedRect(cellX, valueY, pillW, 14, 6).fill(background);
+            doc.fillColor(foreground);
+            doc.text(text, cellX + CUSTOM_FIELD_PILL_PAD, valueY + 3, {
+              width: pillW - CUSTOM_FIELD_PILL_PAD * 2,
+              align: 'center',
+            });
+          } else if (field.type === 'checkbox') {
+            // The base Helvetica font has no glyph for U+2611 (☑) — doc.widthOfString('☑')
+            // returns 0, i.e. it draws nothing. Draw the check as a small vector mark
+            // instead of relying on font glyph coverage.
+            const boxSize = 10;
+            doc.roundedRect(cellX, valueY, boxSize, boxSize, 2).lineWidth(1).stroke(COLORS.ink);
+            doc
+              .moveTo(cellX + 2, valueY + 5)
+              .lineTo(cellX + 4, valueY + 8)
+              .lineTo(cellX + 8, valueY + 2)
+              .stroke(COLORS.ink);
+          } else {
+            doc.font('Helvetica').fontSize(9).fillColor(COLORS.ink);
+            doc.text(field.value, cellX, valueY, { width: colW, lineGap: 2 });
+          }
+        });
+
+        cursorY += row.height + CUSTOM_FIELD_GUTTER;
+      });
+    };
+
     const drawDetailCard = (detail) => {
       const { left, right } = doc.page.margins;
       const width = doc.page.width - left - right;
@@ -279,6 +375,13 @@ const toPDF = (data) =>
       });
       const labelsH = card.labels.length > 0 ? labelRows * 18 : 10;
 
+      const customFields = card.customFields || [];
+      const hasCustomFields = customFields.length > 0;
+      const customFieldsGridH = hasCustomFields
+        ? measureCustomFieldGrid(customFields, innerW).height
+        : 0;
+      const customFieldsBlockH = hasCustomFields ? 8 + 9 + 4 + customFieldsGridH : 0;
+
       const cardH =
         padY * 2 +
         titleRowH +
@@ -288,6 +391,7 @@ const toPDF = (data) =>
         (9 + 4 + descH) +
         8 +
         (9 + 4 + labelsH) +
+        customFieldsBlockH +
         8 +
         (9 + 4 + commentH);
 
@@ -296,7 +400,7 @@ const toPDF = (data) =>
       }
 
       const boxTop = doc.y;
-      doc.roundedRect(left, boxTop, width, cardH, 6).fillAndStroke('#FFFFFF', COLORS.hairline);
+      doc.roundedRect(left, boxTop, width, cardH, 12).fillAndStroke('#FFFFFF', COLORS.hairline);
       doc.lineWidth(1);
 
       // Title row: card name left, origin list as a discreet tag right.
@@ -377,6 +481,17 @@ const toPDF = (data) =>
         doc.font('Helvetica-Oblique').fontSize(9).fillColor(COLORS.muted);
         doc.text('Sem labels', innerX, y);
         y += 10;
+      }
+
+      // Custom fields grid — the whole block, including this header, is skipped
+      // when the card has none (Task 7).
+      if (hasCustomFields) {
+        y += 8;
+        doc.font('Helvetica-Bold').fontSize(7).fillColor(COLORS.muted);
+        doc.text('Campos personalizados', innerX, y);
+        y += 4;
+        drawCustomFieldGrid(customFields, innerX, y, innerW);
+        y += customFieldsGridH;
       }
 
       // Last comment (author — date + text, or placeholder).

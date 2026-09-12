@@ -69,6 +69,7 @@ const {
   getCardPriorityName,
 } = require('../../../utils/card-priorities');
 const { formatDateForReport, toCSV, toPDF } = require('../../../utils/export-formatters');
+const { buildCardCustomFields } = require('../../../utils/custom-field-values');
 
 const Errors = {
   BOARD_NOT_FOUND: {
@@ -203,6 +204,25 @@ module.exports = {
       labelIdsByCardId[cardLabel.cardId].push(cardLabel.labelId);
     });
 
+    const customFieldValues =
+      cardIds.length > 0 ? await CustomFieldValue.qm.getByCardIds(cardIds) : [];
+    const customFieldIds = _.uniq(
+      sails.helpers.utils.mapRecords(customFieldValues, 'customFieldId'),
+    );
+    const customFields = await CustomField.qm.getByIds(customFieldIds);
+    const customFieldById = new Map(
+      customFields.map((customField) => [customField.id, customField]),
+    );
+
+    const customFieldValuesByCardId = {};
+    customFieldValues.forEach((customFieldValue) => {
+      if (!customFieldValuesByCardId[customFieldValue.cardId]) {
+        customFieldValuesByCardId[customFieldValue.cardId] = [];
+      }
+
+      customFieldValuesByCardId[customFieldValue.cardId].push(customFieldValue);
+    });
+
     const comments = cardIds.length > 0 ? await Comment.qm.getLatestByCardIds(cardIds) : [];
     const commentByCardId = new Map(comments.map((comment) => [comment.cardId, comment]));
     const commentUserIds = sails.helpers.utils.mapRecords(comments, 'userId', true, true);
@@ -237,6 +257,10 @@ module.exports = {
               description: card.description || '',
               dueDate: formatDateForReport(card.dueDate),
               labels: cardLabelIds.map((labelId) => labelById.get(labelId)).filter(Boolean),
+              customFields: buildCardCustomFields(
+                customFieldValuesByCardId[card.id] || [],
+                customFieldById,
+              ),
               lastComment: comment
                 ? {
                     authorName: (userById.get(comment.userId) || {}).name || '',

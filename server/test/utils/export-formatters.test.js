@@ -78,6 +78,26 @@ describe('export-formatters', () => {
       expect(lines).to.have.length(1);
       expect(lines[0]).to.contain('List');
     });
+
+    it('includes a Custom Fields column with name and value', () => {
+      const csv = toCSV({
+        ...mockData,
+        details: [
+          {
+            listName: 'Backlog',
+            card: {
+              ...mockData.details[0].card,
+              customFields: [
+                { name: 'N\u00BA Processo', type: 'text', value: 'HMMG.2026-1', color: null },
+              ],
+            },
+          },
+        ],
+      });
+
+      expect(csv).to.include('Custom Fields');
+      expect(csv).to.include('N\u00BA Processo: HMMG.2026-1');
+    });
   });
 
   describe('#toPDF', () => {
@@ -125,6 +145,29 @@ describe('export-formatters', () => {
             card: {
               ...mockData.details[0].card,
               labels: [{ id: 'l1', name: 'L'.repeat(200), color: 'berry-red' }],
+            },
+          },
+        ],
+      });
+
+      expect(pdf.slice(0, 4).toString()).to.equal('%PDF');
+    });
+
+    it('does not throw on a card carrying custom fields of every type', async () => {
+      const pdf = await toPDF({
+        ...mockData,
+        details: [
+          {
+            listName: 'Backlog',
+            card: {
+              ...mockData.details[0].card,
+              customFields: [
+                { name: 'Nº Processo', type: 'text', value: 'HMMG.2026.00000705-83', color: null },
+                { name: 'Valor', type: 'number', value: '45230', color: null },
+                { name: 'Início', type: 'date', value: '12/09/2026', color: null },
+                { name: 'Status', type: 'dropdown', value: 'Em Análise', color: 'berry-red' },
+                { name: 'Aprovado', type: 'checkbox', value: '☑', color: null },
+              ],
             },
           },
         ],
