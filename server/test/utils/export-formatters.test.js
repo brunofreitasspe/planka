@@ -5,6 +5,7 @@ const {
   toCSV,
   toPDF,
   formatDateForReport,
+  LABEL_VALUE_OFFSET,
   toPlainText,
   measurePillWidth,
 } = require('../../utils/export-formatters');
@@ -249,5 +250,15 @@ describe('#toPlainText', () => {
   it('tolerates an empty value', () => {
     expect(toPlainText('')).to.equal('');
     expect(toPlainText(null)).to.equal('');
+  });
+});
+
+describe('LABEL_VALUE_OFFSET', () => {
+  it('clears a 7pt label line (Helvetica-Bold measures 8.33pt)', () => {
+    const doc = new PDFDocument({ size: 'A4' });
+    doc.font('Helvetica-Bold').fontSize(7);
+    const labelHeight = doc.heightOfString('Descrição');
+    const minOffset = Math.ceil(labelHeight);
+    expect(LABEL_VALUE_OFFSET).to.be.at.least(minOffset);
   });
 });

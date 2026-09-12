@@ -38,6 +38,11 @@ const escapeCsvValue = (value) => {
 // mid-word (INEX -> INE / X). Round up so the drawn width is always >= the measurement.
 const measurePillWidth = (doc, text, pad) => Math.ceil(doc.widthOfString(text)) + pad * 2;
 
+// Vertical offset from a small field label to the value drawn beneath it. A 7pt
+// Helvetica-Bold line measures 8.33pt tall, so 9 is that rounded up and the value clears
+// the label. Anything smaller draws the value on top of its own label.
+const LABEL_VALUE_OFFSET = 9;
+
 const truncate = (value, maxLength) => {
   if (!value || value.length <= maxLength) {
     return value || '';
@@ -468,8 +473,12 @@ const toPDF = (data) =>
       doc.text('Prioridade', innerX, y);
       doc.text('Vencimento', innerX + halfW + 8, y);
       doc.font('Helvetica').fontSize(9.5).fillColor(COLORS.secondary);
-      doc.text(card.priority || 'Sem prioridade', innerX, y + 9, { width: halfW });
-      doc.text(card.dueDate || 'Sem data', innerX + halfW + 8, y + 9, { width: halfW });
+      doc.text(card.priority || 'Sem prioridade', innerX, y + LABEL_VALUE_OFFSET, {
+        width: halfW,
+      });
+      doc.text(card.dueDate || 'Sem data', innerX + halfW + 8, y + LABEL_VALUE_OFFSET, {
+        width: halfW,
+      });
       y += 22;
 
       // Description block.
@@ -479,7 +488,7 @@ const toPDF = (data) =>
       doc.font('Helvetica').fontSize(9);
       if (card.description) {
         doc.fillColor(COLORS.ink);
-        doc.text(descText, innerX, y + 4, {
+        doc.text(descText, innerX, y + LABEL_VALUE_OFFSET, {
           width: innerW,
           lineGap: 2,
           height: descH,
@@ -487,7 +496,7 @@ const toPDF = (data) =>
         });
       } else {
         doc.font('Helvetica-Oblique').fillColor(COLORS.muted);
-        doc.text('Sem descrição', innerX, y + 4, { width: innerW });
+        doc.text('Sem descrição', innerX, y + LABEL_VALUE_OFFSET, { width: innerW });
       }
       y += 9 + 4 + descH;
 
@@ -495,7 +504,7 @@ const toPDF = (data) =>
       y += 8;
       doc.font('Helvetica-Bold').fontSize(7).fillColor(COLORS.muted);
       doc.text('Labels', innerX, y);
-      y += 4;
+      y += LABEL_VALUE_OFFSET;
       if (card.labels.length > 0) {
         let pillX = innerX;
         let pillRowY = y;
@@ -534,7 +543,7 @@ const toPDF = (data) =>
         y += 8;
         doc.font('Helvetica-Bold').fontSize(7).fillColor(COLORS.muted);
         doc.text('Campos personalizados', innerX, y);
-        y += 4;
+        y += LABEL_VALUE_OFFSET;
         drawCustomFieldGrid(customFields, innerX, y, innerW);
         y += customFieldsGridH;
       }
@@ -543,7 +552,7 @@ const toPDF = (data) =>
       y += 8;
       doc.font('Helvetica-Bold').fontSize(7).fillColor(COLORS.muted);
       doc.text('Último comentário', innerX, y);
-      y += 4;
+      y += LABEL_VALUE_OFFSET;
       if (card.lastComment) {
         doc.font('Helvetica-Bold').fontSize(9).fillColor(COLORS.secondary);
         doc.text(`${card.lastComment.authorName} — ${card.lastComment.createdAt}`, innerX, y);
@@ -599,6 +608,7 @@ const toPDF = (data) =>
 
 module.exports = {
   formatDateForReport,
+  LABEL_VALUE_OFFSET,
   measurePillWidth,
   toCSV,
   toPDF,
