@@ -47,6 +47,11 @@ const renderValue = (customField, content) => {
 
 // Builds the custom field list of one card, ordered by the field's position so the
 // report matches the board. Fields without a value are omitted entirely.
+//
+// Known v1 limitation: `position` is per custom-field-group, but the fields of every
+// group on the card are flattened into a single list and sorted by that per-group
+// position. Two fields with the same name from different groups are indistinguishable
+// in the exported report (both just show as their shared name).
 const buildCardCustomFields = (customFieldValues, customFieldById) =>
   customFieldValues
     .map((customFieldValue) => ({

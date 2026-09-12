@@ -105,10 +105,10 @@ async function loginViaForm(page, emailOrUsername, password) {
   await page.goto('/login');
   await page.locator('input[name="emailOrUsername"]').fill(emailOrUsername);
   await page.locator('input[name="password"]').fill(password);
-  await page.locator('form').getByRole('button', { name: 'Log in' }).click();
+  await page.locator('form').getByRole('button', { name: 'Entrar' }).click();
 
   // Either the app navigates past /login or the terms modal appears first.
-  const continueButton = page.getByRole('button', { name: 'Continue' });
+  const continueButton = page.getByRole('button', { name: 'Continuar' });
   await Promise.race([
     page.waitForURL((url) => !url.pathname.startsWith('/login'), { timeout: 30000 }),
     continueButton.waitFor({ state: 'visible', timeout: 30000 }),
@@ -130,7 +130,7 @@ async function loginViaForm(page, emailOrUsername, password) {
     await page.waitForURL((url) => !url.pathname.startsWith('/login'), { timeout: 30000 });
   }
 
-  await expect(page.getByRole('button', { name: 'Log in' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Entrar' })).toHaveCount(0);
 }
 
 // ---------------------------------------------------------------------------
@@ -147,7 +147,7 @@ async function openCardLabelSelector(page, cardId) {
 
   // The selector popup is open when its search box is visible. (Section titles
   // like "Board Labels" are hidden when that section has no labels.)
-  await expect(page.getByPlaceholder('Search labels...')).toBeVisible();
+  await expect(page.getByPlaceholder('Pesquisar rótulos...')).toBeVisible();
 }
 
 // Locate one label row inside the opened selector by its name. The label's own
@@ -257,10 +257,10 @@ test.describe('Global project labels', () => {
     await boardItem.locator('xpath=..').locator('button:has(i.arrow.up)').click();
 
     // The promote step opens pre-filled; submit it.
-    await page.getByRole('button', { name: 'Promote to project label' }).click();
+    await page.getByRole('button', { name: 'Promover para etiqueta global' }).click();
 
     // It now lives in the Project Labels section, marked with the globe.
-    await expect(page.getByText('Project Labels', { exact: true })).toBeVisible();
+    await expect(page.getByText('Etiquetas do Projeto', { exact: true })).toBeVisible();
     const globalItem = labelItem(page, LOCAL_LABEL_NAME);
     await expect(globalItem).toContainText(LOCAL_LABEL_NAME);
     await expect(globalItem.locator('span[class*="globe"]')).toHaveCount(1);
@@ -290,15 +290,15 @@ test.describe('Global project labels', () => {
 
     // Switch to the Labels tab and open the create form.
     // (Semantic-UI tab items are plain links, not role=tab — scope to the modal.)
-    await page.locator('.ui.modal').getByText('Labels', { exact: true }).click();
-    await page.getByRole('button', { name: 'Create project label' }).first().click();
+    await page.locator('.ui.modal').getByText('Rótulos', { exact: true }).click();
+    await page.getByRole('button', { name: 'Criar etiqueta do projeto' }).first().click();
 
     // Fill the editor and submit (the name input has no placeholder).
     const editorPopup = page.locator('.ui.popup').filter({
       has: page.locator('input[name="name"]'),
     });
     await editorPopup.locator('input[name="name"]').fill(SETTINGS_GLOBAL_NAME);
-    await editorPopup.getByRole('button', { name: 'Create project label' }).click();
+    await editorPopup.getByRole('button', { name: 'Criar etiqueta do projeto' }).click();
 
     // The new global label appears in the project settings list.
     await expect(page.getByText(SETTINGS_GLOBAL_NAME, { exact: true })).toBeVisible();
@@ -315,7 +315,7 @@ test.describe('Global project labels', () => {
     await openCardLabelSelector(page, cardId);
 
     // It is global now, in the Project Labels section with a globe and a demote (↓) button.
-    await expect(page.getByText('Project Labels', { exact: true })).toBeVisible();
+    await expect(page.getByText('Etiquetas do Projeto', { exact: true })).toBeVisible();
     const globalItem = labelItem(page, LOCAL_LABEL_NAME);
     await expect(globalItem.locator('span[class*="globe"]')).toHaveCount(1);
 
@@ -325,8 +325,8 @@ test.describe('Global project labels', () => {
     // Back in the Board Labels section: local again, no globe. The demote keeps
     // the project label in the project vocabulary, so this board now shows the
     // same name twice — the demoted local here and the global in Project Labels.
-    await expect(page.getByText('Board Labels', { exact: true })).toBeVisible();
-    const boardItem = labelItemInSection(page, 'Board Labels', LOCAL_LABEL_NAME);
+    await expect(page.getByText('Etiquetas do Quadro', { exact: true })).toBeVisible();
+    const boardItem = labelItemInSection(page, 'Etiquetas do Quadro', LOCAL_LABEL_NAME);
     await expect(boardItem).toContainText(LOCAL_LABEL_NAME);
     await expect(boardItem.locator('span[class*="globe"]')).toHaveCount(0);
 
@@ -349,13 +349,13 @@ test.describe('Global project labels', () => {
     await openCardLabelSelector(page, cardId);
 
     // Board labels are visible as usual (the demoted label is local again).
-    await expect(page.getByText('Board Labels', { exact: true })).toBeVisible();
-    await expect(labelItemInSection(page, 'Board Labels', LOCAL_LABEL_NAME)).toContainText(
-      LOCAL_LABEL_NAME,
-    );
+    await expect(page.getByText('Etiquetas do Quadro', { exact: true })).toBeVisible();
+    await expect(
+      labelItemInSection(page, 'Etiquetas do Quadro', LOCAL_LABEL_NAME),
+    ).toContainText(LOCAL_LABEL_NAME);
 
     // The members-usable global is visible, marked with the globe.
-    await expect(page.getByText('Project Labels', { exact: true })).toBeVisible();
+    await expect(page.getByText('Etiquetas do Projeto', { exact: true })).toBeVisible();
     const membersItem = labelItem(page, GLOBAL_MEMBERS_NAME);
     await expect(membersItem.locator('span[class*="globe"]')).toHaveCount(1);
 

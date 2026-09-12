@@ -1,3 +1,8 @@
+/*!
+ * Copyright (c) 2024 PLANKA Software GmbH
+ * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ */
+
 const { expect } = require('chai');
 
 const { buildCustomFieldSearchClause } = require('../../utils/custom-field-search');
@@ -43,6 +48,27 @@ describe('custom-field-search', () => {
       const used = [...new Set((sql.match(/\$(\d+)/g) || []).map((p) => Number(p.slice(1))))];
 
       expect(used).to.deep.equal([4]);
+    });
+
+    it('defaults to an ILIKE substring match', () => {
+      const { sql } = buildCustomFieldSearchClause({ startIndex: 1 });
+
+      expect(sql).to.include("cfv.content ILIKE '%' || $1 || '%'");
+      expect(sql).not.to.include('~*');
+    });
+
+    it('applies the term as a regex, not an ILIKE substring, when regex: true', () => {
+      const { sql } = buildCustomFieldSearchClause({ startIndex: 1, regex: true });
+
+      expect(sql).to.include('cfv.content ~* $1');
+      expect(sql).not.to.include('ILIKE');
+    });
+
+    it('applies the regex mode to the date and dropdown branches too, not just the raw content', () => {
+      const { sql } = buildCustomFieldSearchClause({ startIndex: 2, regex: true });
+
+      expect(sql).to.include("to_char(cfv.content::date, 'DD/MM/YYYY') ~* $2");
+      expect(sql).to.include("option ->> 'name' ~* $2");
     });
   });
 });

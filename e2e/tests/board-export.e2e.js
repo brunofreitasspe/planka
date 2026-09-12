@@ -94,10 +94,10 @@ async function loginViaForm(page, emailOrUsername, password) {
   await page.goto('/login');
   await page.locator('input[name="emailOrUsername"]').fill(emailOrUsername);
   await page.locator('input[name="password"]').fill(password);
-  await page.locator('form').getByRole('button', { name: 'Log in' }).click();
+  await page.locator('form').getByRole('button', { name: 'Entrar' }).click();
 
   // Either the app navigates past /login or the terms modal appears first.
-  const continueButton = page.getByRole('button', { name: 'Continue' });
+  const continueButton = page.getByRole('button', { name: 'Continuar' });
   await Promise.race([
     page.waitForURL((url) => !url.pathname.startsWith('/login'), { timeout: 30000 }),
     continueButton.waitFor({ state: 'visible', timeout: 30000 }),
@@ -119,7 +119,7 @@ async function loginViaForm(page, emailOrUsername, password) {
     await page.waitForURL((url) => !url.pathname.startsWith('/login'), { timeout: 30000 });
   }
 
-  await expect(page.getByRole('button', { name: 'Log in' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Entrar' })).toHaveCount(0);
 }
 
 // ---------------------------------------------------------------------------
@@ -130,8 +130,10 @@ async function loginViaForm(page, emailOrUsername, password) {
 // export modal open.
 async function openExportModal(page) {
   await page.locator('button:has(.icon.ellipsis.vertical)').click();
-  await page.locator('.ui.popup:visible').getByText('Export', { exact: true }).click();
-  await expect(page.locator('.ui.modal').getByText('Export Cards', { exact: true })).toBeVisible();
+  await page.locator('.ui.popup:visible').getByText('Exportar', { exact: true }).click();
+  await expect(
+    page.locator('.ui.modal').getByText('Exportar cards', { exact: true }),
+  ).toBeVisible();
 }
 
 // Pick a value in the format dropdown (semantic-ui selection dropdown).
@@ -221,14 +223,16 @@ test.describe('Board cards export', () => {
     await selectExportFormat(page, 'CSV');
 
     const downloadPromise = page.waitForEvent('download');
-    await page.locator('.ui.modal').getByRole('button', { name: 'Export Now' }).click();
+    await page.locator('.ui.modal').getByRole('button', { name: 'Exportar agora' }).click();
     const download = await downloadPromise;
 
     expect(download.suggestedFilename()).toMatch(/^board-export-\d{4}-\d{2}-\d{2}\.csv$/);
 
     const csv = readFileSync(await download.path(), 'utf8');
     expect(csv.startsWith('﻿')).toBeTruthy();
-    expect(csv).toContain('List,Card,Prioridade,Descrição,Vencimento,Labels,Último Comentário');
+    expect(csv).toContain(
+      'List,Card,Prioridade,Descrição,Vencimento,Labels,Custom Fields,Último Comentário',
+    );
 
     // Open cards from both lists are present; the closed card is not.
     expect(csv).toContain(HIGH_CARD);
@@ -255,7 +259,7 @@ test.describe('Board cards export', () => {
 
     // Format defaults to PDF — export directly.
     const downloadPromise = page.waitForEvent('download');
-    await page.locator('.ui.modal').getByRole('button', { name: 'Export Now' }).click();
+    await page.locator('.ui.modal').getByRole('button', { name: 'Exportar agora' }).click();
     const download = await downloadPromise;
 
     expect(download.suggestedFilename()).toMatch(/^board-export-\d{4}-\d{2}-\d{2}\.pdf$/);
@@ -276,11 +280,11 @@ test.describe('Board cards export', () => {
     await openExportModal(page);
     await selectExportFormat(page, 'CSV');
 
-    // Only the "High" band is selected.
-    await page.locator('.ui.modal').getByText('High', { exact: true }).click();
+    // Only the "High" (Alta) band is selected.
+    await page.locator('.ui.modal').getByText('Alta', { exact: true }).click();
 
     const downloadPromise = page.waitForEvent('download');
-    await page.locator('.ui.modal').getByRole('button', { name: 'Export Now' }).click();
+    await page.locator('.ui.modal').getByRole('button', { name: 'Exportar agora' }).click();
     const download = await downloadPromise;
 
     const csv = readFileSync(await download.path(), 'utf8');

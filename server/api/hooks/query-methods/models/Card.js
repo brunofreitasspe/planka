@@ -82,6 +82,7 @@ const getByEndlessListId = async (listId, { before, search, userIds, labelIds })
         // reuses the same placeholder so no extra value is needed.
         const { sql: customFieldSql } = buildCustomFieldSearchClause({
           startIndex: queryValues.length,
+          regex: true,
         });
 
         query += ` AND (card.name ~* ${termPlaceholder} OR card.description ~* ${termPlaceholder} OR ${customFieldSql})`;
@@ -89,23 +90,21 @@ const getByEndlessListId = async (listId, { before, search, userIds, labelIds })
         const searchParts = buildSearchParts(search);
 
         if (searchParts.length > 0) {
-          const ilikeValues = searchParts.map((searchPart) => {
+          // Mirrors client/src/models/Board.js getFilteredCardsModelArray(): every part
+          // must match somewhere (name, description or a custom field), but different
+          // parts may be satisfied by different fields.
+          const partClauses = searchParts.map((searchPart) => {
             queryValues.push(searchPart);
-            return `'%' || $${queryValues.length} || '%'`;
-          });
+            const partPlaceholder = `$${queryValues.length}`;
 
-          // Custom field values match ANY of the parts (a card would rarely carry
-          // every part in a single field), unlike name/description which require all.
-          const customFieldClauses = searchParts.map((searchPart) => {
-            queryValues.push(searchPart);
             const { sql: customFieldSql } = buildCustomFieldSearchClause({
               startIndex: queryValues.length,
             });
 
-            return customFieldSql;
+            return `(card.name ILIKE '%' || ${partPlaceholder} || '%' OR card.description ILIKE '%' || ${partPlaceholder} || '%' OR ${customFieldSql})`;
           });
 
-          query += ` AND ((card.name ILIKE ALL(ARRAY[${ilikeValues.join(', ')}])) OR (card.description ILIKE ALL(ARRAY[${ilikeValues.join(', ')}])) OR ${customFieldClauses.join(' OR ')})`;
+          query += ` AND (${partClauses.join(' AND ')})`;
         }
       }
     }

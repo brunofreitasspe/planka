@@ -33,6 +33,11 @@ const escapeCsvValue = (value) => {
   return str;
 };
 
+// pdfkit reports fractional widths; adding and later subtracting the padding in
+// floating point can land a hair below the real text width and make the wrapper break
+// mid-word (INEX -> INE / X). Round up so the drawn width is always >= the measurement.
+const measurePillWidth = (doc, text, pad) => Math.ceil(doc.widthOfString(text)) + pad * 2;
+
 const truncate = (value, maxLength) => {
   if (!value || value.length <= maxLength) {
     return value || '';
@@ -142,8 +147,6 @@ const COLORS = {
   muted: '#888780',
   hairline: '#E4E2DA',
   cardBg: '#F5F4EF',
-  labelBg: '#E1F5EE',
-  labelInk: '#04342C',
 };
 
 const toPDF = (data) =>
@@ -237,6 +240,10 @@ const toPDF = (data) =>
     const CUSTOM_FIELD_PILL_PAD = 8;
 
     const measureCustomFieldGrid = (customFields, gridW) => {
+      if (customFields.length === 0) {
+        return { height: 0, colW: gridW, rows: [] };
+      }
+
       const colW = (gridW - CUSTOM_FIELD_GUTTER) / 2;
 
       doc.font('Helvetica').fontSize(9);
@@ -279,11 +286,7 @@ const toPDF = (data) =>
               field.value,
               Math.max(4, Math.floor((colW - CUSTOM_FIELD_PILL_PAD * 2) / 4.6)),
             );
-            // See the label-pill comment below for why ceil() is required here too.
-            const pillW = Math.min(
-              Math.ceil(doc.widthOfString(text)) + CUSTOM_FIELD_PILL_PAD * 2,
-              colW,
-            );
+            const pillW = Math.min(measurePillWidth(doc, text, CUSTOM_FIELD_PILL_PAD), colW);
 
             doc.roundedRect(cellX, valueY, pillW, 14, 6).fill(background);
             doc.fillColor(foreground);
@@ -353,14 +356,7 @@ const toPDF = (data) =>
         truncate(label.name, Math.max(4, Math.floor((MAX_PILL_W - PILL_PAD * 2) / 4.6))),
       );
 
-      // Round the measured width up before doing arithmetic with it: pillW - PILL_PAD * 2
-      // is a different float expression than the original widthOfString() call, and without
-      // ceil() the two can differ by a sub-point epsilon (e.g. 18.671999999999997 vs 18.672).
-      // With zero slack that's enough for pdfkit's line-wrapper to consider the text "too wide"
-      // and wrap it mid-word (this is how "INEX" broke into "INE"/"X").
-      const pillWidths = labelTexts.map(
-        (text) => Math.ceil(doc.widthOfString(text)) + PILL_PAD * 2,
-      );
+      const pillWidths = labelTexts.map((text) => measurePillWidth(doc, text, PILL_PAD));
       let labelRows = 1;
       let used = 0;
       pillWidths.forEach((pillW) => {
@@ -554,6 +550,7 @@ const toPDF = (data) =>
 
 module.exports = {
   formatDateForReport,
+  measurePillWidth,
   toCSV,
   toPDF,
   toPlainText,

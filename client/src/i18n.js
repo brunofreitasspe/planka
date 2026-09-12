@@ -129,10 +129,6 @@ i18n
   });
 
 i18n.loadCoreLocale = async (language = i18n.resolvedLanguage) => {
-  if (language === FALLBACK_LANGUAGE) {
-    return;
-  }
-
   const { default: locale } = await import(`./locales/${language}/core.js`);
 
   Object.keys(locale).forEach((namespace) => {
@@ -148,20 +144,5 @@ i18n.loadCoreLocale = async (language = i18n.resolvedLanguage) => {
     }
   });
 };
-
-/* i18n.detectLanguage = () => {
-  const {
-    services: { languageDetector, languageUtils },
-  } = i18n;
-
-  localStorage.removeItem(languageDetector.options.lookupLocalStorage);
-  const detectedLanguages = languageDetector.detect();
-
-  i18n.language = languageUtils.getBestMatchFromCodes(detectedLanguages);
-  i18n.languages = languageUtils.toResolveHierarchy(i18n.language);
-
-  i18n.resolvedLanguage = undefined;
-  i18n.setResolvedLanguage(i18n.language);
-}; */
 
 export default i18n;

@@ -1,6 +1,14 @@
 const { expect } = require('chai');
+const PDFDocument = require('pdfkit');
 
-const { toCSV, toPDF, formatDateForReport } = require('../../utils/export-formatters');
+const {
+  toCSV,
+  toPDF,
+  formatDateForReport,
+  toPlainText,
+  measurePillWidth,
+} = require('../../utils/export-formatters');
+const { SERVER_LABEL_COLORS, textColorFor } = require('../../utils/label-colors');
 
 const mockData = {
   boardName: 'Test Board',
@@ -100,6 +108,27 @@ describe('export-formatters', () => {
     });
   });
 
+  describe('#measurePillWidth', () => {
+    // Regression test for the Task 6 fix: without Math.ceil(), pillW - pad*2 can land a
+    // hair below the real glyph width (float round-trip), and pdfkit's own line-wrapper
+    // then wraps the pill text onto a second line ("INEX" -> "INE" / "X"). Comparing
+    // against a numeric width alone is not enough to catch this (adding pad and
+    // subtracting it back rarely changes the float value) — the only real proof is that
+    // pdfkit does not wrap the text when drawn at the reserved inner width.
+    it('reserves enough width that the pill text does not wrap onto a second line', () => {
+      const doc = new PDFDocument({ size: 'A4' });
+      doc.font('Helvetica').fontSize(8);
+
+      const text = 'INEX';
+      const pad = 8;
+      const innerWidth = measurePillWidth(doc, text, pad) - pad * 2;
+
+      const oneLineHeight = doc.heightOfString('X', { width: 1000 });
+
+      expect(doc.heightOfString(text, { width: innerWidth })).to.equal(oneLineHeight);
+    });
+  });
+
   describe('#toPDF', () => {
     it('returns a Buffer starting with the PDF header', async () => {
       const buffer = await toPDF(mockData);
@@ -177,9 +206,6 @@ describe('export-formatters', () => {
     });
   });
 });
-
-const { toPlainText } = require('../../utils/export-formatters');
-const { SERVER_LABEL_COLORS, textColorFor } = require('../../utils/label-colors');
 
 describe('label-colors', () => {
   it('maps the label color name to a solid hex', () => {
