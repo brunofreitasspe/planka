@@ -46,6 +46,52 @@ const truncate = (value, maxLength) => {
   return `${value.substring(0, maxLength)}...`;
 };
 
+// Truncate text to fit within a maximum width (in points) at the current doc font/size,
+// using binary search to find the exact character count that fits, rather than guessing
+// based on average character width (which fails for URLs and narrow character sets).
+// Always adds ellipsis if any truncation occurs.
+const truncateToWidth = (doc, value, maxWidth) => {
+  if (!value || value.length === 0) {
+    return '';
+  }
+
+  const ellipsis = '...';
+  const ellipsisWidth = doc.widthOfString(ellipsis);
+
+  if (doc.widthOfString(value) <= maxWidth) {
+    return value;
+  }
+
+  // Binary search: find the longest prefix that fits within (maxWidth - ellipsisWidth).
+  const availableWidth = maxWidth - ellipsisWidth;
+
+  if (availableWidth <= 0) {
+    // Not enough space for even ellipsis
+    return '';
+  }
+
+  let low = 0;
+  let high = value.length;
+
+  while (low < high) {
+    const mid = Math.ceil((low + high) / 2);
+
+    if (doc.widthOfString(value.substring(0, mid)) <= availableWidth) {
+      low = mid;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  // Return the prefix with ellipsis
+  if (low > 0) {
+    return value.substring(0, low) + ellipsis;
+  }
+
+  // Even one character doesn't fit; return just ellipsis
+  return ellipsis;
+};
+
 const MARKDOWN_LINK_REGEX = /\[([^\]]+)\]\(([^)]+)\)/g;
 // Deliberately excludes single-underscore emphasis: `_` shows up inside real
 // identifiers (HMMG_2026_001) and stripping it would corrupt the text.
@@ -282,18 +328,18 @@ const toPDF = (data) =>
             const foreground = textColorFor(background);
 
             doc.font('Helvetica').fontSize(8);
-            const text = truncate(
-              field.value,
-              Math.max(4, Math.floor((colW - CUSTOM_FIELD_PILL_PAD * 2) / 4.6)),
-            );
+            const maxPillContentWidth = colW - CUSTOM_FIELD_PILL_PAD * 2;
+            const text = truncateToWidth(doc, field.value, maxPillContentWidth);
             const pillW = Math.min(measurePillWidth(doc, text, CUSTOM_FIELD_PILL_PAD), colW);
 
             doc.roundedRect(cellX, valueY, pillW, 14, 6).fill(background);
             doc.fillColor(foreground);
-            doc.text(text, cellX + CUSTOM_FIELD_PILL_PAD, valueY + 3, {
-              width: pillW - CUSTOM_FIELD_PILL_PAD * 2,
-              align: 'center',
-            });
+            // Draw the pre-truncated field value without width constraint to avoid pdfkit's
+            // mid-word clipping. Positioning is centered within the pill using manual centering.
+            const fieldTextW = doc.widthOfString(text);
+            const fieldContentW = pillW - CUSTOM_FIELD_PILL_PAD * 2;
+            const fieldTextX = cellX + CUSTOM_FIELD_PILL_PAD + (fieldContentW - fieldTextW) / 2;
+            doc.text(text, fieldTextX, valueY + 3);
           } else if (field.type === 'checkbox') {
             // The base Helvetica font has no glyph for U+2611 (☑) — doc.widthOfString('☑')
             // returns 0, i.e. it draws nothing. Draw the check as a small vector mark
@@ -307,7 +353,7 @@ const toPDF = (data) =>
               .stroke(COLORS.ink);
           } else {
             doc.font('Helvetica').fontSize(9).fillColor(COLORS.ink);
-            doc.text(field.value, cellX, valueY, { width: colW, lineGap: 2 });
+            doc.text(field.value, cellX, valueY, { width: colW, lineGap: 2, ellipsis: true });
           }
         });
 
@@ -351,9 +397,10 @@ const toPDF = (data) =>
       doc.font('Helvetica').fontSize(8);
       const PILL_PAD = 8;
       const MAX_PILL_W = innerW;
+      const maxLabelContentWidth = MAX_PILL_W - PILL_PAD * 2;
 
       const labelTexts = card.labels.map((label) =>
-        truncate(label.name, Math.max(4, Math.floor((MAX_PILL_W - PILL_PAD * 2) / 4.6))),
+        truncateToWidth(doc, label.name, maxLabelContentWidth),
       );
 
       const pillWidths = labelTexts.map((text) => measurePillWidth(doc, text, PILL_PAD));
@@ -465,10 +512,12 @@ const toPDF = (data) =>
 
           doc.roundedRect(pillX, pillRowY, pillW, 14, 7).fill(background);
           doc.font('Helvetica').fontSize(8).fillColor(foreground);
-          doc.text(labelTexts[index], pillX + PILL_PAD, pillRowY + 3, {
-            width: pillW - PILL_PAD * 2,
-            align: 'center',
-          });
+          // Draw the pre-truncated label text without width constraint to avoid pdfkit's
+          // mid-word clipping. Positioning is centered within the pill using manual centering.
+          const labelText = labelTexts[index];
+          const textW = doc.widthOfString(labelText);
+          const textX = pillX + PILL_PAD + (pillW - PILL_PAD * 2 - textW) / 2;
+          doc.text(labelText, textX, pillRowY + 3);
           pillX += pillW + 4;
         });
 
